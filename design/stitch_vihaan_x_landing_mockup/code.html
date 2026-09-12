@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VIHAAN X — The 10th Edition | DTU IEEE Student Branch</title>
+<!-- Google Fonts: Bodoni Moda (High Contrast Serif) & Plus Jakarta Sans (Clean Modern Sans) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Custom Configuration -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            space: {
+              950: '#030308',
+              900: '#06060f',
+              850: '#0b0b1a',
+              800: '#121226',
+              700: '#1e1b38'
+            },
+            celestial: {
+              gold: '#E5A967',
+              goldLight: '#F3C58E',
+              goldDark: '#BF8141',
+              bronze: '#C28346',
+              purple: '#8B5CF6',
+              purpleDeep: '#5B21B6',
+              purpleGlow: '#A855F7',
+              cosmicText: '#CFCEDE'
+            }
+          },
+          fontFamily: {
+            serifHeading: ['"Bodoni Moda"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            monoCode: ['"Space Grotesk"', 'sans-serif']
+          },
+          boxShadow: {
+            'glow-gold': '0 0 25px -5px rgba(229, 169, 103, 0.45)',
+            'glow-purple': '0 0 30px -5px rgba(139, 92, 246, 0.4)',
+            'glass-card': '0 8px 32px 0 rgba(0, 0, 0, 0.55)'
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float-subtle': 'float 6s ease-in-out infinite'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="custom-typography">
+    .font-bodoni {
+      font-family: 'Bodoni Moda', serif;
+    }
+    .letter-spacing-wide {
+      letter-spacing: 0.18em;
+    }
+    .letter-spacing-widest {
+      letter-spacing: 0.28em;
+    }
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #FDE68A 0%, #E5A967 50%, #C28346 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .text-purple-gold-gradient {
+      background: linear-gradient(145deg, #A855F7 15%, #6B21A8 45%, #E5A967 85%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .text-x-gradient {
+      background: linear-gradient(160deg, #9333EA 0%, #6E3CBC 40%, #E5A967 80%, #D49B5B 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+<style data-purpose="visual-effects">
+    /* Glassmorphism surfaces */
+    .glass-panel {
+      background: rgba(11, 11, 26, 0.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(229, 169, 103, 0.15);
+    }
+    .glass-panel-purple {
+      background: rgba(18, 14, 38, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+    .glass-card-hover {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-6px);
+      border-color: rgba(229, 169, 103, 0.45);
+      box-shadow: 0 16px 35px -8px rgba(229, 169, 103, 0.18), 0 0 20px -3px rgba(139, 92, 246, 0.15);
+    }
+    /* Celestial twinkle sparkles */
+    .star-sparkle {
+      filter: drop-shadow(0 0 8px #E5A967);
+    }
+    /* Subtle starlight background dot pattern */
+    .bg-starfield {
+      background-image: 
+        radial-gradient(1.5px 1.5px at 40px 60px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 160px 120px, #E5A967, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 280px 240px, #A855F7, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 420px 80px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 560px 320px, #E5A967, rgba(0,0,0,0));
+      background-size: 650px 650px;
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="bg-[#030308] text-slate-100 font-sans antialiased overflow-x-hidden relative selection:bg-celestial-gold selection:text-black">
+<!-- Starlight background canvas overlay -->
+<div aria-hidden="true" class="fixed inset-0 bg-starfield pointer-events-none opacity-40 z-0"></div>
+<!-- BEGIN: Navigation -->
+<header class="sticky top-0 z-50 w-full px-4 sm:px-8 py-3.5 transition-all duration-300" data-purpose="site-navigation-header">
+<div class="max-w-7xl mx-auto glass-panel rounded-2xl px-5 py-3 flex items-center justify-between shadow-2xl border border-white/10">
+<!-- Brand & DTU IEEE Identifier -->
+<a aria-label="Vihaan X Home" class="flex items-center gap-3.5 group" href="#hero">
+<div class="relative w-11 h-11 rounded-xl p-0.5 bg-gradient-to-tr from-celestial-gold via-purple-500 to-amber-200 overflow-hidden shadow-glow-gold transition-transform group-hover:scale-105">
+<img alt="Vihaan X Emblem Logo" class="w-full h-full object-cover rounded-[10px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_In3vkPJ4-ek-ZGOBA-JO2So0F0AYA8xeS-NciHL9SwS_M54vyd4xLsuuMHRS8yB3aCKnuqUvN4Wbw3Tf6vUdPyfn22fjAbWS6JIbWZ8WYB4DyTYs4CHjwWgatdGw7itiQnjPAqhLMCmO_AQ8_yBLaVXzWfsjMCgj23dScv5P1lgCijIZLlp5dUXlP-oBPQFImxCtpVWa_92C8E1mJTwUyuE65nfRYs0tNu1zS9aaRScilh18LNSojw"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-bodoni text-xl font-bold tracking-wider text-white">VIHAAN</span>
+<span class="font-bodoni text-xl font-black text-x-gradient">X</span>
+</div>
+<span class="text-[9px] uppercase tracking-widest text-celestial-gold/90 font-medium">DTU IEEE SB</span>
+</div>
+</a>
+<!-- Desktop Navigation Menu Links -->
+<nav aria-label="Main Navigation" class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-300">
+<a class="hover:text-celestial-gold transition-colors duration-200" href="#about">About</a>
+<a class="hover:text-celestial-gold transition-colors duration-200" href="#tracks">Tracks</a>
+<a class="hover:text-celestial-gold transition-colors duration-200" href="#timeline">Trajectory</a>
+<a class="hover:text-celestial-gold transition-colors duration-200" href="#prizes">Bounties</a>
+<a class="hover:text-celestial-gold transition-colors duration-200" href="#sponsors">Partners</a>
+<a class="hover:text-celestial-gold transition-colors duration-200" href="#faqs">FAQs</a>
+</nav>
+<!-- CTA and Quick Info -->
+<div class="flex items-center gap-4">
+<!-- Live Status Pill -->
+<div class="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/70 border border-emerald-500/30 text-emerald-400 text-xs font-monoCode">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+<span>Applications Open</span>
+</div>
+<!-- Devfolio Register Action -->
+<a class="relative group overflow-hidden rounded-xl p-[1px] font-semibold text-xs uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-celestial-gold" data-purpose="apply-button" href="#register">
+<span class="absolute inset-0 bg-gradient-to-r from-celestial-gold via-amber-400 to-purple-600 rounded-xl group-hover:opacity-100 transition-opacity duration-300"></span>
+<span class="relative block px-5 py-2.5 rounded-[11px] bg-space-950 text-amber-200 group-hover:bg-transparent group-hover:text-black font-bold transition-all duration-300">
+            Apply with Devfolio
+          </span>
+</a>
+</div>
+</div>
+</header>
+<!-- END: Navigation -->
+<main>
+<!-- BEGIN: HeroSection -->
+<section class="relative pt-6 pb-20 md:py-24 px-4 sm:px-8 overflow-hidden z-10" data-purpose="hero-section" id="hero">
+<!-- Ambient Glow Blobs behind hero content -->
+<div aria-hidden="true" class="absolute top-1/4 -left-40 w-96 h-96 bg-purple-900/25 rounded-full blur-[120px] pointer-events-none"></div>
+<div aria-hidden="true" class="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-celestial-gold/15 rounded-full blur-[140px] pointer-events-none"></div>
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+<!-- Left Column: Typographic Grandeur & Registration Hub -->
+<div class="lg:col-span-7 flex flex-col space-y-7 text-left">
+<!-- Presenter Badge (from Handout IMAGE_1 styling) -->
+<div class="inline-flex items-center gap-3.5 px-4 py-2 rounded-full glass-panel w-fit border border-celestial-gold/30 shadow-glow-gold/20">
+<!-- Sparkle Star Icon -->
+<svg class="w-4 h-4 text-celestial-gold star-sparkle" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"></path>
+</svg>
+<div class="flex items-center gap-2 text-xs md:text-sm font-medium tracking-wide text-slate-200">
+<span class="text-white font-semibold">Delhi Technological University</span>
+<span class="text-celestial-gold font-bold">IEEE Student Branch</span>
+<span class="text-celestial-gold/80 italic font-serifHeading font-normal text-xs">Presents</span>
+</div>
+<svg class="w-3.5 h-3.5 text-purple-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"></path>
+</svg>
+</div>
+<!-- Main Event Title Block -->
+<div class="space-y-2">
+<p class="text-base sm:text-lg md:text-xl font-light text-slate-300 tracking-wide font-sans">
+              The 10th Edition of
+            </p>
+<!-- Grand "VIHAAN X" Serif Headline with Dramatic Cosmic Gradient "X" -->
+<div class="relative flex items-baseline tracking-normal select-none">
+<h1 class="font-bodoni font-normal text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight text-white drop-shadow-[0_4px_30px_rgba(255,255,255,0.2)]">
+                VIHAAN
+              </h1>
+<span class="font-bodoni font-black text-7xl sm:text-8xl md:text-9xl lg:text-[10.5rem] leading-none text-x-gradient ml-2 sm:ml-4 drop-shadow-[0_0_40px_rgba(168,85,247,0.5)]">
+                X
+              </span>
+</div>
+</div>
+<!-- Subtitle / Tagline from Handout -->
+<div class="space-y-3 max-w-2xl">
+<p class="text-lg md:text-xl font-medium text-slate-200 leading-snug">
+              North India’s largest Student-run Hackathon
+            </p>
+<p class="text-sm md:text-base text-celestial-cosmicText/80 font-normal leading-relaxed">
+              Step beyond our terrestrial horizon into <span class="text-celestial-gold font-semibold">36 hours</span> of uninhibited space-tech engineering, artificial intelligence, and moonshot breakthroughs at Delhi Technological University.
+            </p>
+</div>
+<!-- Highlight Badges Bar -->
+<div class="flex flex-wrap gap-2.5 pt-1 text-xs font-monoCode">
+<span class="px-3.5 py-1.5 rounded-lg bg-amber-500/10 border border-celestial-gold/30 text-amber-200">
+              ✦ ₹10,00,000+ Prize Pool
+            </span>
+<span class="px-3.5 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/30 text-purple-200">
+              ✦ 2,500+ Hackers Nationwide
+            </span>
+<span class="px-3.5 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-200">
+              ✦ Hybrid: DTU Campus &amp; Virtual
+            </span>
+</div>
+<!-- Hackathon Kickoff Countdown Timer -->
+<div class="glass-panel-purple rounded-2xl p-4 sm:p-5 max-w-xl border border-white/10" data-purpose="countdown-clock">
+<div class="flex items-center justify-between mb-3">
+<span class="text-xs uppercase tracking-widest text-celestial-gold font-bold flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-celestial-gold animate-pulse"></span>
+                T-Minus to Lift-Off
+              </span>
+<span class="text-[11px] text-slate-400 font-monoCode">November 2024 • DTU New Delhi</span>
+</div>
+<div class="grid grid-cols-4 gap-2 sm:gap-4 text-center font-monoCode">
+<!-- Days -->
+<div class="bg-space-950/80 rounded-xl p-2.5 sm:p-3 border border-purple-500/20">
+<span class="text-2xl sm:text-3xl font-bold text-white block" id="countdown-days">24</span>
+<span class="text-[10px] text-slate-400 uppercase tracking-wider">Days</span>
+</div>
+<!-- Hours -->
+<div class="bg-space-950/80 rounded-xl p-2.5 sm:p-3 border border-purple-500/20">
+<span class="text-2xl sm:text-3xl font-bold text-white block" id="countdown-hours">14</span>
+<span class="text-[10px] text-slate-400 uppercase tracking-wider">Hours</span>
+</div>
+<!-- Minutes -->
+<div class="bg-space-950/80 rounded-xl p-2.5 sm:p-3 border border-purple-500/20">
+<span class="text-2xl sm:text-3xl font-bold text-white block" id="countdown-minutes">48</span>
+<span class="text-[10px] text-slate-400 uppercase tracking-wider">Mins</span>
+</div>
+<!-- Seconds -->
+<div class="bg-space-950/80 rounded-xl p-2.5 sm:p-3 border border-purple-500/20">
+<span class="text-2xl sm:text-3xl font-bold text-celestial-gold block" id="countdown-seconds">32</span>
+<span class="text-[10px] text-slate-400 uppercase tracking-wider">Secs</span>
+</div>
+</div>
+</div>
+<!-- Hero Action Buttons -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+<!-- Primary Action -->
+<a class="px-8 py-4 rounded-xl bg-gradient-to-r from-celestial-gold via-amber-500 to-celestial-goldDark text-space-950 font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 shadow-glow-gold hover:scale-[1.02] active:scale-[0.98] transition-all" href="#register">
+<svg class="w-5 h-5 text-space-950" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path>
+</svg>
+<span>Register on Devfolio</span>
+</a>
+<!-- Secondary Action -->
+<a class="px-7 py-4 rounded-xl glass-panel text-slate-200 hover:text-celestial-gold border border-white/20 hover:border-celestial-gold/50 font-semibold text-sm tracking-wide flex items-center justify-center gap-2 transition-all hover:bg-white/5" href="#tracks">
+<span>Explore Missions</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</a>
+<!-- Discord Community Badge -->
+<a class="px-4 py-4 rounded-xl glass-panel border border-indigo-500/30 hover:border-indigo-400 text-indigo-300 text-sm font-medium flex items-center justify-center gap-2 transition-all hover:bg-indigo-950/40" href="https://discord.com" rel="noopener noreferrer" target="_blank" title="Join Hackathon Discord">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
+<path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"></path>
+</svg>
+<span>Discord</span>
+</a>
+</div>
+</div>
+<!-- Right Column: Celestial Ringed Gas Giant Visual Composition (IMAGE_3) -->
+<div class="lg:col-span-5 relative flex justify-center items-center" data-purpose="celestial-planet-visual">
+<!-- Outer orbital decorative rings (CSS) -->
+<div class="absolute -inset-6 rounded-full border border-purple-500/20 animate-pulse-slow pointer-events-none"></div>
+<div class="absolute -inset-14 rounded-full border border-dashed border-celestial-gold/20 pointer-events-none"></div>
+<!-- Main Visual Showcase Container -->
+<div class="relative w-full max-w-lg aspect-video sm:aspect-square lg:aspect-[4/5] rounded-3xl overflow-hidden glass-panel border border-celestial-gold/30 shadow-glow-purple group">
+<!-- High Resolution Celestial Artwork from DataStore (IMAGE_3) -->
+<img alt="Epic photorealistic deep space scene featuring a massive Saturn-like ringed gas giant planet with glowing copper bronze and amber atmospheric bands, glowing golden rings in space, distant violet nebula" class="w-full h-full object-cover object-center transform scale-105 group-hover:scale-110 transition-transform duration-700 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSMal247YMgSSmr-HzV26MojrHFaTrz4HtmKHNg_n0QBpA6kAcx62JG6sFfCwS8By42X2Ix8cSRXwtp2OkwU560ya7F6s-ipvEp1dE3Vj2FxECQZ8QQWFV0KU2FkWw8irkjz3_bAO7u92wSrFnnuX8QjDjA2B9QdUkyF1G185VrYBQsDGl42sGbGoEQol6ThzaMaUTK8wiwtQQ7IcgRMy4aK8PquQZwpt2jJCat0A18Z_LSzR8wqOXng"/>
+<!-- Subtle Radial Vignette for seamless space blending -->
+<div class="absolute inset-0 bg-gradient-to-t from-space-950 via-space-950/20 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-space-950/40 via-transparent to-space-950/30"></div>
+<!-- Floating Orbital Telemetry Chips -->
+<!-- Chip 1: Milestone Edition -->
+<div class="absolute top-5 right-5 glass-panel px-3.5 py-2 rounded-xl flex items-center gap-2.5 border border-celestial-gold/40 shadow-lg animate-float-subtle">
+<span class="w-2.5 h-2.5 rounded-full bg-celestial-gold animate-ping"></span>
+<div>
+<p class="text-[10px] uppercase text-celestial-gold font-bold tracking-wider">Milestone</p>
+<p class="text-xs font-bold text-white">Edition 10.0</p>
+</div>
+</div>
+<!-- Chip 2: Location / Format -->
+<div class="absolute bottom-6 left-6 right-6 glass-panel-purple p-4 rounded-2xl border border-white/20 backdrop-blur-xl">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-celestial-gold/20 flex items-center justify-center text-celestial-gold border border-celestial-gold/40">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<div>
+<p class="text-xs font-bold text-white">Delhi Technological University</p>
+<p class="text-[11px] text-slate-300">Shahbad Daulatpur, Main Bawana Rd, Delhi</p>
+</div>
+</div>
+<span class="px-2.5 py-1 text-[10px] rounded-md bg-purple-950/80 text-purple-300 font-monoCode border border-purple-500/30">
+                  HYBRID
+                </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: CosmicStatsBar -->
+<section class="relative z-20 -mt-6 sm:-mt-8 px-4 sm:px-8" data-purpose="stat-counters">
+<div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+<!-- Stat 1 -->
+<div class="glass-panel rounded-2xl p-5 border border-white/10 glass-card-hover flex flex-col justify-between">
+<div class="flex items-center justify-between text-celestial-gold mb-2">
+<span class="text-xs uppercase font-monoCode tracking-wider text-celestial-gold/80">Legacy</span>
+<svg class="w-4 h-4 star-sparkle" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 0L14.5 9.5L24 12L14.5 14.5L12 24L9.5 14.5L0 12L9.5 9.5L12 0Z"></path>
+</svg>
+</div>
+<p class="text-3xl sm:text-4xl font-bodoni font-bold text-white mb-1">10th</p>
+<p class="text-xs text-slate-400 font-medium">Consecutive Grand Edition</p>
+</div>
+<!-- Stat 2 -->
+<div class="glass-panel rounded-2xl p-5 border border-celestial-gold/20 glass-card-hover flex flex-col justify-between shadow-glow-gold/10">
+<div class="flex items-center justify-between text-amber-300 mb-2">
+<span class="text-xs font-monoCode tracking-wider uppercase text-amber-200/80">Prize Pool</span>
+<span class="text-sm font-bold">₹</span>
+</div>
+<p class="text-3xl sm:text-4xl font-bodoni font-bold text-gold-gradient mb-1">10 LAKH+</p>
+<p class="text-xs text-slate-400 font-medium">Bounties, Cash &amp; Swag Grants</p>
+</div>
+<!-- Stat 3 -->
+<div class="glass-panel rounded-2xl p-5 border border-white/10 glass-card-hover flex flex-col justify-between">
+<div class="flex items-center justify-between text-purple-400 mb-2">
+<span class="text-xs uppercase font-monoCode tracking-wider text-purple-300/80">Duration</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<p class="text-3xl sm:text-4xl font-bodoni font-bold text-white mb-1">36 HRS</p>
+<p class="text-xs text-slate-400 font-medium">Non-Stop Rapid Prototyping</p>
+</div>
+<!-- Stat 4 -->
+<div class="glass-panel rounded-2xl p-5 border border-white/10 glass-card-hover flex flex-col justify-between">
+<div class="flex items-center justify-between text-indigo-400 mb-2">
+<span class="text-xs uppercase font-monoCode tracking-wider text-indigo-300/80">Reach</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<p class="text-3xl sm:text-4xl font-bodoni font-bold text-white mb-1">2,500+</p>
+<p class="text-xs text-slate-400 font-medium">Top Student Hackers &amp; Creators</p>
+</div>
+</div>
+</section>
+<!-- END: CosmicStatsBar -->
+<!-- BEGIN: AboutSection -->
+<section class="py-24 px-4 sm:px-8 relative" data-purpose="about-vihaan-x" id="about">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<!-- Graphic / Handout banner snapshot framing -->
+<div class="lg:col-span-5 order-2 lg:order-1 relative">
+<div class="rounded-3xl p-1 bg-gradient-to-br from-celestial-gold/40 via-purple-600/30 to-transparent shadow-2xl">
+<div class="rounded-[22px] overflow-hidden bg-space-900 border border-white/10 relative group">
+<img alt="Vihaan X Design Handout Preview featuring DTU IEEE presents, the 10th edition typography, and cosmic Saturn" class="w-full h-auto object-cover transform group-hover:scale-102 transition duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtfiddPOYdnNAB4C1HeaRubdStdGM47b4MtbUQjQqOQSTXyfGkbvQHO3A6jECfVJMPOu-bVSXKHuC9GUL244pGzHU2RTnA4WiqfRRtfXec8ik_-D8D5u94A7pdSaCz5CmKZ70F3ZaHIBTgUfrA-ON9plYKPgslL4jtqkXvhZ_F0icqblVYhnU0rATg-d9lazED_nByMGpQGEnaFdfspZpcOJwewwBU_xt8n2JoI9cl9VfNCHtCAYJ7XK6nKXZP7oiJW0Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-space-950 via-transparent to-transparent opacity-60"></div>
+<div class="absolute bottom-4 left-4 right-4 text-center">
+<span class="inline-block px-3 py-1 rounded-full text-xs font-monoCode bg-space-950/90 text-celestial-gold border border-celestial-gold/30">
+                    Official 10th Edition Space Handout
+                  </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Narrative description -->
+<div class="lg:col-span-7 order-1 lg:order-2 space-y-6">
+<div class="inline-flex items-center gap-2 text-celestial-gold uppercase tracking-widest text-xs font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-celestial-gold"></span>
+              A Decade of Tech Leadership
+            </div>
+<h2 class="text-3xl sm:text-4xl md:text-5xl font-bodoni font-bold text-white tracking-tight leading-tight">
+              Pioneering Space &amp; Deep Tech at <span class="text-gold-gradient">Delhi Technological University</span>
+</h2>
+<p class="text-slate-300 text-base leading-relaxed">
+              Organized by the <strong class="text-white font-semibold">DTU IEEE Student Branch</strong>, VIHAAN has evolved into North India's premier technological marathon. For our milestone <strong class="text-celestial-gold font-semibold">10th Edition</strong>, we set our coordinates toward the cosmos.
+            </p>
+<p class="text-slate-400 text-sm leading-relaxed">
+              Whether you are architecting decentralized interplanetary networks, training neural systems for planetary rovers, or designing bio-telemetry suits for extreme environments, VIHAAN X provides the launchpad, top-tier mentors, industry juries, and seed opportunities to transform prototypes into orbit-ready ventures.
+            </p>
+<!-- Highlights Checklist -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+<div class="flex items-start gap-3">
+<span class="text-celestial-gold mt-1">✦</span>
+<span class="text-sm text-slate-300 font-medium">Free Accommodations &amp; Gourmet Meals on DTU Campus</span>
+</div>
+<div class="flex items-start gap-3">
+<span class="text-celestial-gold mt-1">✦</span>
+<span class="text-sm text-slate-300 font-medium">Direct Mentorship from Silicon Valley &amp; Tier-1 Tech Leads</span>
+</div>
+<div class="flex items-start gap-3">
+<span class="text-celestial-gold mt-1">✦</span>
+<span class="text-celestial-gold mt-1">✦</span>
+<span class="text-sm text-slate-300 font-medium">Official Devfolio Certified Hackathon Verification</span>
+</div>
+<div class="flex items-start gap-3">
+<span class="text-celestial-gold mt-1">✦</span>
+<span class="text-sm text-slate-300 font-medium">Exclusive Swag Bundles, Badges &amp; Hardware Kits</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: AboutSection -->
+<!-- BEGIN: CosmicTracksSection -->
+<section class="py-24 px-4 sm:px-8 bg-space-900/60 relative border-y border-white/5" data-purpose="hackathon-tracks" id="tracks">
+<div class="max-w-7xl mx-auto space-y-14">
+<!-- Header -->
+<div class="text-center max-w-3xl mx-auto space-y-4">
+<div class="inline-flex items-center gap-2 text-celestial-gold text-xs font-monoCode uppercase tracking-widest px-4 py-1.5 rounded-full bg-celestial-gold/10 border border-celestial-gold/20">
+            ✦ Mission Trajectories
+          </div>
+<h2 class="text-3xl sm:text-5xl font-bodoni font-bold text-white tracking-tight">
+            Cosmic Innovation Tracks
+          </h2>
+<p class="text-slate-400 text-sm sm:text-base">
+            Choose your orbital challenge. Each track carries specialized sponsor bounties, dedicated mentors, and dedicated track champion prizes.
+          </p>
+</div>
+<!-- Tracks Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Track 1: AI & Neural Systems -->
+<div class="glass-panel rounded-2xl p-7 border border-white/10 glass-card-hover flex flex-col justify-between group">
+<div class="space-y-4">
+<div class="w-14 h-14 rounded-xl bg-purple-950/80 border border-purple-500/40 flex items-center justify-center text-purple-400 group-hover:scale-110 group-hover:border-purple-400 transition-all">
+<!-- AI Icon -->
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"></path>
+</svg>
+</div>
+<div class="space-y-1">
+<span class="text-xs uppercase font-monoCode tracking-wider text-celestial-gold">Track 01</span>
+<h3 class="text-xl font-bodoni font-bold text-white group-hover:text-celestial-goldLight transition-colors">
+                  Deep Space AI &amp; Autonomous Systems
+                </h3>
+</div>
+<p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                Large multimodal models, computer vision for planetary rovers, autonomous telemetry, and edge-intelligence aboard micro-satellites.
+              </p>
+</div>
+<div class="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
+<span class="text-xs text-purple-300 font-monoCode">₹1,50,000 Bounty</span>
+<span class="text-xs text-slate-400">GenAI / Robotics</span>
+</div>
+</div>
+<!-- Track 2: Orbital Web3 & Decentralized Protocols -->
+<div class="glass-panel rounded-2xl p-7 border border-white/10 glass-card-hover flex flex-col justify-between group">
+<div class="space-y-4">
+<div class="w-14 h-14 rounded-xl bg-amber-950/70 border border-celestial-gold/40 flex items-center justify-center text-celestial-gold group-hover:scale-110 group-hover:border-celestial-gold transition-all">
+<!-- Web3 Orbit Icon -->
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"></path>
+</svg>
+</div>
+<div class="space-y-1">
+<span class="text-xs uppercase font-monoCode tracking-wider text-celestial-gold">Track 02</span>
+<h3 class="text-xl font-bodoni font-bold text-white group-hover:text-celestial-goldLight transition-colors">
+                  Orbital Web3 &amp; Decentralized Protocols
+                </h3>
+</div>
+<p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                Decentralized physical infrastructure (DePIN), zero-knowledge interplanetary verification, smart contract architectures, and resilient data vaults.
+              </p>
+</div>
+<div class="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
+<span class="text-xs text-amber-300 font-monoCode">₹1,50,000 Bounty</span>
+<span class="text-xs text-slate-400">Blockchain / ZK</span>
+</div>
+</div>
+<!-- Track 3: Stellar FinTech & Quantum Commerce -->
+<div class="glass-panel rounded-2xl p-7 border border-white/10 glass-card-hover flex flex-col justify-between group">
+<div class="space-y-4">
+<div class="w-14 h-14 rounded-xl bg-emerald-950/70 border border-emerald-500/40 flex items-center justify-center text-emerald-400 group-hover:scale-110 group-hover:border-emerald-400 transition-all">
+<!-- FinTech Icon -->
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"></path>
+</svg>
+</div>
+<div class="space-y-1">
+<span class="text-xs uppercase font-monoCode tracking-wider text-celestial-gold">Track 03</span>
+<h3 class="text-xl font-bodoni font-bold text-white group-hover:text-celestial-goldLight transition-colors">
+                  Stellar FinTech &amp; Algorithmic Markets
+                </h3>
+</div>
+<p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                High-frequency trading architectures, fraud immune transaction rails, programmable cross-border liquidity pools, and decentralized clearing.
+              </p>
+</div>
+<div class="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
+<span class="text-xs text-emerald-300 font-monoCode">₹1,25,000 Bounty</span>
+<span class="text-xs text-slate-400">Payments / DeFi</span>
+</div>
+</div>
+<!-- Track 4: Planetary HealthTech & Telemetry -->
+<div class="glass-panel rounded-2xl p-7 border border-white/10 glass-card-hover flex flex-col justify-between group">
+<div class="space-y-4">
+<div class="w-14 h-14 rounded-xl bg-rose-950/70 border border-rose-500/40 flex items-center justify-center text-rose-400 group-hover:scale-110 group-hover:border-rose-400 transition-all">
+<!-- HealthTech Icon -->
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"></path>
+</svg>
+</div>
+<div class="space-y-1">
+<span class="text-xs uppercase font-monoCode tracking-wider text-celestial-gold">Track 04</span>
+<h3 class="text-xl font-bodoni font-bold text-white group-hover:text-celestial-goldLight transition-colors">
+                  Planetary HealthTech &amp; Bio-Telemetry
+                </h3>
+</div>
+<p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                Extreme-environment biometric sensors, genomics analysis algorithms, predictive diagnosis platforms, and remote care tele-infrastructure.
+              </p>
+</div>
+<div class="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
+<span class="text-xs text-rose-300 font-monoCode">₹1,25,000 Bounty</span>
+<span class="text-xs text-slate-400">BioTech / IoT</span>
+</div>
+</div>
+<!-- Track 5: Cosmic Open Innovation & Moonshots -->
+<div class="glass-panel rounded-2xl p-7 border border-white/10 glass-card-hover flex flex-col justify-between group md:col-span-2 lg:col-span-2">
+<div class="space-y-4">
+<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-celestial-gold/30 to-purple-800/40 border border-celestial-gold/40 flex items-center justify-center text-celestial-gold group-hover:scale-110 transition-all">
+<!-- Rocket Moonshot Icon -->
+<svg class="w-7 h-7" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"></path>
+</svg>
+</div>
+<div class="space-y-1">
+<span class="text-xs uppercase font-monoCode tracking-wider text-celestial-gold">Track 05</span>
+<h3 class="text-2xl font-bodoni font-bold text-white group-hover:text-gold-gradient transition-colors">
+                  Cosmic Open Innovation &amp; Sustainable Moonshots
+                </h3>
+</div>
+<p class="text-slate-400 text-sm leading-relaxed max-w-2xl">
+                Have a radical idea that defies standard classifications? Hack for space debris mitigation, renewable atmospheric energy, climate resilience, accessible education, or cyber-physical hardware prototypes.
+              </p>
+</div>
+<div class="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
+<span class="text-xs text-celestial-gold font-monoCode">₹2,00,000 Grand Bounty</span>
+<span class="text-xs text-slate-400">Open Track / Moonshots</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: CosmicTracksSection -->
+<!-- BEGIN: TimelineSection -->
+<section class="py-24 px-4 sm:px-8 relative" data-purpose="mission-trajectory-timeline" id="timeline">
+<div class="max-w-6xl mx-auto space-y-14">
+<!-- Header -->
+<div class="text-center max-w-2xl mx-auto space-y-4">
+<div class="inline-flex items-center gap-2 text-celestial-gold text-xs font-monoCode uppercase tracking-widest px-4 py-1.5 rounded-full bg-celestial-gold/10 border border-celestial-gold/20">
+            ✦ Flight Trajectory
+          </div>
+<h2 class="text-3xl sm:text-5xl font-bodoni font-bold text-white">
+            Hackathon Mission Roadmap
+          </h2>
+<p class="text-slate-400 text-sm">
+            Four strategic mission phases guiding your crew from initial concept to the orbital grand finale.
+          </p>
+</div>
+<!-- Trajectory Timeline Steps -->
+<div class="relative border-l border-celestial-gold/30 ml-4 sm:ml-32 space-y-12">
+<!-- Phase 01 -->
+<div class="relative pl-8 sm:pl-12 group">
+<span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-celestial-gold shadow-[0_0_12px_#E5A967] border-2 border-space-950"></span>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+<h3 class="text-xl font-bodoni font-bold text-white group-hover:text-celestial-gold transition-colors">
+                Phase 01: Cadet Registration &amp; Team Formation
+              </h3>
+<span class="text-xs font-monoCode text-celestial-gold bg-celestial-gold/10 px-3 py-1 rounded-full border border-celestial-gold/20 w-fit">
+                Applications Live
+              </span>
+</div>
+<p class="text-slate-400 text-sm max-w-2xl">
+              Register your crew of 2-4 members on Devfolio. Select your mission track, join the official DTU IEEE Discord hangar, and attend pre-hackathon AMA sessions with industry veterans.
+            </p>
+</div>
+<!-- Phase 02 -->
+<div class="relative pl-8 sm:pl-12 group">
+<span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-purple-500 shadow-[0_0_12px_#A855F7] border-2 border-space-950"></span>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+<h3 class="text-xl font-bodoni font-bold text-white group-hover:text-purple-300 transition-colors">
+                Phase 02: Orbital Concept Shortlisting
+              </h3>
+<span class="text-xs font-monoCode text-purple-300 bg-purple-900/30 px-3 py-1 rounded-full border border-purple-500/30 w-fit">
+                November 10, 2024
+              </span>
+</div>
+<p class="text-slate-400 text-sm max-w-2xl">
+              Our technical jury evaluates abstract submissions, systemic feasibility, and uniqueness. The top 120 teams are selected for on-campus &amp; high-bandwidth virtual access.
+            </p>
+</div>
+<!-- Phase 03 -->
+<div class="relative pl-8 sm:pl-12 group">
+<span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-amber-400 shadow-[0_0_14px_#F59E0B] border-2 border-space-950"></span>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+<h3 class="text-xl font-bodoni font-bold text-white group-hover:text-amber-300 transition-colors">
+                Phase 03: The 36-Hour Non-Stop Space Hack
+              </h3>
+<span class="text-xs font-monoCode text-amber-300 bg-amber-950/60 px-3 py-1 rounded-full border border-amber-500/30 w-fit">
+                November 18-20, 2024
+              </span>
+</div>
+<p class="text-slate-400 text-sm max-w-2xl">
+              Hacking kicks off at DTU Auditorium. Includes 3 rounds of continuous mentor check-ins, midnight gaming tournaments, red-bull recharge zones, and sponsor workshops.
+            </p>
+</div>
+<!-- Phase 04 -->
+<div class="relative pl-8 sm:pl-12 group">
+<span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-emerald-400 shadow-[0_0_14px_#10B981] border-2 border-space-950"></span>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+<h3 class="text-xl font-bodoni font-bold text-white group-hover:text-emerald-300 transition-colors">
+                Phase 04: Grand Pitch &amp; Galactic Awards Ceremony
+              </h3>
+<span class="text-xs font-monoCode text-emerald-300 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30 w-fit">
+                Grand Finale
+              </span>
+</div>
+<p class="text-slate-400 text-sm max-w-2xl">
+              Finalists deliver 5-minute live stage presentations to a jury of founders, venture capitalists, and IEEE senior fellows. Crowning the Vihaan X Champions.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: TimelineSection -->
+<!-- BEGIN: PrizesBountiesSection -->
+<section class="py-24 px-4 sm:px-8 bg-space-900/40 relative border-t border-white/5" data-purpose="prizes-and-rewards" id="prizes">
+<div class="max-w-7xl mx-auto space-y-14">
+<!-- Header -->
+<div class="text-center max-w-3xl mx-auto space-y-4">
+<div class="inline-flex items-center gap-2 text-celestial-gold text-xs font-monoCode uppercase tracking-widest px-4 py-1.5 rounded-full bg-celestial-gold/10 border border-celestial-gold/20">
+            ✦ Rewarding Galactic Excellence
+          </div>
+<h2 class="text-3xl sm:text-5xl font-bodoni font-bold text-white">
+            ₹10,00,000+ Prize Bounty Pool
+          </h2>
+<p class="text-slate-400 text-sm sm:text-base">
+            Cash bounties, cloud credits, venture grants, and hardware perks for top interplanetary engineering squads.
+          </p>
+</div>
+<!-- Podium Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center pt-6">
+<!-- 2nd Place / Silver -->
+<div class="glass-panel rounded-3xl p-8 border border-white/10 order-2 lg:order-1 text-center space-y-5 glass-card-hover">
+<div class="w-16 h-16 mx-auto rounded-2xl bg-slate-800/80 border border-slate-400 flex items-center justify-center text-slate-200 text-2xl font-bold font-bodoni">
+              II
+            </div>
+<div>
+<p class="text-xs uppercase font-monoCode text-slate-400 tracking-wider">1st Runner Up</p>
+<h3 class="text-2xl font-bodoni font-bold text-white">₹1,50,000</h3>
+</div>
+<p class="text-xs text-slate-400 leading-relaxed">
+              Cash prize + Wolfram Alpha Pro lifetime subscription + $10,000 AWS Cloud Credits + Silver Trophy.
+            </p>
+<div class="pt-2 text-xs font-monoCode text-slate-300">
+              ✦ Fast-track Startup Incubation
+            </div>
+</div>
+<!-- 1st Place / Grand Champion (Elevated) -->
+<div class="glass-panel-purple rounded-3xl p-10 border-2 border-celestial-gold order-1 lg:order-2 text-center space-y-6 shadow-glow-gold relative transform lg:-translate-y-4">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-celestial-gold to-amber-500 text-space-950 font-bold text-xs uppercase tracking-widest shadow-md">
+              Cosmic Grand Winner
+            </div>
+<div class="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-tr from-amber-400 to-celestial-gold p-0.5 shadow-glow-gold">
+<div class="w-full h-full bg-space-950 rounded-[22px] flex items-center justify-center text-celestial-gold">
+<svg class="w-10 h-10 star-sparkle" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path>
+</svg>
+</div>
+</div>
+<div>
+<p class="text-xs uppercase font-monoCode text-celestial-gold tracking-widest font-bold">10th Edition Champion</p>
+<h3 class="text-4xl sm:text-5xl font-bodoni font-extrabold text-gold-gradient">₹3,00,000</h3>
+</div>
+<p class="text-sm text-slate-300 leading-relaxed">
+              Grand Cash Bounty + Vihaan X Sovereign Trophy + DTU IEEE Innovation Fellowship + Direct Angel Pitch Deck review by venture partners.
+            </p>
+<div class="pt-3 flex flex-wrap justify-center gap-2 text-xs font-monoCode">
+<span class="px-3 py-1 rounded-md bg-amber-500/20 text-amber-200 border border-amber-500/40">Wolfram Award</span>
+<span class="px-3 py-1 rounded-md bg-purple-500/20 text-purple-200 border border-purple-500/40">GitHub Enterprise</span>
+<span class="px-3 py-1 rounded-md bg-white/10 text-white border border-white/20">$25k Cloud Grants</span>
+</div>
+</div>
+<!-- 3rd Place / Bronze -->
+<div class="glass-panel rounded-3xl p-8 border border-white/10 order-3 lg:order-3 text-center space-y-5 glass-card-hover">
+<div class="w-16 h-16 mx-auto rounded-2xl bg-amber-950/80 border border-celestial-bronze flex items-center justify-center text-amber-400 text-2xl font-bold font-bodoni">
+              III
+            </div>
+<div>
+<p class="text-xs uppercase font-monoCode text-amber-400/80 tracking-wider">2nd Runner Up</p>
+<h3 class="text-2xl font-bodoni font-bold text-white">₹1,00,000</h3>
+</div>
+<p class="text-xs text-slate-400 leading-relaxed">
+              Cash prize + Domain &amp; Hosting allowances + Bronze Vihaan Trophy + Swag Chest for all squad members.
+            </p>
+<div class="pt-2 text-xs font-monoCode text-slate-300">
+              ✦ IEEE DTU Special Commendation
+            </div>
+</div>
+</div>
+<!-- Special Category Bounties Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+<div class="glass-panel p-4 rounded-xl border border-white/10 text-left">
+<p class="text-xs text-celestial-gold font-monoCode">✦ Best All-Women Crew</p>
+<p class="text-base font-bold text-white mt-1">₹50,000 Bounty</p>
+<p class="text-[11px] text-slate-400 mt-1">Presented to champion inclusivity &amp; women in deep-tech.</p>
+</div>
+<div class="glass-panel p-4 rounded-xl border border-white/10 text-left">
+<p class="text-xs text-purple-400 font-monoCode">✦ Best Beginner Hack</p>
+<p class="text-base font-bold text-white mt-1">₹40,000 Bounty</p>
+<p class="text-[11px] text-slate-400 mt-1">Exclusively for 1st &amp; 2nd year undergraduate teams.</p>
+</div>
+<div class="glass-panel p-4 rounded-xl border border-white/10 text-left">
+<p class="text-xs text-emerald-400 font-monoCode">✦ Best Space-Hardware Prototype</p>
+<p class="text-base font-bold text-white mt-1">₹60,000 Bounty</p>
+<p class="text-[11px] text-slate-400 mt-1">Raspberry Pi, Arduino, Drone, or IoT integrated solutions.</p>
+</div>
+<div class="glass-panel p-4 rounded-xl border border-white/10 text-left">
+<p class="text-xs text-blue-400 font-monoCode">✦ Community Favorite Award</p>
+<p class="text-base font-bold text-white mt-1">₹30,000 Bounty</p>
+<p class="text-[11px] text-slate-400 mt-1">Decided by live participant polling on Discord.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: PrizesBountiesSection -->
+<!-- BEGIN: SponsorsPartnersSection -->
+<section class="py-20 px-4 sm:px-8 relative" data-purpose="partners-and-sponsors" id="sponsors">
+<div class="max-w-6xl mx-auto text-center space-y-10">
+<div class="space-y-2">
+<p class="text-xs uppercase font-monoCode text-celestial-gold tracking-widest">Galactic Allies</p>
+<h2 class="text-2xl sm:text-3xl font-bodoni font-bold text-white">
+            Backed by Premier Global Technology Leaders
+          </h2>
+</div>
+<!-- Tier 1 Logos Showcase -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
+<div class="glass-panel p-6 rounded-2xl border border-white/10 flex items-center justify-center h-24 hover:border-celestial-gold/50 transition">
+<div class="text-center">
+<span class="font-bold text-xl tracking-wider text-slate-200">DEVFOLIO</span>
+<span class="block text-[10px] text-celestial-gold uppercase tracking-widest mt-0.5">Platform Partner</span>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-2xl border border-white/10 flex items-center justify-center h-24 hover:border-celestial-gold/50 transition">
+<div class="text-center">
+<span class="font-bold text-xl tracking-wider text-purple-300">POLYGON</span>
+<span class="block text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">Track Partner</span>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-2xl border border-white/10 flex items-center justify-center h-24 hover:border-celestial-gold/50 transition">
+<div class="text-center">
+<span class="font-bold text-xl tracking-wider text-amber-200">ETHINDIA</span>
+<span class="block text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">Ecosystem Partner</span>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-2xl border border-white/10 flex items-center justify-center h-24 hover:border-celestial-gold/50 transition">
+<div class="text-center">
+<span class="font-bold text-xl tracking-wider text-rose-300">WOLFRAM</span>
+<span class="block text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">Compute Partner</span>
+</div>
+</div>
+</div>
+<!-- Host Organization Credit Tag -->
+<div class="pt-4 flex items-center justify-center gap-3 text-xs text-slate-400">
+<span>Hosted with pride at</span>
+<span class="text-white font-semibold underline decoration-celestial-gold underline-offset-4">Delhi Technological University (DTU), New Delhi</span>
+</div>
+</div>
+</section>
+<!-- END: SponsorsPartnersSection -->
+<!-- BEGIN: FAQSection -->
+<section class="py-20 px-4 sm:px-8 bg-space-900/40 relative border-t border-white/5" data-purpose="frequently-asked-questions" id="faqs">
+<div class="max-w-4xl mx-auto space-y-10">
+<div class="text-center space-y-3">
+<span class="text-xs uppercase font-monoCode text-celestial-gold tracking-widest">Ground Control</span>
+<h2 class="text-3xl sm:text-4xl font-bodoni font-bold text-white">
+            Frequently Asked Questions
+          </h2>
+</div>
+<div class="space-y-4">
+<!-- FAQ 1 -->
+<div class="glass-panel rounded-xl p-5 border border-white/10">
+<h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+<span>What is the eligibility for Vihaan X?</span>
+<span class="text-celestial-gold text-lg">✦</span>
+</h3>
+<p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Vihaan X is open to all enrolled college undergraduate and postgraduate students from any recognized university across India and abroad. Beginners and experienced hackers are equally welcomed!
+            </p>
+</div>
+<!-- FAQ 2 -->
+<div class="glass-panel rounded-xl p-5 border border-white/10">
+<h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+<span>Is there any registration fee?</span>
+<span class="text-celestial-gold text-lg">✦</span>
+</h3>
+<p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Zero, nada! Vihaan X is completely free of cost for all shortlisted hackers thanks to our generous IEEE sponsors and DTU alumni support. Food, swag, internet, and accommodation are 100% on us.
+            </p>
+</div>
+<!-- FAQ 3 -->
+<div class="glass-panel rounded-xl p-5 border border-white/10">
+<h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+<span>What are the team size constraints?</span>
+<span class="text-celestial-gold text-lg">✦</span>
+</h3>
+<p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Teams can consist of 2 to 4 members. Inter-college and inter-disciplinary teams are strongly encouraged. Individual solo participation is not permitted to maximize collaborative brainstorming.
+            </p>
+</div>
+<!-- FAQ 4 -->
+<div class="glass-panel rounded-xl p-5 border border-white/10">
+<h3 class="text-base font-bold text-white mb-2 flex items-center justify-between">
+<span>How does the Hybrid mode operate?</span>
+<span class="text-celestial-gold text-lg">✦</span>
+</h3>
+<p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Shortlisted teams residing in Delhi NCR attend in-person at the prestigious DTU Campus in New Delhi. Outstation teams have the flexibility to hack offline on campus (accommodations provided) or pitch via the virtual metaverse track.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: FAQSection -->
+<!-- BEGIN: CallToActionRegister -->
+<section class="py-24 px-4 sm:px-8 relative overflow-hidden" data-purpose="final-call-to-action" id="register">
+<div class="max-w-5xl mx-auto glass-panel-purple rounded-3xl p-8 sm:p-14 border border-celestial-gold/40 text-center relative overflow-hidden shadow-glow-gold/20">
+<!-- Background radial glow -->
+<div class="absolute inset-0 bg-gradient-to-b from-celestial-gold/10 via-transparent to-purple-900/20 pointer-events-none"></div>
+<div class="relative z-10 space-y-6 max-w-2xl mx-auto">
+<div class="w-14 h-14 mx-auto rounded-2xl bg-space-950 p-1 border border-celestial-gold/60 shadow-glow-gold">
+<img alt="Vihaan X Emblem" class="w-full h-full object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_In3vkPJ4-ek-ZGOBA-JO2So0F0AYA8xeS-NciHL9SwS_M54vyd4xLsuuMHRS8yB3aCKnuqUvN4Wbw3Tf6vUdPyfn22fjAbWS6JIbWZ8WYB4DyTYs4CHjwWgatdGw7itiQnjPAqhLMCmO_AQ8_yBLaVXzWfsjMCgj23dScv5P1lgCijIZLlp5dUXlP-oBPQFImxCtpVWa_92C8E1mJTwUyuE65nfRYs0tNu1zS9aaRScilh18LNSojw"/>
+</div>
+<h2 class="text-3xl sm:text-5xl font-bodoni font-bold text-white">
+            Ready to Leave <span class="text-gold-gradient">Earth's Orbit?</span>
+</h2>
+<p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Secure your spot in the 10th landmark edition of North India’s greatest student tech expedition. Join 2,500+ visionaries shaping tomorrow.
+          </p>
+<div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+<a class="w-full sm:w-auto px-9 py-4 rounded-xl bg-gradient-to-r from-celestial-gold via-amber-400 to-celestial-goldDark text-space-950 font-bold text-sm uppercase tracking-wider shadow-glow-gold hover:scale-105 transition-all" href="https://devfolio.co" rel="noopener noreferrer" target="_blank">
+              Apply with Devfolio
+            </a>
+<a class="w-full sm:w-auto px-7 py-4 rounded-xl glass-panel text-white hover:text-celestial-gold border border-white/20 hover:border-celestial-gold font-semibold text-sm transition-all" href="https://discord.com" rel="noopener noreferrer" target="_blank">
+              Join Vihaan Community
+            </a>
+</div>
+<p class="text-xs text-slate-400 pt-2 font-monoCode">
+            Applications close strictly on November 15, 2024 • No extensions granted.
+          </p>
+</div>
+</div>
+</section>
+<!-- END: CallToActionRegister -->
+</main>
+<!-- BEGIN: SiteFooter -->
+<footer class="border-t border-white/10 bg-space-950/90 py-14 px-4 sm:px-8 relative z-20" data-purpose="site-footer">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+<!-- Brand & Mission Column -->
+<div class="md:col-span-5 space-y-4">
+<div class="flex items-center gap-3">
+<img alt="Vihaan X Logo Emblem" class="w-10 h-10 rounded-lg object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_In3vkPJ4-ek-ZGOBA-JO2So0F0AYA8xeS-NciHL9SwS_M54vyd4xLsuuMHRS8yB3aCKnuqUvN4Wbw3Tf6vUdPyfn22fjAbWS6JIbWZ8WYB4DyTYs4CHjwWgatdGw7itiQnjPAqhLMCmO_AQ8_yBLaVXzWfsjMCgj23dScv5P1lgCijIZLlp5dUXlP-oBPQFImxCtpVWa_92C8E1mJTwUyuE65nfRYs0tNu1zS9aaRScilh18LNSojw"/>
+<div>
+<div class="flex items-baseline gap-1">
+<span class="font-bodoni text-xl font-bold text-white tracking-wider">VIHAAN</span>
+<span class="font-bodoni text-xl font-black text-x-gradient">X</span>
+</div>
+<p class="text-[10px] text-celestial-gold uppercase tracking-widest font-monoCode">10th Edition • Space Theme</p>
+</div>
+</div>
+<p class="text-xs text-slate-400 leading-relaxed max-w-sm">
+          Presented by the IEEE Student Branch at Delhi Technological University (DTU). Inspiring young technologists to architect breakthroughs since 2014.
+        </p>
+<p class="text-xs text-slate-500 font-monoCode">
+          Delhi Technological University, Shahbad Daulatpur, Bawana Road, Delhi-110042, India.
+        </p>
+</div>
+<!-- Quick Nav Links -->
+<div class="md:col-span-2 space-y-3">
+<p class="text-xs uppercase font-monoCode text-celestial-gold tracking-wider font-bold">Exploration</p>
+<ul class="space-y-2 text-xs text-slate-300">
+<li><a class="hover:text-celestial-gold transition" href="#about">About Vihaan</a></li>
+<li><a class="hover:text-celestial-gold transition" href="#tracks">Hack Tracks</a></li>
+<li><a class="hover:text-celestial-gold transition" href="#timeline">Mission Schedule</a></li>
+<li><a class="hover:text-celestial-gold transition" href="#prizes">Prize Pool</a></li>
+</ul>
+</div>
+<!-- Organizers & DTU IEEE Links -->
+<div class="md:col-span-2 space-y-3">
+<p class="text-xs uppercase font-monoCode text-celestial-gold tracking-wider font-bold">DTU IEEE</p>
+<ul class="space-y-2 text-xs text-slate-300">
+<li><a class="hover:text-celestial-gold transition" href="https://dtu.ac.in" rel="noopener" target="_blank">DTU Website</a></li>
+<li><a class="hover:text-celestial-gold transition" href="https://ieeedtu.in" rel="noopener" target="_blank">IEEE Student Branch</a></li>
+<li><a class="hover:text-celestial-gold transition" href="#sponsors">Sponsorship Deck</a></li>
+<li><a class="hover:text-celestial-gold transition" href="mailto:contact@vihaan.dtu.ac.in">Contact Organizers</a></li>
+</ul>
+</div>
+<!-- Legal & Code of Conduct -->
+<div class="md:col-span-3 space-y-3">
+<p class="text-xs uppercase font-monoCode text-celestial-gold tracking-wider font-bold">Protocols</p>
+<ul class="space-y-2 text-xs text-slate-300">
+<li><a class="hover:text-celestial-gold transition" href="#">MLH Code of Conduct</a></li>
+<li><a class="hover:text-celestial-gold transition" href="#">Privacy Policy &amp; Telemetry</a></li>
+<li><a class="hover:text-celestial-gold transition" href="#">Terms &amp; Conditions</a></li>
+<li><a class="hover:text-celestial-gold transition" href="#">Community Guidelines</a></li>
+</ul>
+</div>
+</div>
+<!-- Copyright Strip -->
+<div class="max-w-7xl mx-auto pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+<p>© 2024 Vihaan X • Delhi Technological University IEEE Student Branch. All rights reserved.</p>
+<div class="flex items-center gap-4 text-slate-400">
+<a class="hover:text-celestial-gold transition" href="https://twitter.com" rel="noopener" target="_blank">Twitter/X</a>
+<a class="hover:text-celestial-gold transition" href="https://linkedin.com" rel="noopener" target="_blank">LinkedIn</a>
+<a class="hover:text-celestial-gold transition" href="https://instagram.com" rel="noopener" target="_blank">Instagram</a>
+<a class="hover:text-celestial-gold transition" href="https://github.com" rel="noopener" target="_blank">GitHub</a>
+</div>
+</div>
+</footer>
+<!-- END: SiteFooter -->
+<!-- BEGIN: Interactive Countdown Script -->
+<script data-purpose="countdown-logic">
+    (function initCosmicTimer() {
+      // Set target hackathon date: 24 days from now
+      const targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + 24);
+      targetDate.setHours(targetDate.getHours() + 14);
+
+      function updateClock() {
+        const now = new Date().getTime();
+        const distance = targetDate.getTime() - now;
+
+        if (distance <= 0) {
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        const dEl = document.getElementById('countdown-days');
+        const hEl = document.getElementById('countdown-hours');
+        const mEl = document.getElementById('countdown-minutes');
+        const sEl = document.getElementById('countdown-seconds');
+
+        if (dEl) dEl.textContent = String(days).padStart(2, '0');
+        if (hEl) hEl.textContent = String(hours).padStart(2, '0');
+        if (mEl) mEl.textContent = String(minutes).padStart(2, '0');
+        if (sEl) sEl.textContent = String(seconds).padStart(2, '0');
+      }
+
+      setInterval(updateClock, 1000);
+      updateClock();
+    })();
+  </script>
+<!-- END: Interactive Countdown Script -->
+</body></html>

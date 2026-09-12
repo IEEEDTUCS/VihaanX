@@ -1,0 +1,29 @@
+/* Global base styles — Tailwind directives, CSS reset, design tokens, and body defaults */
+@import "tailwindcss";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* ── Design Tokens ──────────────────────────────────────
+     Add global CSS variables here, e.g.:
+     --color-primary: #6c63ff;
+     --font-heading: 'YourFont', sans-serif;
+  ─────────────────────────────────────────────────────── */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #000;
+  color: #fff;
+  overflow-x: hidden;
+}

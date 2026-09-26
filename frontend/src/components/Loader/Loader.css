@@ -1,0 +1,141 @@
+/* ========================================
+   Loader
+   ======================================== */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  background: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  transition: opacity 0.9s var(--ease-out-expo),
+              visibility 0.9s;
+}
+
+.loader--exit {
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+/* Title Row */
+
+.loader__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.loader__title-row {
+  display: flex;
+  gap: 0.1em;
+}
+
+.loader__letter {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translateY(12px);
+  animation: loaderLetterIn 0.6s var(--ease-out-expo) forwards;
+}
+
+@keyframes loaderLetterIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* X Character */
+
+.loader__x {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 0.8;
+  opacity: 0;
+  animation:
+    loaderXIn 0.8s var(--ease-out-expo) 0.8s forwards,
+    loaderXGlow 2.5s ease-in-out 1.6s infinite;
+}
+
+@keyframes loaderXIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes loaderXGlow {
+  0%, 100% {
+    text-shadow: 0 0 16px var(--accent-glow);
+  }
+  50% {
+    text-shadow:
+      0 0 30px var(--accent-glow),
+      0 0 60px rgba(193, 68, 62, 0.15);
+  }
+}
+
+
+/* Edition tag */
+
+.loader__edition {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  opacity: 0;
+  animation: fadeIn 0.6s ease 1.2s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+
+/* Progress Bar */
+
+.loader__progress {
+  width: min(220px, 60vw);
+}
+
+.loader__progress-track {
+  width: 100%;
+  height: 1px;
+  background: var(--text-muted);
+  border-radius: 1px;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeIn 0.4s ease 1s forwards;
+}
+
+.loader__progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 1px;
+  width: 0%;
+  animation: loadFill 2.4s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
+}
+
+@keyframes loadFill {
+  0%   { width: 0%; }
+  40%  { width: 55%; }
+  70%  { width: 78%; }
+  100% { width: 100%; }
+}

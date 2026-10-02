@@ -1,5 +1,6 @@
+'use client';
+
 import { useState, useEffect, useRef } from 'react';
-import './StatsBar.css';
 
 /* ── Data ── */
 const STATS = [
@@ -38,9 +39,9 @@ function useCountUp(target, duration = 2000, active = false) {
 function StatItem({ value, suffix, label, active }) {
   const display = useCountUp(value, 2200, active);
   return (
-    <div className="stats-bar__item">
-      <span className="stats-bar__value">{active ? display : 0}{suffix}</span>
-      <span className="stats-bar__label">{label}</span>
+    <div className="flex flex-1 flex-col items-center gap-1 max-md:basis-1/2 max-md:py-2 md:not-first:border-l md:not-first:border-white/[.06]">
+      <span className="text-xl font-bold tracking-[.02em] text-[#f0f0f0]">{active ? display : 0}{suffix}</span>
+      <span className="text-[.55rem] uppercase tracking-[.14em] text-[#505068]">{label}</span>
     </div>
   );
 }
@@ -63,8 +64,8 @@ export default function StatsBar() {
   }, []);
 
   return (
-    <div className="stats-bar" ref={ref}>
-      <div className="stats-bar__inner">
+    <div className="absolute bottom-0 left-0 right-0 z-[4] border-t border-white/[.06] bg-black/60 backdrop-blur-lg max-md:relative" ref={ref}>
+      <div className="mx-auto flex max-w-[900px] items-center justify-between px-4 py-4 max-md:flex-wrap max-md:gap-y-3 sm:px-8">
         {STATS.map((s, i) => (
           <StatItem key={i} {...s} active={active} />
         ))}

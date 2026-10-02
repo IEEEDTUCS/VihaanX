@@ -1,7 +1,14 @@
+'use client';
+
 import { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
+
+function seededRandom(index, salt = 0) {
+  const value = Math.sin(index * 12.9898 + salt * 78.233) * 43758.5453;
+  return value - Math.floor(value);
+}
 
 /* ------------------------------------------------------------------
    Star Field — layered point clouds for depth
@@ -15,22 +22,22 @@ function StarLayer({ count = 3000, radius = 100, spread = 100, size = 0.12, spee
     const colors = new Float32Array(count * 3);
 
     for (let i = 0; i < count; i++) {
-      const r = radius + Math.random() * spread;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
+      const r = radius + seededRandom(i, 1) * spread;
+      const theta = seededRandom(i, 2) * Math.PI * 2;
+      const phi = Math.acos(2 * seededRandom(i, 3) - 1);
 
       positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       positions[i * 3 + 2] = r * Math.cos(phi);
 
       /* subtle colour variation: mostly white, rare warm/cool tints */
-      const roll = Math.random();
+      const roll = seededRandom(i, 4);
       if (roll > 0.96) {
         colors[i * 3] = 0.72; colors[i * 3 + 1] = 0.82; colors[i * 3 + 2] = 1.0;
       } else if (roll > 0.92) {
         colors[i * 3] = 1.0; colors[i * 3 + 1] = 0.88; colors[i * 3 + 2] = 0.72;
       } else {
-        const w = 0.9 + Math.random() * 0.1;
+        const w = 0.9 + seededRandom(i, 5) * 0.1;
         colors[i * 3] = w; colors[i * 3 + 1] = w; colors[i * 3 + 2] = w;
       }
     }
@@ -89,12 +96,7 @@ function Jupiter() {
 export default function SpaceBackground() {
   return (
     <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 0,
-        pointerEvents: 'none',
-      }}
+      className="pointer-events-none fixed inset-0 z-0"
     >
       <Canvas
         camera={{ position: [0, 0, 1], fov: 60, near: 0.1, far: 1000 }}

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import './Countdown.css';
 
 const TARGET = new Date('2026-11-14T00:00:00+05:30');
 
@@ -32,17 +31,17 @@ export default function Countdown() {
   ];
 
   return (
-    <div className="countdown" aria-label="Countdown to Vihaan X">
+    <div className="mt-8 flex items-start justify-center" aria-label="Countdown to Vihaan X">
       {blocks.map((b, i) => (
-        <div className="countdown__group" key={b.label}>
-          <div className="countdown__block">
-            <div className="countdown__card">
-              <span className="countdown__number">{pad(b.value)}</span>
+        <div className="flex items-start" key={b.label}>
+          <div className="flex flex-col items-center gap-1.5">
+            <div className="min-w-[2.6rem] rounded-lg border border-white/[.06] bg-white/[.04] px-2 py-2 text-center backdrop-blur-md sm:min-w-[3.4rem] sm:px-3">
+              <span className="font-mono text-xl tracking-[.08em] text-[#f0f0f0] sm:text-2xl">{pad(b.value)}</span>
             </div>
-            <span className="countdown__label">{b.label}</span>
+            <span className="font-body text-[.55rem] uppercase tracking-[.12em] text-[#505068]">{b.label}</span>
           </div>
           {i < blocks.length - 1 && (
-            <span className="countdown__sep" aria-hidden="true">:</span>
+            <span className="animate-pulse-colon px-1.5 pt-2 font-mono text-xl text-violet-400 sm:text-2xl" aria-hidden="true">:</span>
           )}
         </div>
       ))}

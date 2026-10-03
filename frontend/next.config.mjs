@@ -7,12 +7,12 @@ const nextConfig = {
       {
         source: '/wa',
         destination: 'https://chat.whatsapp.com/LhXp4DQOVgEIP6yxeeY37V',
-        permanent: true,
+        permanent: false,
       },
       {
         source: '/register',
         destination: 'https://unstop.com/college-fests/vihaan-x-ieee-dtu-delhi-technological-university-dtu-new-delhi-519244',
-        permanent: true,
+        permanent: false,
       }
     ];
   },

@@ -31,8 +31,16 @@ export default function Hero({ isLoaded, onPreviousEditions }) {
         <div className={visible}><Countdown /></div>
       </div>
 
-      <div className={`absolute bottom-0 right-[-1%] z-[2] hidden w-[clamp(280px,38vw,560px)] pointer-events-none md:block ${visible}`}>
-        <img src="/landingPage/astronaut.png" alt="Astronaut sitting on the edge of a cliff, gazing at the cosmos" width="600" height="730" className="animate-float w-full drop-shadow-[0_0_60px_rgba(0,0,0,.5)]" />
+      {/* Astronaut — bottom-right, large, matches mockup */}
+      <div className={`absolute bottom-0 right-0 z-[2] hidden pointer-events-none md:block ${visible}`}
+        style={{ width: 'clamp(320px,42vw,640px)' }}>
+        <img
+          src="/landingPage/astronaut.png"
+          alt="Astronaut sitting on the edge of a cliff, gazing at the cosmos"
+          width="640" height="780"
+          className="w-full animate-float"
+          style={{ filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.6))' }}
+        />
       </div>
     </section>
   );

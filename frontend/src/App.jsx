@@ -25,7 +25,6 @@ export default function App() {
         </main>
       </div>
       {showModal && <PreviousEditions onClose={() => setShowModal(false)} />}
-      {!isLoading && <ScrollEffects />}
     </div>
   );
 }

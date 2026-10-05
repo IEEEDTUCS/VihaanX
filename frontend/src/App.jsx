@@ -5,10 +5,7 @@ import Loader from './components/Loader/Loader';
 import SpaceBackground from './components/SpaceBackground/SpaceBackground';
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
-import GlobeWrapper from './components/Globe/GlobeWrapper';
 import PreviousEditions from './components/PreviousEditions/PreviousEditions';
-
-import ScrollEffects from './components/ScrollEffects/ScrollEffects';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,7 +18,6 @@ export default function App() {
         <Navbar />
         <main>
           <Hero isLoaded={!isLoading} onPreviousEditions={() => setShowModal(true)} />
-          <GlobeWrapper />
         </main>
       </div>
       {showModal && <PreviousEditions onClose={() => setShowModal(false)} />}

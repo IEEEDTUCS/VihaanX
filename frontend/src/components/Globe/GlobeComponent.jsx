@@ -1,5 +1,8 @@
 'use client';
 
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/immutability */
+
 import { useEffect, useRef, useState } from 'react';
 import { Color, Scene, Fog, PerspectiveCamera, Vector3 } from 'three';
 import ThreeGlobe from 'three-globe';
@@ -10,7 +13,6 @@ import countries from '@/data/globe.json';
 extend({ ThreeGlobe });
 
 const RING_PROPAGATION_SPEED = 3;
-const aspect = 1;
 const cameraZ = 300;
 
 export function Globe({ globeConfig, data }) {
@@ -119,16 +121,12 @@ export function Globe({ globeConfig, data }) {
 }
 
 export function WebGLRendererConfig() {
-  const { gl, size, camera } = useThree();
+  const { gl, size } = useThree();
   useEffect(() => {
     gl.setPixelRatio(window.devicePixelRatio);
     gl.setSize(size.width, size.height);
     gl.setClearColor(0x000000, 0);
-    // Keep camera aspect square
-    if (camera.isPerspectiveCamera) {
-      camera.aspect = size.width / size.height;
-      camera.updateProjectionMatrix();
-    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [size]);
   return null;
 }

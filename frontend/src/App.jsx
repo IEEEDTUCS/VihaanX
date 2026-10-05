@@ -5,7 +5,6 @@ import Loader from './components/Loader/Loader';
 import SpaceBackground from './components/SpaceBackground/SpaceBackground';
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
-import Globe from './components/Globe/Globe';
 import GlobeWrapper from './components/Globe/GlobeWrapper';
 import PreviousEditions from './components/PreviousEditions/PreviousEditions';
 

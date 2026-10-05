@@ -208,56 +208,30 @@ export default function Timeline() {
 
   const totalSteps = TIMELINE_EVENTS.length;
 
-  // Scrub video to match current step position (proportional scrubbing)
+  // Scrub video proportionally to step (0 = start, 9 = end)
   const scrubVideoToStep = useCallback((stepIdx) => {
     const video = videoRef.current;
-    if (!video || !video.duration || isNaN(video.duration)) return;
+    if (!video) return;
 
-    // Map step index to video time proportionally
-    const targetTime = (stepIdx / (totalSteps - 1)) * video.duration;
-
-    // If scrubbing forward, speed up briefly for tactile feel
-    const isForward = targetTime > video.currentTime;
-    video.playbackRate = isForward ? 2.8 : 2.8;
-
-    if (playbackTimeoutRef.current) clearTimeout(playbackTimeoutRef.current);
-    playbackTimeoutRef.current = setTimeout(() => {
-      if (video) video.playbackRate = 1.0;
-    }, 400);
-
-    // Smoothly animate toward target time
-    const startTime = video.currentTime;
-    const diff = targetTime - startTime;
-    const duration = 350; // ms
-    const startMs = performance.now();
-
-    const animate = (now) => {
-      const elapsed = now - startMs;
-      const t = Math.min(elapsed / duration, 1);
-      const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // easeInOut
-      video.currentTime = startTime + diff * ease;
-      if (t < 1) requestAnimationFrame(animate);
-      else {
-        video.currentTime = targetTime;
-        video.playbackRate = 1.0;
-      }
+    const setTime = () => {
+      if (!video.duration || isNaN(video.duration) || video.duration === 0) return;
+      const targetTime = (stepIdx / (totalSteps - 1)) * video.duration;
+      video.currentTime = targetTime;
+      if (video.paused) video.play().catch(() => {});
     };
 
-    requestAnimationFrame(animate);
-
-    if (video.paused) video.play().catch(() => {});
+    if (!video.duration || isNaN(video.duration)) {
+      video.addEventListener('loadedmetadata', setTime, { once: true });
+    } else {
+      setTime();
+    }
   }, [totalSteps]);
 
-  // Keep advanceVideo for backward compat (click interactions)
+  // advanceVideo kept for detail button clicks
   const advanceVideo = useCallback((amount = 0.85) => {
     const video = videoRef.current;
     if (!video || !video.duration || isNaN(video.duration)) return;
     video.currentTime = (video.currentTime + amount) % video.duration;
-    video.playbackRate = 2.4;
-    if (playbackTimeoutRef.current) clearTimeout(playbackTimeoutRef.current);
-    playbackTimeoutRef.current = setTimeout(() => {
-      if (video) video.playbackRate = 1.0;
-    }, 380);
     if (video.paused) video.play().catch(() => {});
   }, []);
 

@@ -1,47 +1,142 @@
 'use client';
 
-import Countdown from '../Countdown/Countdown';
+import AnimatedCountdown from '../ui/animated-countdown';
+import Button from '../ui/Button';
 
 export default function Hero({ isLoaded, onPreviousEditions }) {
-  const visible = isLoaded ? 'animate-fade-slide-up' : '';
-  const sidebar = 'absolute top-1/2 z-[3] hidden flex-col gap-10 text-[.6rem] font-medium leading-[1.7] tracking-[.22em] text-[#8a8a9a] xl:flex';
+  const vis = isLoaded ? 'animate-fade-slide-up' : 'opacity-0';
+
   return (
-    <section className="relative flex min-h-screen min-h-[100dvh] items-center justify-center overflow-hidden px-5 pb-24 pt-24 sm:px-8">
-      <aside className={`${sidebar} left-10 -translate-y-1/2 ${visible}`} aria-hidden="true">
-        <div><p>A DECADE</p><p>OF DREAMERS</p></div>
-        <div className="mt-10"><p>TECHNOLOGY</p><p>FOR A BETTER</p><p>TOMORROW</p></div>
-        <div className="mt-10"><p>PEOPLE</p><p>IDEAS</p><p>IMPACT</p></div>
-      </aside>
-      <aside className={`${sidebar} right-10 -translate-y-1/2 text-right ${visible}`} aria-hidden="true">
-        <div><p>INNOVATE</p><p>BUILD</p><p>BELONG</p></div>
-        <div className="mt-10"><p>IDEAS</p><p>BEYOND</p><p>LIMITS</p></div>
+    <section className="relative flex min-h-screen min-h-[100dvh] items-center justify-center overflow-hidden px-4 pb-20 pt-20 sm:px-6 sm:pb-24 sm:pt-24 lg:px-8">
+
+      {/* ── Left sidebar — all text stacked, top-left ── */}
+      <aside
+        className={`parallax-sidebar-left absolute left-4 top-20 z-[5] hidden flex-col gap-4 xl:flex ${vis}`}
+        aria-hidden="true"
+        style={{ maxWidth: '10rem' }}
+      >
+        {/* A DECADE OF DREAMERS */}
+        <div className="flex flex-col gap-0.5">
+          <p className="text-[0.72rem] font-bold leading-snug tracking-[0.25em] text-white/90 lg:text-[0.8rem]">A DECADE</p>
+          <p className="text-[0.72rem] font-bold leading-snug tracking-[0.25em] text-white/90 lg:text-[0.8rem]">OF DREAMERS</p>
+        </div>
+
+        {/* PEOPLE IDEAS IMPACT */}
+        <div className="flex flex-col gap-0.5">
+          <span className="mb-1.5 block h-px w-5 bg-[#e84a55]" />
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/70 lg:text-[0.75rem]">PEOPLE</p>
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/70 lg:text-[0.75rem]">IDEAS</p>
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/70 lg:text-[0.75rem]">IMPACT</p>
+        </div>
+
+        {/* INNOVATE BUILD BELONG — moved here from right */}
+        <div className="flex flex-col gap-0.5 mt-2">
+          <span className="mb-1.5 block h-px w-5 bg-[#e84a55]/50" />
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/60 lg:text-[0.75rem]">INNOVATE</p>
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/60 lg:text-[0.75rem]">BUILD</p>
+          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/60 lg:text-[0.75rem]">BELONG</p>
+        </div>
+
+        {/* Dot trail */}
+        <div className="mt-2 flex flex-col gap-1.5">
+          {[0,1,2,3,4].map(i => (
+            <span key={i} className={`block rounded-full ${i===0?'h-1.5 w-1.5 bg-white/50':'h-1 w-1 bg-white/20'}`} />
+          ))}
+        </div>
       </aside>
 
-      <div className="z-[3] flex w-full max-w-[720px] flex-col items-center text-center">
-        <p className={`mb-3 text-[.5rem] tracking-[.28em] text-[#8a8a9a] sm:text-[.8rem] ${visible}`}>PRESENTS THE 10TH EDITION OF</p>
-        <div className={`relative inline-flex items-end ${visible}`}>
-            <img src="/logos/vihaan_full.png" className="h-auto w-7xl" />
-          {/*<h1 className="font-display text-[clamp(2.8rem,14vw,9rem)] font-bold leading-[.9] tracking-[.06em] text-[#f0f0f0]">VIHAAN</h1>*/}
-          {/*<img src="/landingPage/X.svg" alt="" aria-hidden="true" width="280" height="320" className="absolute -bottom-[20%] -right-[18%] h-[95%] w-auto opacity-[.88] drop-shadow-[0_0_40px_rgba(124,58,237,.15)]" />*/}
+      {/* ── Centre content ── */}
+      <div className={`parallax-hero-content relative z-[5] flex w-full max-w-[min(680px,90vw)] flex-col items-center text-center ${vis}`}>
+
+        {/* PRESENTS */}
+        <p className="mb-1 text-[0.65rem] font-medium tracking-[0.35em] text-white/50
+                       sm:text-[0.72rem] lg:text-[0.8rem]">
+          PRESENTS
+        </p>
+
+        {/* THE 10TH EDITION OF */}
+        <p className="mb-3 text-[0.85rem] font-bold tracking-[0.18em] text-white/85
+                       sm:text-[1rem] lg:text-[1.15rem]">
+          THE 10TH EDITION OF
+        </p>
+
+        {/* VIHAAN X logo */}
+        <div className="w-full">
+          <img
+            src="/logos/vihaan_full.png"
+            alt="Vihaan X"
+            className="h-auto w-full object-contain"
+            style={{
+              maxWidth: '100%',
+              maxHeight: 'clamp(70px, 18vw, 200px)',
+              minHeight: '60px',
+            }}
+          />
         </div>
-        <div className={`mt-5 flex items-center gap-2.5 text-[.45rem] tracking-[.22em] text-[#8a8a9a] sm:gap-3.5 sm:text-[.7rem] ${visible}`}>
-          <span className="h-px w-5 shrink-0 bg-violet-400 sm:w-7" /><p>NORTH INDIA&apos;S LARGEST STUDENT-RUN HACKATHON</p><span className="h-px w-5 shrink-0 bg-violet-400 sm:w-7" />
+
+        {/* NORTH INDIA'S LARGEST */}
+        <div className="mt-4 flex w-full items-center justify-center gap-2 sm:gap-3">
+          <span className="h-px w-6 shrink-0 bg-[#e84a55] sm:w-10" />
+          <p className="text-[0.65rem] font-semibold tracking-[0.18em] text-white/80
+                         sm:text-[0.75rem] lg:text-[0.88rem]">
+            NORTH INDIA&apos;S LARGEST STUDENT&#8209;RUN HACKATHON
+          </p>
+          <span className="h-px w-6 shrink-0 bg-[#e84a55] sm:w-10" />
         </div>
-        <button type="button" onClick={onPreviousEditions} className={`mt-8 inline-flex items-center gap-2.5 rounded-full border border-violet-400 px-5 py-2.5 text-[.58rem] font-medium tracking-[.16em] text-[#f0f0f0] transition hover:-translate-y-px hover:bg-violet-400 hover:shadow-[0_0_28px_rgba(124,58,237,.35)] sm:px-8 sm:py-3 sm:text-[.7rem] ${visible}`}>PREVIOUS EDITIONS <span className="text-sm transition group-hover:translate-x-1">→</span></button>
-        <div className={visible}><Countdown /></div>
+
+        {/* Buttons */}
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+          <Button href="/register" size="md" innerClassName="bg-black/70 backdrop-blur-sm">
+            REGISTER NOW&nbsp;&rarr;
+          </Button>
+          <Button onClick={onPreviousEditions} size="md" innerClassName="bg-black/70 backdrop-blur-sm">
+            PREVIOUS EDITIONS&nbsp;&rarr;
+          </Button>
+        </div>
+
+        {/* IDEAS BEYOND LIMITS */}
+        <p className="mt-4 text-[0.6rem] font-medium tracking-[0.35em] text-white/35
+                       sm:text-[0.68rem] lg:text-[0.75rem]">
+          IDEAS BEYOND LIMITS
+        </p>
+
+        {/* Countdown */}
+        <div className="mt-5 w-full">
+          <AnimatedCountdown
+            targetDate={new Date('2026-11-14T00:00:00+05:30')}
+            variant="modern"
+            size="sm"
+            containerClassName="border-white/[0.06] bg-black/20 backdrop-blur-xl w-full justify-center sm:size-md"
+            unitClassName="border-white/[0.07] bg-white/[0.04]"
+            numberClassName="text-white"
+            labelClassName="text-white/40"
+          />
+        </div>
+
       </div>
 
-      {/* Astronaut — bottom-right, large, matches mockup */}
-      <div className={`absolute bottom-0 right-0 z-[2] hidden pointer-events-none md:block ${visible}`}
-        style={{ width: 'clamp(320px,42vw,640px)' }}>
+      {/* ── Astronaut — bottom-right, responsive size ── */}
+      <div
+        className={`parallax-astronaut absolute bottom-0 right-0 z-[3] hidden pointer-events-none sm:block ${vis}`}
+        style={{ width: 'clamp(160px, 22vw, 380px)' }}
+      >
         <img
-          src="/landingPage/astronaut.png"
-          alt="Astronaut sitting on the edge of a cliff, gazing at the cosmos"
-          width="640" height="780"
-          className="w-full animate-float"
-          style={{ filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.6))' }}
+          src="/landingPage/astroanut.png"
+          alt="Astronaut sitting on rocks gazing at the cosmos"
+          width="380" height="380"
+          className="w-full"
+          style={{ filter: 'drop-shadow(0 0 30px rgba(0,0,0,0.7))' }}
         />
       </div>
+
+      {/* ── Scroll indicator ── */}
+      <div className={`absolute bottom-5 left-1/2 z-[5] hidden -translate-x-1/2 flex-col items-center gap-1.5 sm:flex ${vis}`}>
+        <p className="text-[0.48rem] tracking-[0.3em] text-white/25 sm:text-[0.52rem]">SCROLL TO EXPLORE</p>
+        <div className="flex h-6 w-4 items-start justify-center rounded-full border border-white/20 p-0.5">
+          <span className="h-1.5 w-0.5 animate-bounce rounded-full bg-white/35" />
+        </div>
+      </div>
+
     </section>
   );
 }

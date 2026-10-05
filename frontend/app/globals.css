@@ -24,6 +24,7 @@
 
 @keyframes fade-slide-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes floatX { 0%,100% { transform: translateX(0) translateY(0); } 25% { transform: translateX(-8px) translateY(-4px); } 75% { transform: translateX(8px) translateY(4px); } }
 @keyframes pulse-colon { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
 @keyframes loader-letter { to { opacity: 1; transform: translateY(0); } }
 @keyframes loader-x-in { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: scale(1); } }
@@ -31,6 +32,7 @@
 @keyframes fade-in { to { opacity: 1; } }
 @keyframes load-fill { 0% { width: 0; } 40% { width: 55%; } 70% { width: 78%; } 100% { width: 100%; } }
 @keyframes modal-in { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes btnRipple { from { transform: scale(0); opacity: 1; } to { transform: scale(1); opacity: 0; } }
 
 @layer base {
   * { box-sizing: border-box; }

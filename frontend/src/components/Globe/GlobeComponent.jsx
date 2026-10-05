@@ -15,7 +15,7 @@ extend({ ThreeGlobe });
 const RING_PROPAGATION_SPEED = 3;
 const cameraZ = 300;
 
-export function Globe({ globeConfig, data }) {
+export function Globe({ globeConfig, data, onReady }) {
   const globeRef = useRef(null);
   const groupRef = useRef();
   const [isInitialized, setIsInitialized] = useState(false);
@@ -42,9 +42,9 @@ export function Globe({ globeConfig, data }) {
       globeRef.current = new ThreeGlobe();
       groupRef.current.add(globeRef.current);
       setIsInitialized(true);
-      props.onReady?.();
+      onReady?.();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!globeRef.current || !isInitialized) return;

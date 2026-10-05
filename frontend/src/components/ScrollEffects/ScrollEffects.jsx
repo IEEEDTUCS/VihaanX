@@ -2,24 +2,6 @@
 
 import { useEffect, useRef } from 'react';
 
-/**
- * ScrollEffects — GSAP ScrollTrigger parallax + 3D perspective
- *
- * Layers (slowest → fastest parallax = furthest → closest):
- *  - Background video/image     : slowest (0.15x)  — deep space
- *  - Planet (right)             : slow    (0.25x)  — far
- *  - Globe (left)               : slow    (0.20x)  — far
- *  - Sidebar text               : medium  (0.40x)  — mid
- *  - Hero logo + text           : medium  (0.50x)  — mid
- *  - Astronaut                  : faster  (0.70x)  — close
- *  - Navbar                     : fixed (no scroll)
- *
- * Also adds:
- *  - Hero entrance: staggered fade+slide-up on load
- *  - Scroll-scrubbed scale on planet (grows slightly as you scroll)
- *  - Countdown block fades in from below
- *  - Horizontal drift on sidebar text
- */
 export default function ScrollEffects() {
   const initRef = useRef(false);
 
@@ -27,166 +9,113 @@ export default function ScrollEffects() {
     if (initRef.current) return;
     initRef.current = true;
 
-    let gsap, ScrollTrigger;
-
     const init = async () => {
-      const gsapModule = await import('gsap');
-      const stModule   = await import('gsap/ScrollTrigger');
-
-      gsap = gsapModule.gsap || gsapModule.default;
-      ScrollTrigger = stModule.ScrollTrigger;
+      const { gsap } = await import('gsap');
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
 
       const mm = gsap.matchMedia();
 
-      // ── Desktop only (≥1024px) ──────────────────────────────────
       mm.add('(min-width: 1024px)', () => {
 
-        // 1. Background parallax — very slow, creates depth
+        const hero = document.querySelector('section');
+        if (!hero) return;
+
+        // Background — drifts up slowly (deepest layer)
         gsap.to('.parallax-bg', {
-          yPercent: -12,
+          yPercent: -15,
           ease: 'none',
-          scrollTrigger: {
-            trigger: 'body',
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1.5,
-          },
+          scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 2 },
         });
 
-        // 2. Planet (right) — slow parallax + slight scale growth
-        gsap.to('.parallax-planet', {
-          y: '-8vh',
-          scale: 1.06,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: 'body',
-            start: 'top top',
-            end: '50% top',
-            scrub: 2,
-          },
-        });
-
-        // 3. Globe (left) — parallax down (moves out of view)
-        gsap.to('.parallax-globe', {
-          y: '6vh',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: 'body',
-            start: 'top top',
-            end: '50% top',
-            scrub: 2.5,
-          },
-        });
-
-        // 4. Astronaut — closest layer, moves fastest
-        gsap.to('.parallax-astronaut', {
-          y: '-18vh',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: 'body',
-            start: 'top top',
-            end: '50% top',
-            scrub: 0.8,
-          },
-        });
-
-        // 5. Hero center content — medium parallax + fade out
-        gsap.to('.parallax-hero-content', {
-          y: '-12vh',
-          opacity: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: 'body',
-            start: 'top top',
-            end: '35% top',
-            scrub: 1,
-          },
-        });
-
-        // 6. Left sidebar — drifts left + fades
-        gsap.to('.parallax-sidebar-left', {
-          x: '-3vw',
-          opacity: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: 'body',
-            start: 'top top',
-            end: '30% top',
-            scrub: 1.2,
-          },
-        });
-
-        // 7. Right sidebar — drifts right + fades
-        gsap.to('.parallax-sidebar-right', {
-          x: '3vw',
-          opacity: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: 'body',
-            start: 'top top',
-            end: '30% top',
-            scrub: 1.2,
-          },
-        });
-
-        // 8. Stars video — subtle scale for depth illusion
+        // Stars — subtle scale zoom
         gsap.to('.parallax-stars', {
+          scale: 1.12,
+          ease: 'none',
+          scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 3 },
+        });
+
+        // Planet — floats up + grows slightly as you scroll
+        gsap.to('.parallax-planet', {
+          y: '-10vh',
           scale: 1.08,
           ease: 'none',
-          scrollTrigger: {
-            trigger: 'body',
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 3,
-          },
+          scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1.5 },
+        });
+
+        // Globe — sinks down (opposite to planet)
+        gsap.to('.parallax-globe', {
+          y: '8vh',
+          ease: 'none',
+          scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 2 },
+        });
+
+        // Astronaut — fastest, creates closest-layer illusion
+        gsap.to('.parallax-astronaut', {
+          y: '-22vh',
+          ease: 'none',
+          scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.8 },
+        });
+
+        // Hero content — fades + rises as you scroll away
+        gsap.to('.parallax-hero-content', {
+          y: '-14vh',
+          opacity: 0,
+          ease: 'none',
+          scrollTrigger: { trigger: hero, start: 'top top', end: '60% top', scrub: 1 },
+        });
+
+        // Left sidebar — drifts left + fades
+        gsap.to('.parallax-sidebar-left', {
+          x: '-4vw',
+          opacity: 0,
+          ease: 'none',
+          scrollTrigger: { trigger: hero, start: 'top top', end: '50% top', scrub: 1.2 },
         });
 
       });
 
-      // ── All screen sizes ────────────────────────────────────────
-
-      // 9. Horizontal mouse parallax on hero content
+      // ── Mouse parallax — all screens ──────────────────────────
+      let mouseRaf;
       const handleMouse = (e) => {
-        const cx = window.innerWidth  / 2;
-        const cy = window.innerHeight / 2;
-        const dx = (e.clientX - cx) / cx; // -1 to 1
-        const dy = (e.clientY - cy) / cy;
+        cancelAnimationFrame(mouseRaf);
+        mouseRaf = requestAnimationFrame(() => {
+          const cx = window.innerWidth  / 2;
+          const cy = window.innerHeight / 2;
+          const dx = (e.clientX - cx) / cx;
+          const dy = (e.clientY - cy) / cy;
 
-        gsap.to('.parallax-hero-content', {
-          x: dx * -8,
-          y: dy * -5,
-          duration: 1.2,
-          ease: 'power2.out',
-          overwrite: 'auto',
-        });
-
-        gsap.to('.parallax-planet', {
-          x: dx * 12,
-          duration: 2,
-          ease: 'power2.out',
-          overwrite: 'auto',
-        });
-
-        gsap.to('.parallax-globe', {
-          x: dx * -10,
-          duration: 2,
-          ease: 'power2.out',
-          overwrite: 'auto',
-        });
-
-        gsap.to('.parallax-astronaut', {
-          x: dx * 6,
-          y: dy * 4,
-          duration: 1.5,
-          ease: 'power2.out',
-          overwrite: 'auto',
+          gsap.to('.parallax-hero-content', {
+            x: dx * -10, y: dy * -6,
+            duration: 1.4, ease: 'power2.out', overwrite: 'auto',
+          });
+          gsap.to('.parallax-planet', {
+            x: dx * 18, y: dy * 8,
+            duration: 2.2, ease: 'power2.out', overwrite: 'auto',
+          });
+          gsap.to('.parallax-globe', {
+            x: dx * -12, y: dy * -6,
+            duration: 2, ease: 'power2.out', overwrite: 'auto',
+          });
+          gsap.to('.parallax-astronaut', {
+            x: dx * 8, y: dy * 5,
+            duration: 1.6, ease: 'power2.out', overwrite: 'auto',
+          });
+          gsap.to('.parallax-bg', {
+            x: dx * -6, y: dy * -4,
+            duration: 2.5, ease: 'power2.out', overwrite: 'auto',
+          });
+          gsap.to('.parallax-sidebar-left', {
+            x: dx * -5,
+            duration: 1.8, ease: 'power2.out', overwrite: 'auto',
+          });
         });
       };
 
       window.addEventListener('mousemove', handleMouse, { passive: true });
 
       return () => {
+        cancelAnimationFrame(mouseRaf);
         window.removeEventListener('mousemove', handleMouse);
         mm.revert();
         ScrollTrigger.getAll().forEach(t => t.kill());
@@ -196,5 +125,5 @@ export default function ScrollEffects() {
     init();
   }, []);
 
-  return null; // purely imperative — no DOM of its own
+  return null;
 }

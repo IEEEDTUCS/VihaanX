@@ -15,7 +15,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#0a0a0f]">
+    <div className="relative min-h-screen bg-[#0a0a0f]">
       {isLoading && <Loader onComplete={() => setIsLoading(false)} />}
       <SpaceBackground />
       <div className="relative z-10">
@@ -27,6 +27,8 @@ export default function App() {
       </div>
       {showModal && <PreviousEditions onClose={() => setShowModal(false)} />}
       {!isLoading && <ScrollEffects />}
+      {/* Scroll spacer — gives scroll distance for parallax to work */}
+      <div style={{ height: '60vh' }} aria-hidden="true" />
     </div>
   );
 }

@@ -50,7 +50,7 @@ export default function GlobeWrapper() {
     // Positioned bottom-left, partially off-screen — matches mockup
     // Only top-right arc of globe visible (cropped by overflow-hidden on parent)
     <div
-      className="pointer-events-none absolute hidden lg:block"
+      className="parallax-globe pointer-events-none absolute hidden lg:block"
       style={{
         bottom:    '-22vw',
         left:      '-22vw',

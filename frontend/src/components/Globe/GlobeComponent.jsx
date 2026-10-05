@@ -42,6 +42,7 @@ export function Globe({ globeConfig, data }) {
       globeRef.current = new ThreeGlobe();
       groupRef.current.add(globeRef.current);
       setIsInitialized(true);
+      props.onReady?.();
     }
   }, []);
 

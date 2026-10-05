@@ -45,10 +45,8 @@ const arcs = [
   { order: 6,  startLat: 34.0,   startLng: -118.2, endLat: 28.6,   endLng: 77.2,    arcAlt: 0.32, color: '#f43f5e' },
 ];
 
-export default function GlobeWrapper() {
+export default function GlobeWrapper({ onReady }) {
   return (
-    // Positioned bottom-left, partially off-screen — matches mockup
-    // Only top-right arc of globe visible (cropped by overflow-hidden on parent)
     <div
       className="parallax-globe pointer-events-none absolute hidden lg:block"
       style={{
@@ -62,7 +60,7 @@ export default function GlobeWrapper() {
         aspectRatio: '1 / 1',
       }}
     >
-      <World globeConfig={globeConfig} data={arcs} />
+      <World globeConfig={globeConfig} data={arcs} onReady={onReady} />
     </div>
   );
 }

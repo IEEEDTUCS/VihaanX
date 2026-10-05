@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import Loader from './components/Loader/Loader';
 import SpaceBackground from './components/SpaceBackground/SpaceBackground';
 import Navbar from './components/Navbar/Navbar';
@@ -9,23 +9,42 @@ import GlobeWrapper from './components/Globe/GlobeWrapper';
 import PreviousEditions from './components/PreviousEditions/PreviousEditions';
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  const [isLoading,   setIsLoading]   = useState(true);
+  const [showModal,   setShowModal]   = useState(false);
+
+  // Both gates must pass before loader dismisses
+  const loaderDoneRef = useRef(false);
+  const globeReadyRef = useRef(false);
+
+  const tryDismiss = useCallback(() => {
+    if (loaderDoneRef.current && globeReadyRef.current) {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const handleLoaderComplete = useCallback(() => {
+    loaderDoneRef.current = true;
+    tryDismiss();
+  }, [tryDismiss]);
+
+  const handleGlobeReady = useCallback(() => {
+    globeReadyRef.current = true;
+    tryDismiss();
+  }, [tryDismiss]);
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0f]">
-      {isLoading && <Loader onComplete={() => setIsLoading(false)} />}
+      {isLoading && <Loader onComplete={handleLoaderComplete} />}
 
       <SpaceBackground />
 
-      {/* Globe — rendered immediately so it loads during the loader,
-          but visually hidden until loader completes */}
+      {/* Globe rendered immediately — loads in background during loader */}
       <div style={{
-        opacity:    isLoading ? 0 : 1,
-        transition: 'opacity 0.8s ease',
+        opacity:       isLoading ? 0 : 1,
+        transition:    'opacity 0.6s ease',
         pointerEvents: isLoading ? 'none' : 'auto',
       }}>
-        <GlobeWrapper />
+        <GlobeWrapper onReady={handleGlobeReady} />
       </div>
 
       <div className="relative z-10">

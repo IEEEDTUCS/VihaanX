@@ -444,7 +444,7 @@ export default function Tracks() {
       {/* ── 1. Cosmic Background Layers ── */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <img
-          src="/tracks/tracks_base_bg.png"
+          src="/tracks/tracks_base_bg.webp"
           alt="Cosmic tracks background"
           className="h-full w-full object-cover object-center"
         />
@@ -762,9 +762,9 @@ export default function Tracks() {
                           transform: 'rotateY(180deg)',
                         }}
                       >
-                        {/* High-res Celestial Artwork from /tracks/card.png Edge-to-Edge */}
+                        {/* High-res Celestial Artwork from /tracks/card.webp Edge-to-Edge */}
                         <img
-                          src="/tracks/card.png"
+                          src="/tracks/card.webp"
                           alt=""
                           className="pointer-events-none absolute inset-0 h-full w-full object-contain select-none"
                           style={{

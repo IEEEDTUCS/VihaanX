@@ -1,13 +1,10 @@
 "use client";
 
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react-hooks/set-state-in-effect */
-
 import * as React from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const DEFAULT_STATIC_TIME = { days: 7, hours: 12, minutes: 45, seconds: 30 };
+const DEFAULT_STATIC_TIME = { days: 0, hours: 0, minutes: 0, seconds: 0 };
 
 const UNIT_LABELS = {
   days: "Days",
@@ -57,12 +54,21 @@ function getTimeLeft(targetDate) {
 }
 
 function isFinished(t) { return t.days === 0 && t.hours === 0 && t.minutes === 0 && t.seconds === 0; }
-function format(v)     { return String(Math.max(0, v)).padStart(2, "0"); }
+function format(v)     { return String(Math.max(0, v || 0)).padStart(2, "0"); }
 
-function CountdownNumber({ value, className }) {
+function CountdownNumber({ value, className, mounted }) {
   const reduceMotion = useReducedMotion() === true;
+
+  if (!mounted) {
+    return (
+      <span className={cn("relative inline-grid min-w-[2ch] place-items-center tabular-nums", className)} suppressHydrationWarning>
+        <span>{value}</span>
+      </span>
+    );
+  }
+
   return (
-    <span className={cn("relative inline-grid min-w-[2ch] place-items-center tabular-nums", className)}>
+    <span className={cn("relative inline-grid min-w-[2ch] place-items-center tabular-nums", className)} suppressHydrationWarning>
       <AnimatePresence initial={false} mode="popLayout">
         <motion.span
           key={value}
@@ -78,21 +84,17 @@ function CountdownNumber({ value, className }) {
   );
 }
 
-function CountdownUnit({ unit, value, variant, size, unitClassName, numberClassName, labelClassName, accentClassName, index }) {
-  const reduceMotion = useReducedMotion() === true;
+function CountdownUnit({ unit, value, variant, size, unitClassName, numberClassName, labelClassName, accentClassName, index, mounted }) {
   const sizePreset = sizeClasses[size];
   return (
-    <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: 12, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: reduceMotion ? 0 : index * 0.055, duration: 0.35, ease: "easeOut" }}
-      whileHover={reduceMotion ? undefined : { y: -3 }}
+    <div
       className={cn(
-        "relative flex flex-col items-center justify-center overflow-hidden border text-center",
+        "relative flex flex-col items-center justify-center overflow-hidden border text-center transition-all duration-300",
         unitVariantClasses[variant],
         sizePreset.unit,
         unitClassName,
       )}
+      suppressHydrationWarning
     >
       {/* Violet accent line at top for modern variant */}
       {variant === "modern" && (
@@ -103,6 +105,7 @@ function CountdownUnit({ unit, value, variant, size, unitClassName, numberClassN
       )}
       <CountdownNumber
         value={format(value)}
+        mounted={mounted}
         className={cn(
           "font-bold leading-none tracking-tight text-white",
           variant === "digital" && "font-mono text-cyan-100 drop-shadow-[0_0_18px_rgba(34,211,238,0.45)]",
@@ -119,7 +122,7 @@ function CountdownUnit({ unit, value, variant, size, unitClassName, numberClassN
       )}>
         {UNIT_LABELS[unit]}
       </span>
-    </motion.div>
+    </div>
   );
 }
 
@@ -149,32 +152,29 @@ export function AnimatedCountdown({
   size = compact ? "sm" : "md",
   ariaLabel = "Countdown timer",
 }) {
-  const reduceMotion = useReducedMotion() === true;
-  const isStatic = staticMode ?? !targetDate;
-  const completedRef = React.useRef(false);
-  const staticTime = React.useMemo(() => ({ ...DEFAULT_STATIC_TIME, ...initialStaticTime }), [initialStaticTime]);
-  const [timeLeft, setTimeLeft] = React.useState(DEFAULT_STATIC_TIME);
   const [mounted, setMounted] = React.useState(false);
+  const [timeLeft, setTimeLeft] = React.useState(DEFAULT_STATIC_TIME);
+  const completedRef = React.useRef(false);
+
+  const isStatic = staticMode ?? !targetDate;
+  const staticTime = React.useMemo(() => ({ ...DEFAULT_STATIC_TIME, ...initialStaticTime }), [initialStaticTime]);
 
   const enabled = { days: showDays, hours: showHours, minutes: showMinutes, seconds: showSeconds };
   const visibleUnits = React.useMemo(
     () => unitOrder.filter(u => enabled[u]),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [showDays, showHours, showMinutes, showSeconds, unitOrder]
   );
 
   const sizePreset = sizeClasses[size];
-  const displayTimeLeft = isStatic ? staticTime : timeLeft;
+  const displayTimeLeft = !mounted ? (initialStaticTime || DEFAULT_STATIC_TIME) : (isStatic ? staticTime : timeLeft);
   const completed = mounted && !isStatic && isFinished(displayTimeLeft);
 
   React.useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     if (isStatic) return;
     setTimeLeft(getTimeLeft(targetDate));
     const id = window.setInterval(() => setTimeLeft(getTimeLeft(targetDate)), 1000);
     return () => window.clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStatic, targetDate]);
 
   React.useEffect(() => {
@@ -189,11 +189,9 @@ export function AnimatedCountdown({
   };
 
   return (
-    <motion.div
-      initial={reduceMotion ? false : { opacity: 0, y: 20, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+    <div
       aria-label={ariaLabel}
+      suppressHydrationWarning
       className={cn(
         "inline-flex max-w-full flex-col items-center rounded-[1.75rem] border",
         variantClasses[variant],
@@ -211,11 +209,16 @@ export function AnimatedCountdown({
         {visibleUnits.map((unit, index) => (
           <React.Fragment key={unit}>
             <CountdownUnit
-              unit={unit} value={displayTimeLeft[unit]}
-              variant={variant} size={size}
-              unitClassName={unitClassName} numberClassName={numberClassName}
-              labelClassName={labelClassName} accentClassName={accentClassName}
+              unit={unit}
+              value={displayTimeLeft[unit]}
+              variant={variant}
+              size={size}
+              unitClassName={unitClassName}
+              numberClassName={numberClassName}
+              labelClassName={labelClassName}
+              accentClassName={accentClassName}
               index={index}
+              mounted={mounted}
             />
             {showSeparators && index < visibleUnits.length - 1 && (
               <span className={cn(
@@ -229,20 +232,12 @@ export function AnimatedCountdown({
         ))}
       </div>
 
-      <AnimatePresence>
-        {completed && completionMessage && (
-          <motion.p
-            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.25 }}
-            className="mt-3 text-sm font-medium text-violet-400"
-          >
-            {completionMessage}
-          </motion.p>
-        )}
-      </AnimatePresence>
-    </motion.div>
+      {mounted && completed && completionMessage && (
+        <p className="mt-3 text-sm font-medium text-violet-400">
+          {completionMessage}
+        </p>
+      )}
+    </div>
   );
 }
 

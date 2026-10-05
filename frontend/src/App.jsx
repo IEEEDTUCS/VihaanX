@@ -5,6 +5,7 @@ import Loader from './components/Loader/Loader';
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
 import Tracks from './components/Tracks/Tracks';
+import Timeline from './components/Timeline/Timeline';
 import PreviousEditions from './components/PreviousEditions/PreviousEditions';
 
 export default function App() {
@@ -44,6 +45,7 @@ export default function App() {
             onGlobeReady={handleGlobeReady}
           />
           <Tracks />
+          <Timeline />
         </main>
       </div>
 

@@ -5,6 +5,8 @@ import Button from '../ui/Button';
 import SpaceBackground from '../SpaceBackground/SpaceBackground';
 import GlobeWrapper from '../Globe/GlobeWrapper';
 
+const TARGET_DATE = '2026-11-14T00:00:00+05:30';
+
 export default function Hero({ isLoaded, onPreviousEditions, onGlobeReady }) {
   const vis = isLoaded ? 'animate-fade-slide-up' : 'opacity-0';
 
@@ -119,7 +121,7 @@ export default function Hero({ isLoaded, onPreviousEditions, onGlobeReady }) {
         {/* Countdown */}
         <div className="mt-5 w-full">
           <AnimatedCountdown
-            targetDate={new Date('2026-11-14T00:00:00+05:30')}
+            targetDate={TARGET_DATE}
             variant="modern"
             size="sm"
             containerClassName="border-white/[0.06] bg-black/20 backdrop-blur-xl w-full justify-center sm:size-md"
@@ -137,7 +139,7 @@ export default function Hero({ isLoaded, onPreviousEditions, onGlobeReady }) {
         style={{ width: 'clamp(160px, 22vw, 380px)' }}
       >
         <img
-          src="/landingPage/astroanut.png"
+          src="/landingPage/astroanut.webp"
           alt="Astronaut sitting on rocks gazing at the cosmos"
           width="380" height="380"
           className="w-full"

@@ -26,8 +26,6 @@ export default function App() {
       </div>
       {showModal && <PreviousEditions onClose={() => setShowModal(false)} />}
       {!isLoading && <ScrollEffects />}
-      {/* Scroll spacer — gives scroll distance for parallax to work */}
-      <div style={{ height: '60vh' }} aria-hidden="true" />
     </div>
   );
 }

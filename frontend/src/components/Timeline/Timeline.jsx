@@ -208,25 +208,57 @@ export default function Timeline() {
 
   const totalSteps = TIMELINE_EVENTS.length;
 
-  // Video scrub & forward acceleration on ANY scroll/action
+  // Scrub video to match current step position (proportional scrubbing)
+  const scrubVideoToStep = useCallback((stepIdx) => {
+    const video = videoRef.current;
+    if (!video || !video.duration || isNaN(video.duration)) return;
+
+    // Map step index to video time proportionally
+    const targetTime = (stepIdx / (totalSteps - 1)) * video.duration;
+
+    // If scrubbing forward, speed up briefly for tactile feel
+    const isForward = targetTime > video.currentTime;
+    video.playbackRate = isForward ? 2.8 : 2.8;
+
+    if (playbackTimeoutRef.current) clearTimeout(playbackTimeoutRef.current);
+    playbackTimeoutRef.current = setTimeout(() => {
+      if (video) video.playbackRate = 1.0;
+    }, 400);
+
+    // Smoothly animate toward target time
+    const startTime = video.currentTime;
+    const diff = targetTime - startTime;
+    const duration = 350; // ms
+    const startMs = performance.now();
+
+    const animate = (now) => {
+      const elapsed = now - startMs;
+      const t = Math.min(elapsed / duration, 1);
+      const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // easeInOut
+      video.currentTime = startTime + diff * ease;
+      if (t < 1) requestAnimationFrame(animate);
+      else {
+        video.currentTime = targetTime;
+        video.playbackRate = 1.0;
+      }
+    };
+
+    requestAnimationFrame(animate);
+
+    if (video.paused) video.play().catch(() => {});
+  }, [totalSteps]);
+
+  // Keep advanceVideo for backward compat (click interactions)
   const advanceVideo = useCallback((amount = 0.85) => {
     const video = videoRef.current;
-    if (!video) return;
-
-    if (video.duration && !isNaN(video.duration) && video.duration > 0) {
-      video.currentTime = (video.currentTime + amount) % video.duration;
-    }
-
-    // Dynamic speed surge for immediate tactile feedback
+    if (!video || !video.duration || isNaN(video.duration)) return;
+    video.currentTime = (video.currentTime + amount) % video.duration;
     video.playbackRate = 2.4;
     if (playbackTimeoutRef.current) clearTimeout(playbackTimeoutRef.current);
     playbackTimeoutRef.current = setTimeout(() => {
       if (video) video.playbackRate = 1.0;
     }, 380);
-
-    if (video.paused) {
-      video.play().catch(() => {});
-    }
+    if (video.paused) video.play().catch(() => {});
   }, []);
 
   // Video continuous loop
@@ -272,7 +304,7 @@ export default function Timeline() {
   // Step to specific index
   const goToStep = (idx) => {
     setActiveStep(idx);
-    advanceVideo(0.85);
+    scrubVideoToStep(idx);
   };
 
   const nextStep = () => {
@@ -349,19 +381,19 @@ export default function Timeline() {
           lastWheelTimeRef.current = now;
           setActiveStep((prev) => {
             const next = Math.min(totalSteps - 1, prev + 1);
-            advanceVideo(0.85);
+            scrubVideoToStep(next);
             return next;
           });
         }
         // At last step, lets natural page scroll proceed to next section!
       } else if (delta < 0) {
-        // Scroll UP -> Previous Event (Video STILL proceeds forward as requested!)
+        // Scroll UP -> Previous Event
         if (activeStep > 0) {
           e.preventDefault();
           lastWheelTimeRef.current = now;
           setActiveStep((prev) => {
             const previous = Math.max(0, prev - 1);
-            advanceVideo(0.85);
+            scrubVideoToStep(previous);
             return previous;
           });
         }
@@ -403,7 +435,7 @@ export default function Timeline() {
           touchStartRef.current = currentY;
           setActiveStep((prev) => {
             const next = Math.min(totalSteps - 1, prev + 1);
-            advanceVideo(0.85);
+            scrubVideoToStep(next);
             return next;
           });
         }
@@ -415,7 +447,7 @@ export default function Timeline() {
           touchStartRef.current = currentY;
           setActiveStep((prev) => {
             const previous = Math.max(0, prev - 1);
-            advanceVideo(0.85);
+            scrubVideoToStep(previous);
             return previous;
           });
         }
@@ -431,7 +463,7 @@ export default function Timeline() {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [activeStep, totalSteps, advanceVideo, selectedEvent]);
+  }, [activeStep, totalSteps, scrubVideoToStep, selectedEvent]);
 
   // Calculate rail active laser height percentage
   const laserFillPercentage = totalSteps > 1 ? (activeStep / (totalSteps - 1)) * 100 : 0;

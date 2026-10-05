@@ -208,18 +208,44 @@ export default function Timeline() {
 
   const totalSteps = TIMELINE_EVENTS.length;
 
-  // Scrub video proportionally to step (0 = start, 9 = end)
+  // Scroll-driven video playback
+  // Video plays forward on scroll down, backward on scroll up
+  const scrollAccumRef = useRef(0);
+  const rafRef = useRef(null);
+  const lastScrollDirRef = useRef(0);
+
+  const driveVideo = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !video.duration) return;
+
+    const acc = scrollAccumRef.current;
+    if (Math.abs(acc) < 0.01) {
+      scrollAccumRef.current *= 0.85;
+      if (Math.abs(scrollAccumRef.current) > 0.001) {
+        rafRef.current = requestAnimationFrame(driveVideo);
+      }
+      return;
+    }
+
+    // Move video time by accumulated scroll
+    let newTime = video.currentTime + acc * 0.04;
+    // Clamp within duration
+    newTime = Math.max(0, Math.min(video.duration - 0.05, newTime));
+    video.currentTime = newTime;
+
+    // Decay the accumulator
+    scrollAccumRef.current *= 0.78;
+
+    rafRef.current = requestAnimationFrame(driveVideo);
+  }, []);
+
   const scrubVideoToStep = useCallback((stepIdx) => {
     const video = videoRef.current;
     if (!video) return;
-
     const setTime = () => {
-      if (!video.duration || isNaN(video.duration) || video.duration === 0) return;
-      const targetTime = (stepIdx / (totalSteps - 1)) * video.duration;
-      video.currentTime = targetTime;
-      if (video.paused) video.play().catch(() => {});
+      if (!video.duration || isNaN(video.duration)) return;
+      video.currentTime = (stepIdx / (totalSteps - 1)) * video.duration;
     };
-
     if (!video.duration || isNaN(video.duration)) {
       video.addEventListener('loadedmetadata', setTime, { once: true });
     } else {
@@ -227,29 +253,17 @@ export default function Timeline() {
     }
   }, [totalSteps]);
 
-  // advanceVideo kept for detail button clicks
-  const advanceVideo = useCallback((amount = 0.85) => {
-    const video = videoRef.current;
-    if (!video || !video.duration || isNaN(video.duration)) return;
-    video.currentTime = (video.currentTime + amount) % video.duration;
-    if (video.paused) video.play().catch(() => {});
-  }, []);
+  const advanceVideo = useCallback(() => {}, []);
 
-  // Video continuous loop
+  // Video setup — paused, scroll will drive it
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
-    video.play().catch(() => {});
-
-    const handleEnded = () => {
-      video.currentTime = 0;
-      video.play().catch(() => {});
-    };
-
-    video.addEventListener('ended', handleEnded);
+    // Don't autoplay — scroll drives it
+    video.pause();
+    video.currentTime = 0;
     return () => {
-      video.removeEventListener('ended', handleEnded);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (playbackTimeoutRef.current) clearTimeout(playbackTimeoutRef.current);
     };
   }, []);
@@ -327,11 +341,10 @@ export default function Timeline() {
     if (!section) return;
 
     const handleWheel = (e) => {
-      if (selectedEvent) return; // Allow normal modal scrolling
+      if (selectedEvent) return;
 
       const rect = section.getBoundingClientRect();
       const windowH = window.innerHeight;
-
       const isCenteredInView = rect.top <= 120 && rect.bottom >= windowH - 120;
       if (!isCenteredInView) return;
 
@@ -340,38 +353,32 @@ export default function Timeline() {
 
       const now = Date.now();
 
-      // Debounce window for 1-scroll-per-event precision
-      if (now - lastWheelTimeRef.current < 360) {
-        if ((delta > 0 && activeStep < totalSteps - 1) || (delta < 0 && activeStep > 0)) {
-          e.preventDefault();
-        }
-        return;
-      }
-
       if (delta > 0) {
-        // Scroll DOWN -> Next Event
         if (activeStep < totalSteps - 1) {
           e.preventDefault();
-          lastWheelTimeRef.current = now;
-          setActiveStep((prev) => {
-            const next = Math.min(totalSteps - 1, prev + 1);
-            scrubVideoToStep(next);
-            return next;
-          });
+          // Drive video forward
+          scrollAccumRef.current += Math.abs(delta) * 0.5;
+          if (rafRef.current) cancelAnimationFrame(rafRef.current);
+          rafRef.current = requestAnimationFrame(driveVideo);
+          // Change step (debounced)
+          if (now - lastWheelTimeRef.current >= 360) {
+            lastWheelTimeRef.current = now;
+            setActiveStep(prev => Math.min(totalSteps - 1, prev + 1));
+          }
         }
-        // At last step, lets natural page scroll proceed to next section!
       } else if (delta < 0) {
-        // Scroll UP -> Previous Event
         if (activeStep > 0) {
           e.preventDefault();
-          lastWheelTimeRef.current = now;
-          setActiveStep((prev) => {
-            const previous = Math.max(0, prev - 1);
-            scrubVideoToStep(previous);
-            return previous;
-          });
+          // Drive video backward
+          scrollAccumRef.current -= Math.abs(delta) * 0.5;
+          if (rafRef.current) cancelAnimationFrame(rafRef.current);
+          rafRef.current = requestAnimationFrame(driveVideo);
+          // Change step (debounced)
+          if (now - lastWheelTimeRef.current >= 360) {
+            lastWheelTimeRef.current = now;
+            setActiveStep(prev => Math.max(0, prev - 1));
+          }
         }
-        // At first step, lets natural page scroll proceed to previous section!
       }
     };
 
@@ -437,7 +444,7 @@ export default function Timeline() {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [activeStep, totalSteps, scrubVideoToStep, selectedEvent]);
+  }, [activeStep, totalSteps, scrubVideoToStep, selectedEvent, driveVideo]);
 
   // Calculate rail active laser height percentage
   const laserFillPercentage = totalSteps > 1 ? (activeStep / (totalSteps - 1)) * 100 : 0;

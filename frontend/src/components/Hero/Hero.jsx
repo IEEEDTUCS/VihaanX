@@ -2,12 +2,28 @@
 
 import AnimatedCountdown from '../ui/animated-countdown';
 import Button from '../ui/Button';
+import SpaceBackground from '../SpaceBackground/SpaceBackground';
+import GlobeWrapper from '../Globe/GlobeWrapper';
 
-export default function Hero({ isLoaded, onPreviousEditions }) {
+export default function Hero({ isLoaded, onPreviousEditions, onGlobeReady }) {
   const vis = isLoaded ? 'animate-fade-slide-up' : 'opacity-0';
 
   return (
     <section className="relative flex min-h-screen min-h-[100dvh] items-center justify-center overflow-hidden px-4 pb-20 pt-20 sm:px-6 sm:pb-24 sm:pt-24 lg:px-8">
+      
+      {/* ── 1. Hero Isolated Space Background (Base bg, Stars, Top-Right 3D Planet) ── */}
+      <SpaceBackground />
+
+      {/* ── 2. Hero Isolated 3D Globe at Bottom-Left ── */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[2] overflow-hidden"
+        style={{
+          opacity: isLoaded ? 1 : 0,
+          transition: 'opacity 0.6s ease',
+        }}
+      >
+        <GlobeWrapper onReady={onGlobeReady} />
+      </div>
 
       {/* ── Left sidebar — all text stacked, top-left ── */}
       <aside
@@ -17,8 +33,8 @@ export default function Hero({ isLoaded, onPreviousEditions }) {
       >
         {/* A DECADE OF DREAMERS */}
         <div className="flex flex-col gap-0.5">
-          <p className="text-[0.72rem] font-bold leading-snug tracking-[0.25em] text-white/90 lg:text-[0.8rem]">A DECADE</p>
-          <p className="text-[0.72rem] font-bold leading-snug tracking-[0.25em] text-white/90 lg:text-[0.8rem]">OF DREAMERS</p>
+          <p className="font-display text-[0.68rem] font-bold leading-snug tracking-[0.22em] text-white/90 lg:text-[0.75rem]">A DECADE</p>
+          <p className="font-display text-[0.68rem] font-bold leading-snug tracking-[0.22em] text-white/90 lg:text-[0.75rem]">OF DREAMERS</p>
         </div>
 
         {/* PEOPLE IDEAS IMPACT */}
@@ -55,8 +71,8 @@ export default function Hero({ isLoaded, onPreviousEditions }) {
         </p>
 
         {/* THE 10TH EDITION OF */}
-        <p className="mb-3 text-[0.85rem] font-bold tracking-[0.18em] text-white/85
-                       sm:text-[1rem] lg:text-[1.15rem]">
+        <p className="mb-3 font-display text-[0.78rem] font-bold tracking-[0.16em] text-white/85
+                       sm:text-[0.92rem] lg:text-[1.05rem]">
           THE 10TH EDITION OF
         </p>
 
@@ -86,17 +102,17 @@ export default function Hero({ isLoaded, onPreviousEditions }) {
 
         {/* Buttons */}
         <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-          <Button href="/register" size="md" innerClassName="bg-black/70 backdrop-blur-sm">
+          <Button href="/register" size="md" innerClassName="bg-black/70 backdrop-blur-sm font-display tracking-[0.12em] text-[0.6rem] sm:text-[0.65rem]">
             REGISTER NOW&nbsp;&rarr;
           </Button>
-          <Button onClick={onPreviousEditions} size="md" innerClassName="bg-black/70 backdrop-blur-sm">
+          <Button onClick={onPreviousEditions} size="md" innerClassName="bg-black/70 backdrop-blur-sm font-display tracking-[0.12em] text-[0.6rem] sm:text-[0.65rem]">
             PREVIOUS EDITIONS&nbsp;&rarr;
           </Button>
         </div>
 
         {/* IDEAS BEYOND LIMITS */}
-        <p className="mt-4 text-[0.6rem] font-medium tracking-[0.35em] text-white/35
-                       sm:text-[0.68rem] lg:text-[0.75rem]">
+        <p className="mt-4 font-display text-[0.58rem] font-medium tracking-[0.3em] text-white/40
+                       sm:text-[0.64rem] lg:text-[0.7rem]">
           IDEAS BEYOND LIMITS
         </p>
 

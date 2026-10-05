@@ -19,8 +19,11 @@ export default function Button({
   href,
   size       = 'md',
   speed      = '4s',
+  color,
+  borderColor,
   className  = '',
   innerClassName = '',
+  style      = {},
   ...rest
 }) {
   const containerRef = useRef(null);
@@ -56,13 +59,20 @@ export default function Button({
 
   const Tag = href ? 'a' : 'button';
 
+  const customStyle = {
+    animationDuration: speed,
+    ...(color ? { '--btn-glow-color': color, '--btn-glow-highlight': color } : {}),
+    ...(borderColor ? { '--btn-border-color': borderColor } : {}),
+    ...style,
+  };
+
   return (
     <Tag
       ref={containerRef}
       href={href}
       type={href ? undefined : 'button'}
       className={`star-border-container star-border-${size} ${className}`}
-      style={{ animationDuration: speed }}
+      style={customStyle}
       onClick={handleClick}
       {...rest}
     >

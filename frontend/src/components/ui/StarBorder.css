@@ -61,7 +61,7 @@
   justify-content: center;
   gap: 8px;
   border-radius: 9999px;
-  border: 1px solid rgba(220, 74, 85, 0.55);
+  border: 1px solid var(--btn-border-color, rgba(220, 74, 85, 0.55));
   background: rgba(0, 0, 0, 0.65);
   color: #f0f0f0;
   font-weight: 500;
@@ -85,9 +85,9 @@
     from var(--angle),
     transparent 0%,
     transparent 72%,
-    rgba(220, 74, 85, 0.85) 85%,
-    rgba(255, 160, 165, 1)  90%,
-    rgba(220, 74, 85, 0.85) 95%,
+    var(--btn-glow-color, rgba(220, 74, 85, 0.85)) 85%,
+    var(--btn-glow-highlight, rgba(255, 160, 165, 1)) 90%,
+    var(--btn-glow-color, rgba(220, 74, 85, 0.85)) 95%,
     transparent 100%
   ) border-box;
   -webkit-mask:
@@ -116,9 +116,9 @@
 
 /* Hover state */
 .star-border-container:hover .star-border-inner {
-  border-color: rgba(220, 74, 85, 0.85);
+  border-color: var(--btn-glow-color, rgba(220, 74, 85, 0.85));
   background: rgba(220, 74, 85, 0.08);
-  box-shadow: 0 0 18px rgba(220, 74, 85, 0.2), inset 0 0 12px rgba(220, 74, 85, 0.05);
+  box-shadow: 0 0 18px var(--btn-glow-color, rgba(220, 74, 85, 0.2)), inset 0 0 12px rgba(220, 74, 85, 0.05);
 }
 
 /* Active / click state */
@@ -130,7 +130,7 @@
 .btn-ripple {
   position: absolute;
   border-radius: 50%;
-  background: rgba(220, 74, 85, 0.25);
+  background: var(--btn-glow-color, rgba(220, 74, 85, 0.25));
   transform: scale(0);
   animation: btnRippleAnim 0.55s ease-out forwards;
   pointer-events: none;
@@ -142,6 +142,7 @@
 }
 
 /* Sizes */
+.star-border-icon .star-border-inner { width: 34px; height: 34px; padding: 0; font-size: 0.75rem; border-radius: 50%; }
 .star-border-sm .star-border-inner  { padding: 7px 18px;  font-size: 0.58rem; }
 .star-border-md .star-border-inner  { padding: 10px 26px; font-size: 0.65rem; }
 .star-border-lg .star-border-inner  { padding: 14px 36px; font-size: 0.78rem; letter-spacing: 0.18em; }

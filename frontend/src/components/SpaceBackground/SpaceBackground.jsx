@@ -4,10 +4,9 @@ import VihaanPlanet from './VihaanPlanet';
 
 export default function SpaceBackground() {
   return (
-    <>
+    <div className="pointer-events-none absolute inset-0 h-full w-full overflow-hidden z-0">
       {/* Background layers */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-
+      <div className="absolute inset-0 z-0 overflow-hidden">
         {/* 1 — Base background */}
         <img
           src="/landingPage/base%20bg.webp"
@@ -29,18 +28,18 @@ export default function SpaceBackground() {
         <div className="absolute inset-0" style={{
           background: `
             radial-gradient(ellipse 70% 60% at 45% 45%, transparent 20%, rgba(4,4,12,0.45) 100%),
-            linear-gradient(to bottom, rgba(4,4,12,0.3) 0%, transparent 25%, transparent 65%, rgba(4,4,12,0.7) 100%)
+            linear-gradient(to bottom, rgba(4,4,12,0.3) 0%, transparent 25%, transparent 65%, rgba(4,4,12,0.9) 100%)
           `,
         }} />
       </div>
 
       {/* 4 — Planet */}
       <div
-        className="parallax-planet fixed hidden lg:block"
+        className="parallax-planet absolute hidden lg:block"
         style={{
           right: '-22vw', top: '-15vh',
           width: '52vw', height: '90vh',
-          zIndex: 15, pointerEvents: 'none',
+          zIndex: 5, pointerEvents: 'none',
           transform: 'rotate(-12deg)',
           transformOrigin: 'center center',
         }}
@@ -49,6 +48,6 @@ export default function SpaceBackground() {
           <VihaanPlanet planetSpeed={0.10} ringSpeed={0.8} interactive={true} tilt={0.38} />
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -209,32 +209,28 @@ export default function Timeline() {
   const totalSteps = TIMELINE_EVENTS.length;
 
   // Scroll-driven video playback
-  // Video plays forward on scroll down, backward on scroll up
   const scrollAccumRef = useRef(0);
   const rafRef = useRef(null);
-  const lastScrollDirRef = useRef(0);
 
   const driveVideo = useCallback(() => {
     const video = videoRef.current;
     if (!video || !video.duration) return;
 
     const acc = scrollAccumRef.current;
-    if (Math.abs(acc) < 0.01) {
-      scrollAccumRef.current *= 0.85;
-      if (Math.abs(scrollAccumRef.current) > 0.001) {
-        rafRef.current = requestAnimationFrame(driveVideo);
-      }
-      return;
+
+    // Set playback rate based on scroll direction and intensity
+    // Positive acc = forward, negative = backward (use playbackRate)
+    if (Math.abs(acc) > 0.5) {
+      const rate = Math.sign(acc) * Math.min(Math.abs(acc) * 0.015, 4);
+      video.playbackRate = rate;
+      if (video.paused) video.play().catch(() => {});
+    } else {
+      // Slow down to near-stop when no scroll
+      video.playbackRate = 0.05;
     }
 
-    // Move video time by accumulated scroll
-    let newTime = video.currentTime + acc * 0.04;
-    // Clamp within duration
-    newTime = Math.max(0, Math.min(video.duration - 0.05, newTime));
-    video.currentTime = newTime;
-
-    // Decay the accumulator
-    scrollAccumRef.current *= 0.78;
+    // Decay accumulator
+    scrollAccumRef.current *= 0.75;
 
     rafRef.current = requestAnimationFrame(driveVideo);
   }, []);
@@ -255,18 +251,23 @@ export default function Timeline() {
 
   const advanceVideo = useCallback(() => {}, []);
 
-  // Video setup — paused, scroll will drive it
+  // Video setup — plays at slow rate, scroll drives speed
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    // Don't autoplay — scroll drives it
-    video.pause();
-    video.currentTime = 0;
+
+    // Start playing slowly — scroll will speed it up
+    video.playbackRate = 0.05;
+    video.play().catch(() => {});
+
+    // Start the rAF drive loop
+    rafRef.current = requestAnimationFrame(driveVideo);
+
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (playbackTimeoutRef.current) clearTimeout(playbackTimeoutRef.current);
     };
-  }, []);
+  }, [driveVideo]);
 
   // Smoothly center the active card inside the right container
   useEffect(() => {

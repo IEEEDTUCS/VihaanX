@@ -1,55 +1,31 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
-import Loader from './components/Loader/Loader';
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
-import Tracks from './components/Tracks/Tracks';
-import Timeline from './components/Timeline/Timeline';
-import PreviousEditions from './components/PreviousEditions/PreviousEditions';
+import AboutSection from './components/Sections/AboutSection';
+import GallerySection from './components/Sections/GallerySection';
+import TracksSection from './components/Sections/TracksSection';
+import PrizesSection from './components/Sections/PrizesSection';
+import SponsorsSection from './components/Sections/SponsorsSection';
+import TeamSection from './components/Sections/TeamSection';
+import RegisterSection from './components/Sections/RegisterSection';
+import Footer from './components/Sections/Footer';
 
 export default function App() {
-  const [isLoading,   setIsLoading]   = useState(true);
-  const [showModal,   setShowModal]   = useState(false);
-
-  // Both gates must pass before loader dismisses
-  const loaderDoneRef = useRef(false);
-  const globeReadyRef = useRef(false);
-
-  const tryDismiss = useCallback(() => {
-    if (loaderDoneRef.current && globeReadyRef.current) {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const handleLoaderComplete = useCallback(() => {
-    loaderDoneRef.current = true;
-    tryDismiss();
-  }, [tryDismiss]);
-
-  const handleGlobeReady = useCallback(() => {
-    globeReadyRef.current = true;
-    tryDismiss();
-  }, [tryDismiss]);
-
   return (
-    <div className="relative min-h-screen bg-[#0a0a0f]">
-      {isLoading && <Loader onComplete={handleLoaderComplete} />}
-
-      <div className="relative z-10">
-        <Navbar />
-        <main>
-          <Hero
-            isLoaded={!isLoading}
-            onPreviousEditions={() => setShowModal(true)}
-            onGlobeReady={handleGlobeReady}
-          />
-          <Tracks />
-          <Timeline />
-        </main>
-      </div>
-
-      {showModal && <PreviousEditions onClose={() => setShowModal(false)} />}
+    <div className="relative min-h-screen bg-[#070b19] overflow-x-hidden selection:bg-[#ff3b6c] selection:text-white">
+      <Navbar />
+      <main>
+        <Hero />
+        <AboutSection />
+        <GallerySection />
+        <TracksSection />
+        <PrizesSection />
+        <SponsorsSection />
+        <TeamSection />
+        <RegisterSection />
+      </main>
+      <Footer />
     </div>
   );
 }

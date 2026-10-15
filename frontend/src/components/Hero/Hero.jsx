@@ -1,159 +1,130 @@
 'use client';
 
-import AnimatedCountdown from '../ui/animated-countdown';
-import Button from '../ui/Button';
-import SpaceBackground from '../SpaceBackground/SpaceBackground';
-import GlobeWrapper from '../Globe/GlobeWrapper';
+import SpaceCanvas from './SpaceCanvas';
+import ObjectAnimations from './ObjectAnimations';
+import LeftHUD from './LeftHUD';
+import Countdown from './Countdown';
 
-const TARGET_DATE = '2026-11-14T00:00:00+05:30';
-
-export default function Hero({ isLoaded, onPreviousEditions, onGlobeReady }) {
-  const vis = isLoaded ? 'animate-fade-slide-up' : 'opacity-0';
-
+export default function Hero() {
   return (
-    <section className="relative flex min-h-screen min-h-[100dvh] items-center justify-center overflow-hidden px-4 pb-20 pt-20 sm:px-6 sm:pb-24 sm:pt-24 lg:px-8">
+    <section id="home" className="relative flex min-h-screen min-h-[100dvh] w-full flex-col items-center justify-between overflow-hidden pt-28 pb-10 px-4 sm:px-6 select-none">
       
-      {/* ── 1. Hero Isolated Space Background (Base bg, Stars, Top-Right 3D Planet) ── */}
-      <SpaceBackground />
-
-      {/* ── 2. Hero Isolated 3D Globe at Bottom-Left ── */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[2] overflow-hidden"
-        style={{
-          opacity: isLoaded ? 1 : 0,
-          transition: 'opacity 0.6s ease',
-        }}
-      >
-        <GlobeWrapper onReady={onGlobeReady} />
+      {/* ── 1. Background Artwork ── */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <img
+          src="/landingPage/space_hero_bg.jpg"
+          alt="Space Colony Landscape"
+          className="h-full w-full object-cover object-bottom sm:object-center pointer-events-none"
+        />
+        {/* Subtle contrast gradient */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at 50% 40%, rgba(7, 11, 25, 0.2) 0%, rgba(7, 11, 25, 0.45) 80%, rgba(7, 11, 25, 0.75) 100%)',
+          }}
+        />
       </div>
 
-      {/* ── Left sidebar — all text stacked, top-left ── */}
-      <aside
-        className={`parallax-sidebar-left absolute left-4 top-20 z-[5] hidden flex-col gap-4 xl:flex ${vis}`}
-        aria-hidden="true"
-        style={{ maxWidth: '10rem' }}
-      >
-        {/* A DECADE OF DREAMERS */}
-        <div className="flex flex-col gap-0.5">
-          <p className="font-display text-[0.68rem] font-bold leading-snug tracking-[0.22em] text-white/90 lg:text-[0.75rem]">A DECADE</p>
-          <p className="font-display text-[0.68rem] font-bold leading-snug tracking-[0.22em] text-white/90 lg:text-[0.75rem]">OF DREAMERS</p>
-        </div>
+      {/* ── 2. Space Canvas (Shooting Stars & Starfield) ── */}
+      <SpaceCanvas />
 
-        {/* PEOPLE IDEAS IMPACT */}
-        <div className="flex flex-col gap-0.5">
-          <span className="mb-1.5 block h-px w-5 bg-[#e84a55]" />
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/70 lg:text-[0.75rem]">PEOPLE</p>
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/70 lg:text-[0.75rem]">IDEAS</p>
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/70 lg:text-[0.75rem]">IMPACT</p>
-        </div>
+      {/* ── 3. Live Object Animations (Radar signals, tower beacons, planetary aura) ── */}
+      <ObjectAnimations />
 
-        {/* INNOVATE BUILD BELONG — moved here from right */}
-        <div className="flex flex-col gap-0.5 mt-2">
-          <span className="mb-1.5 block h-px w-5 bg-[#e84a55]/50" />
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/60 lg:text-[0.75rem]">INNOVATE</p>
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/60 lg:text-[0.75rem]">BUILD</p>
-          <p className="text-[0.68rem] font-semibold tracking-[0.22em] text-white/60 lg:text-[0.75rem]">BELONG</p>
-        </div>
+      {/* ── 4. Left HUD Telemetry Text ── */}
+      <LeftHUD />
 
-        {/* Dot trail */}
-        <div className="mt-2 flex flex-col gap-1.5">
-          {[0,1,2,3,4].map(i => (
-            <span key={i} className={`block rounded-full ${i===0?'h-1.5 w-1.5 bg-white/50':'h-1 w-1 bg-white/20'}`} />
-          ))}
-        </div>
-      </aside>
-
-      {/* ── Centre content ── */}
-      <div className={`parallax-hero-content relative z-[5] flex w-full max-w-[min(680px,90vw)] flex-col items-center text-center ${vis}`}>
-
+      {/* ── 5. Main Center Hero Content ── */}
+      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center my-auto">
+        
         {/* PRESENTS */}
-        <p className="mb-1 text-[0.65rem] font-medium tracking-[0.35em] text-white/50
-                       sm:text-[0.72rem] lg:text-[0.8rem]">
+        <p className="font-tech text-[0.62rem] sm:text-[0.72rem] tracking-[0.38em] text-white/60 mb-1">
           PRESENTS
         </p>
 
         {/* THE 10TH EDITION OF */}
-        <p className="mb-3 font-display text-[0.78rem] font-bold tracking-[0.16em] text-white/85
-                       sm:text-[0.92rem] lg:text-[1.05rem]">
+        <h2 className="font-tech text-xs sm:text-sm lg:text-base font-bold tracking-[0.24em] text-white/90 mb-3 sm:mb-4">
           THE 10TH EDITION OF
-        </p>
+        </h2>
 
-        {/* VIHAAN X logo */}
-        <div className="w-full">
+        {/* Cybernetic VIHAAN-X Logo */}
+        <div className="relative w-full max-w-[340px] sm:max-w-[500px] lg:max-w-[580px] my-1 sm:my-2 animate-logo-glow">
           <img
             src="/logos/vihaan_full.png"
-            alt="Vihaan X"
-            className="h-auto w-full object-contain"
-            style={{
-              maxWidth: '100%',
-              maxHeight: 'clamp(70px, 18vw, 200px)',
-              minHeight: '60px',
-            }}
+            alt="VIHAAN-X Hackathon Logo"
+            className="w-full h-auto object-contain transition-transform duration-500 hover:scale-[1.03]"
           />
         </div>
 
-        {/* NORTH INDIA'S LARGEST */}
-        <div className="mt-4 flex w-full items-center justify-center gap-2 sm:gap-3">
-          <span className="h-px w-6 shrink-0 bg-[#e84a55] sm:w-10" />
-          <p className="text-[0.65rem] font-semibold tracking-[0.18em] text-white/80
-                         sm:text-[0.75rem] lg:text-[0.88rem]">
+        {/* NORTH INDIA'S LARGEST STUDENT-RUN HACKATHON */}
+        <div className="mt-3 sm:mt-4 flex items-center justify-center gap-2 sm:gap-4 w-full">
+          <span className="h-px w-6 sm:w-12 bg-[#ff3b6c] shrink-0 shadow-[0_0_8px_#ff3b6c]" />
+          <p className="text-[0.58rem] sm:text-[0.75rem] lg:text-[0.82rem] font-semibold tracking-[0.22em] text-white/85 uppercase whitespace-nowrap">
             NORTH INDIA&apos;S LARGEST STUDENT&#8209;RUN HACKATHON
           </p>
-          <span className="h-px w-6 shrink-0 bg-[#e84a55] sm:w-10" />
+          <span className="h-px w-6 sm:w-12 bg-[#ff3b6c] shrink-0 shadow-[0_0_8px_#ff3b6c]" />
         </div>
 
-        {/* Buttons */}
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-          <Button href="/register" size="md" innerClassName="bg-black/70 backdrop-blur-sm font-display tracking-[0.12em] text-[0.6rem] sm:text-[0.65rem]">
-            REGISTER NOW&nbsp;&rarr;
-          </Button>
-          <Button onClick={onPreviousEditions} size="md" innerClassName="bg-black/70 backdrop-blur-sm font-display tracking-[0.12em] text-[0.6rem] sm:text-[0.65rem]">
-            PREVIOUS EDITIONS&nbsp;&rarr;
-          </Button>
+        {/* Action Buttons: REGISTER NOW & PREVIOUS EDITIONS */}
+        <div className="mt-6 sm:mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+          
+          {/* Primary CTA: Register Now */}
+          <a
+            href="#register"
+            className="group relative inline-flex items-center gap-2 rounded-full bg-[#ff3b6c] px-7 py-3 text-xs sm:text-[0.8rem] font-bold tracking-[0.16em] text-white transition-all duration-300 shadow-[0_0_24px_rgba(255,59,108,0.65)] hover:bg-[#ff1e56] hover:shadow-[0_0_36px_rgba(255,59,108,0.9)] hover:scale-105 active:scale-95"
+          >
+            <span>REGISTER NOW</span>
+            <svg
+              className="w-3.5 h-3.5 transform transition-transform group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2.5}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
+
+          {/* Secondary CTA: Previous Editions -> https://9.vihaan.ieeedtu.in/ */}
+          <a
+            href="https://9.vihaan.ieeedtu.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative inline-flex items-center gap-2 rounded-full border border-white/30 bg-[#070b19]/60 backdrop-blur-md px-6 py-3 text-xs sm:text-[0.8rem] font-bold tracking-[0.16em] text-white/90 transition-all duration-300 hover:border-cyan-400 hover:text-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95"
+          >
+            <span>PREVIOUS EDITIONS</span>
+            <svg
+              className="w-3.5 h-3.5 transform transition-transform group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2.5}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
         </div>
 
-        {/* IDEAS BEYOND LIMITS */}
-        <p className="mt-4 font-display text-[0.58rem] font-medium tracking-[0.3em] text-white/40
-                       sm:text-[0.64rem] lg:text-[0.7rem]">
-          IDEAS BEYOND LIMITS
-        </p>
-
-        {/* Countdown */}
-        <div className="mt-5 w-full">
-          <AnimatedCountdown
-            targetDate={TARGET_DATE}
-            variant="modern"
-            size="sm"
-            containerClassName="border-white/[0.06] bg-black/20 backdrop-blur-xl w-full justify-center sm:size-md"
-            unitClassName="border-white/[0.07] bg-white/[0.04]"
-            numberClassName="text-white"
-            labelClassName="text-white/40"
-          />
+        {/* Live Glassmorphic Countdown */}
+        <div className="mt-6 sm:mt-8 w-full flex justify-center">
+          <Countdown />
         </div>
 
       </div>
 
-      {/* ── Astronaut — bottom-right, responsive size ── */}
-      <div
-        className={`parallax-astronaut absolute bottom-0 right-0 z-[3] hidden pointer-events-none sm:block ${vis}`}
-        style={{ width: 'clamp(160px, 22vw, 380px)' }}
+      {/* ── 6. Bottom Scroll Indicator ── */}
+      <a
+        href="#about"
+        className="relative z-10 flex flex-col items-center gap-1.5 pt-4 group cursor-pointer"
+        aria-label="Scroll down to About section"
       >
-        <img
-          src="/landingPage/astroanut.webp"
-          alt="Astronaut sitting on rocks gazing at the cosmos"
-          width="380" height="380"
-          className="w-full"
-          style={{ filter: 'drop-shadow(0 0 30px rgba(0,0,0,0.7))' }}
-        />
-      </div>
-
-      {/* ── Scroll indicator ── */}
-      <div className={`absolute bottom-5 left-1/2 z-[5] hidden -translate-x-1/2 flex-col items-center gap-1.5 sm:flex ${vis}`}>
-        <p className="text-[0.48rem] tracking-[0.3em] text-white/25 sm:text-[0.52rem]">SCROLL TO EXPLORE</p>
-        <div className="flex h-6 w-4 items-start justify-center rounded-full border border-white/20 p-0.5">
-          <span className="h-1.5 w-0.5 animate-bounce rounded-full bg-white/35" />
+        <p className="text-[0.48rem] sm:text-[0.55rem] font-medium tracking-[0.35em] text-white/35 group-hover:text-white/70 transition-colors uppercase">
+          SCROLL TO EXPLORE
+        </p>
+        <div className="flex h-6 w-3.5 sm:h-7 sm:w-4 items-start justify-center rounded-full border border-white/25 p-0.5 shadow-[0_0_8px_rgba(255,255,255,0.15)] group-hover:border-cyan-400 transition-colors">
+          <span className="h-1.5 w-0.5 animate-bounce rounded-full bg-white/60 group-hover:bg-cyan-300 transition-colors" />
         </div>
-      </div>
+      </a>
 
     </section>
   );

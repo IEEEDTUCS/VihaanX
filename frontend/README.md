@@ -1,16 +1,15 @@
-# Vihaan X frontend
+# React Project
 
-Next.js App Router frontend for Vihaan X, styled with Tailwind CSS.
+Clean React + Next.js starter template.
 
-## Routes
+## Getting Started
 
-- `/` — Vihaan X landing page
-- `/linktree` — event linktree
-
-Add future URL redirects in `next.config.mjs`.
-
-## Development
+Run the development server:
 
 ```bash
 npm run dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `src/App.jsx`.

@@ -1,17 +1,15 @@
-import { Michroma, Cinzel } from 'next/font/google';
+import { Orbitron, Inter } from 'next/font/google';
 import './globals.css';
 
-const michroma = Michroma({
-  weight: '400',
+const orbitron = Orbitron({
   subsets: ['latin'],
-  variable: '--font-michroma',
+  variable: '--font-orbitron',
   display: 'swap',
 });
 
-const cinzel = Cinzel({
-  weight: ['400', '600', '700', '800', '900'],
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-cinzel',
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -20,18 +18,15 @@ export const metadata = {
   description: "The 10th edition of North India's largest student-run hackathon, presented by IEEE DTU.",
   icons: {
     icon: '/favicon.png',
-    shortcut: '/favicon.png',
-    apple: '/favicon.png',
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${michroma.variable} ${cinzel.variable}`}>
-      <head>
-        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/ethnocentric" />
-      </head>
-      <body className="font-body antialiased">{children}</body>
+    <html lang="en" className={`${orbitron.variable} ${inter.variable}`}>
+      <body className="min-h-screen bg-[#070b19] text-white font-sans antialiased selection:bg-[#ff3b6c] selection:text-white overflow-x-hidden">
+        {children}
+      </body>
     </html>
   );
 }

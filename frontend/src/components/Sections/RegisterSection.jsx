@@ -25,13 +25,13 @@ export default function RegisterSection() {
         </h2>
 
         <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto font-light leading-relaxed mb-10">
-          Registrations for Vihaan X are opening on Unstop. Assemble your squad of 2 to 4 hackers and prepare for the 24-hour sprint.
+          Registrations for VIHAAN X are open on Unstop. Assemble your squad of 2 to 4 hackers and prepare for the 24-hour sprint.
         </p>
 
         {/* Action Button */}
         <div className="flex flex-wrap items-center justify-center gap-4 mb-14">
           <a
-            href="https://unstop.com"
+            href="/register"
             target="_blank"
             rel="noopener noreferrer"
             className="group relative inline-flex items-center gap-2 rounded-full bg-[#ff3b6c] px-9 py-4 text-sm font-bold tracking-[0.18em] text-white transition-all duration-300 shadow-[0_0_35px_rgba(255,59,108,0.7)] hover:bg-[#ff1e56] hover:shadow-[0_0_50px_rgba(255,59,108,1)] hover:scale-105 active:scale-95"

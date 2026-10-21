@@ -17,12 +17,12 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-        <AboutSection />
-        <GallerySection />
-        <TracksSection />
-        <PrizesSection />
-        <SponsorsSection />
-        <TeamSection />
+        {/*<AboutSection />*/}
+        {/*<GallerySection />*/}
+        {/*<TracksSection />*/}
+        {/*<PrizesSection />*/}
+        {/*<SponsorsSection />*/}
+        {/*<TeamSection />*/}
         <RegisterSection />
       </main>
       <Footer />

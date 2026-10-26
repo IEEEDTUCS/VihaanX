@@ -1,5 +1,3 @@
-'use client';
-
 export default function AboutSection() {
   const stats = [
     { label: 'EDITION', value: '10TH', detail: 'A Decade of Innovation' },
@@ -11,7 +9,7 @@ export default function AboutSection() {
   return (
     <section
       id="about"
-      className="relative min-h-screen w-full flex flex-col justify-center px-4 sm:px-8 py-24 bg-gradient-to-b from-[#070b19] via-[#091129] to-[#070b19] overflow-hidden"
+      className="relative min-h-screen scroll-mt-20 w-full flex flex-col justify-center px-4 sm:px-8 py-24 bg-gradient-to-b from-[#070b19] via-[#091129] to-[#070b19] overflow-hidden"
     >
       {/* Background Grid Accent */}
       <div

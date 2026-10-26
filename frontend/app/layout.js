@@ -24,6 +24,23 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${orbitron.variable} ${inter.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                  for (let registration of registrations) {
+                    registration.unregister().then(function(boolean) {
+                      if (boolean) window.location.reload();
+                    });
+                  }
+                });
+              }
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-[#070b19] text-white font-sans antialiased selection:bg-[#ff3b6c] selection:text-white overflow-x-hidden">
         {children}
       </body>

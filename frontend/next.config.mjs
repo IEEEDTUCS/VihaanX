@@ -12,7 +12,7 @@ const nextConfig = {
       // { source: '/register', destination: 'https://example.com', permanent: false },
       {
         source: '/wa',
-        destination: 'https://chat.whatsapp.com/LhXp4DQOVgEIP6yxeeY37V',
+        destination: 'https://chat.whatsapp.com/LOuOW4gzGJFAE3OdheHVQw',
         permanent: true,
       },
       {

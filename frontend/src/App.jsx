@@ -2,7 +2,7 @@
 
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
-// import AboutSection from './components/Sections/AboutSection';
+import AboutSection from './components/Sections/AboutSection';
 // import GallerySection from './components/Sections/GallerySection';
 // import TracksSection from './components/Sections/TracksSection';
 // import PrizesSection from './components/Sections/PrizesSection';
@@ -17,7 +17,7 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-        {/*<AboutSection />*/}
+        <AboutSection />
         {/*<GallerySection />*/}
         {/*<TracksSection />*/}
         {/*<PrizesSection />*/}

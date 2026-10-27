@@ -1,27 +1,27 @@
-'use client';
+"use client";
 
 export default function GallerySection() {
   const editions = [
     {
-      year: 'VIHAAN 09',
-      theme: 'Quantum Horizons',
-      date: '2024 Edition',
-      link: 'https://9.vihaan.ieeedtu.in/',
-      desc: 'Over 2,200 registrations, 65 prototype submissions, and groundbreaking projects in generative AI and cloud infrastructure.',
+      year: "VIHAAN 09",
+      theme: "Quantum Horizons",
+      date: "2024 Edition",
+      link: "https://9.vihaan.ieeedtu.in/",
+      desc: "Over 2,200 registrations, 65 prototype submissions, and groundbreaking projects in generative AI and cloud infrastructure.",
     },
     {
-      year: 'VIHAAN 08',
-      theme: 'Cybernetic Evolution',
-      date: '2023 Edition',
-      link: 'https://9.vihaan.ieeedtu.in/',
-      desc: 'A 24-hour hybrid hackathon pushing the frontiers of Web3, edge computing, and accessible assistive hardware.',
+      year: "VIHAAN 08",
+      theme: "Cybernetic Evolution",
+      date: "2023 Edition",
+      link: "https://9.vihaan.ieeedtu.in/",
+      desc: "A 24-hour hybrid hackathon pushing the frontiers of Web3, edge computing, and accessible assistive hardware.",
     },
     {
-      year: 'VIHAAN 07',
-      theme: 'Infinite Realities',
-      date: '2022 Edition',
-      link: 'https://9.vihaan.ieeedtu.in/',
-      desc: 'Uniting passionate engineering minds across top national universities with extensive mentor reviews.',
+      year: "VIHAAN 07",
+      theme: "Infinite Realities",
+      date: "2022 Edition",
+      link: "https://9.vihaan.ieeedtu.in/",
+      desc: "Uniting passionate engineering minds across top national universities with extensive mentor reviews.",
     },
   ];
 
@@ -31,7 +31,6 @@ export default function GallerySection() {
       className="relative min-h-screen w-full flex flex-col justify-center px-4 sm:px-8 py-24 bg-[#070b19] overflow-hidden"
     >
       <div className="relative z-10 max-w-6xl mx-auto w-full">
-        
         {/* Header Tag */}
         <div className="flex items-center gap-3 mb-3">
           <span className="h-px w-8 bg-cyan-400 shadow-[0_0_8px_#38bdf8]" />
@@ -47,7 +46,8 @@ export default function GallerySection() {
               EVENT GALLERY
             </h2>
             <p className="mt-2 text-sm sm:text-base text-white/60 max-w-xl font-light leading-relaxed">
-              Explore footprints from our previous editions. Relive the keynote speeches, midnight code sprints, and prize ceremonies.
+              Explore footprints from our previous editions. Relive the keynote
+              speeches, midnight code sprints, and prize ceremonies.
             </p>
           </div>
           <a
@@ -95,12 +95,13 @@ export default function GallerySection() {
                 className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest text-cyan-400 group-hover:text-cyan-300 transition-colors pt-4 border-t border-white/5"
               >
                 <span>VIEW TRANSMISSION ARCHIVE</span>
-                <span className="transform transition-transform group-hover:translate-x-1">&rarr;</span>
+                <span className="transform transition-transform group-hover:translate-x-1">
+                  &rarr;
+                </span>
               </a>
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

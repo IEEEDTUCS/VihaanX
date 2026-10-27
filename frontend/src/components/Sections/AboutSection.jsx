@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 export default function AboutSection() {
   const stats = [
-    { label: 'EDITION', value: '10TH', detail: 'A Decade of Innovation' },
-    { label: 'HACKING SPRINT', value: '24 HRS', detail: 'Non-stop Building' },
-    { label: 'PARTICIPANTS', value: '2500+', detail: 'Pan-India Reach' },
-    { label: 'PRIZE POOL', value: '₹5L+', detail: 'Cash & Tech Bounties' },
+    { label: "EDITION", value: "10TH", detail: "A Decade of Innovation" },
+    { label: "HACKING SPRINT", value: "24 HRS", detail: "Non-stop Building" },
+    { label: "PARTICIPANTS", value: "2500+", detail: "Pan-India Reach" },
+    { label: "PRIZE POOL", value: "₹5L+", detail: "Cash & Tech Bounties" },
   ];
 
   return (
@@ -17,14 +17,14 @@ export default function AboutSection() {
       <div
         className="absolute inset-0 pointer-events-none opacity-20"
         style={{
-          backgroundImage: 'radial-gradient(rgba(255, 59, 108, 0.15) 1px, transparent 1px), radial-gradient(rgba(56, 189, 248, 0.15) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-          backgroundPosition: '0 0, 20px 20px',
+          backgroundImage:
+            "radial-gradient(rgba(255, 59, 108, 0.15) 1px, transparent 1px), radial-gradient(rgba(56, 189, 248, 0.15) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+          backgroundPosition: "0 0, 20px 20px",
         }}
       />
 
       <div className="relative z-10 max-w-6xl mx-auto w-full">
-        
         {/* Header Tag */}
         <div className="flex items-center gap-3 mb-3">
           <span className="h-px w-8 bg-[#ff3b6c] shadow-[0_0_8px_#ff3b6c]" />
@@ -40,7 +40,9 @@ export default function AboutSection() {
               ABOUT VIHAAN X
             </h2>
             <p className="mt-2 text-sm sm:text-base text-white/60 max-w-xl font-light leading-relaxed">
-              Organized by IEEE DTU, Vihaan stands as North India&apos;s most prestigious student-driven hackathon. A platform built for visionary engineers to solve pressing challenges.
+              Organized by IEEE DTU, Vihaan stands as North India&apos;s most
+              prestigious student-driven hackathon. A platform built for
+              visionary engineers to solve pressing challenges.
             </p>
           </div>
           <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-cyan-400/80 bg-cyan-950/40 border border-cyan-500/20 px-4 py-2 rounded-full">
@@ -79,7 +81,11 @@ export default function AboutSection() {
             A Decade of Pioneering Curiosity
           </h3>
           <p className="text-sm sm:text-base text-white/75 leading-relaxed font-light mb-6">
-            For 10 iterations, Vihaan has provided students with the mentorship, cloud infrastructure, and community needed to turn bold ideas into high-impact software and hardware solutions. Whether diving deep into artificial intelligence or crafting decentralized autonomous architectures, this edition marks our grandest leap forward.
+            For 10 iterations, Vihaan has provided students with the mentorship,
+            cloud infrastructure, and community needed to turn bold ideas into
+            high-impact software and hardware solutions. Whether diving deep
+            into artificial intelligence or crafting decentralized autonomous
+            architectures, this edition marks our grandest leap forward.
           </p>
           <div className="flex flex-wrap gap-3">
             <span className="text-xs font-mono px-3 py-1 rounded-full border border-pink-500/30 bg-pink-500/10 text-pink-300">
@@ -93,7 +99,6 @@ export default function AboutSection() {
             </span>
           </div>
         </div>
-
       </div>
     </section>
   );

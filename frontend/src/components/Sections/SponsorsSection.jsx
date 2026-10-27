@@ -1,13 +1,21 @@
-'use client';
+"use client";
 
 export default function SponsorsSection() {
   const sponsors = [
-    { name: 'IEEE DTU', tier: 'ORGANIZING BODY', badge: 'HOST' },
-    { name: 'DELHI TECHNOLOGICAL UNIVERSITY', tier: 'PATRON UNIVERSITY', badge: 'CAMPUS' },
-    { name: 'UNSTOP', tier: 'PLATFORM PARTNER', badge: 'REGISTRATION' },
-    { name: 'GITHUB', tier: 'DEVELOPER TOOLING', badge: 'CLOUD' },
-    { name: 'MAJOR LEAGUE HACKING', tier: 'ALLIED ECOSYSTEM', badge: 'COMMUNITY' },
-    { name: 'POLYGON', tier: 'TRACK PARTNER', badge: 'WEB3' },
+    { name: "IEEE DTU", tier: "ORGANIZING BODY", badge: "HOST" },
+    {
+      name: "DELHI TECHNOLOGICAL UNIVERSITY",
+      tier: "PATRON UNIVERSITY",
+      badge: "CAMPUS",
+    },
+    { name: "UNSTOP", tier: "PLATFORM PARTNER", badge: "REGISTRATION" },
+    { name: "GITHUB", tier: "DEVELOPER TOOLING", badge: "CLOUD" },
+    {
+      name: "MAJOR LEAGUE HACKING",
+      tier: "ALLIED ECOSYSTEM",
+      badge: "COMMUNITY",
+    },
+    { name: "POLYGON", tier: "TRACK PARTNER", badge: "WEB3" },
   ];
 
   return (
@@ -16,7 +24,6 @@ export default function SponsorsSection() {
       className="relative min-h-screen w-full flex flex-col justify-center px-4 sm:px-8 py-24 bg-gradient-to-b from-[#070b19] via-[#091129] to-[#070b19] overflow-hidden"
     >
       <div className="relative z-10 max-w-6xl mx-auto w-full">
-        
         {/* Header Tag */}
         <div className="flex items-center gap-3 mb-3">
           <span className="h-px w-8 bg-purple-400 shadow-[0_0_8px_#c084fc]" />
@@ -32,7 +39,9 @@ export default function SponsorsSection() {
               SPONSORS & PARTNERS
             </h2>
             <p className="mt-2 text-sm sm:text-base text-white/60 max-w-xl font-light leading-relaxed">
-              Powering the frontier of student innovation. Supported by prominent institutions, developer platforms, and engineering brands.
+              Powering the frontier of student innovation. Supported by
+              prominent institutions, developer platforms, and engineering
+              brands.
             </p>
           </div>
           <a
@@ -71,7 +80,9 @@ export default function SponsorsSection() {
               Want to partner with Vihaan X?
             </h4>
             <p className="text-xs sm:text-sm text-white/60 font-light max-w-lg">
-              Gain visibility with 2,500+ top engineering candidates across India. Access tailored tech bounties, mentorship, and branding sessions.
+              Gain visibility with 2,500+ top engineering candidates across
+              India. Access tailored tech bounties, mentorship, and branding
+              sessions.
             </p>
           </div>
           <a
@@ -81,7 +92,6 @@ export default function SponsorsSection() {
             GET BROCHURE
           </a>
         </div>
-
       </div>
     </section>
   );

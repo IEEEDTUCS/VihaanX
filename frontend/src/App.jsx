@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import Navbar from './components/Navbar/Navbar';
-import Hero from './components/Hero/Hero';
+import Navbar from "./components/Navbar/Navbar";
+import Hero from "./components/Hero/Hero";
 // import AboutSection from './components/Sections/AboutSection';
 // import GallerySection from './components/Sections/GallerySection';
-// import TracksSection from './components/Sections/TracksSection';
+import TracksSection from "./components/Sections/TracksSection";
 // import PrizesSection from './components/Sections/PrizesSection';
 // import SponsorsSection from './components/Sections/SponsorsSection';
 // import TeamSection from './components/Sections/TeamSection';
-import RegisterSection from './components/Sections/RegisterSection';
-import Footer from './components/Sections/Footer';
+import RegisterSection from "./components/Sections/RegisterSection";
+import Footer from "./components/Sections/Footer";
 
 export default function App() {
   return (
@@ -19,7 +19,7 @@ export default function App() {
         <Hero />
         {/*<AboutSection />*/}
         {/*<GallerySection />*/}
-        {/*<TracksSection />*/}
+        <TracksSection />
         {/*<PrizesSection />*/}
         {/*<SponsorsSection />*/}
         {/*<TeamSection />*/}

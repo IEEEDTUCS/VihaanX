@@ -1,23 +1,25 @@
-import { Orbitron, Inter } from 'next/font/google';
-import './globals.css';
+import { Orbitron, Inter } from "next/font/google";
+import "./globals.css";
+import "./tracks.css";
 
 const orbitron = Orbitron({
-  subsets: ['latin'],
-  variable: '--font-orbitron',
-  display: 'swap',
+  subsets: ["latin"],
+  variable: "--font-orbitron",
+  display: "swap",
 });
 
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata = {
   title: "Vihaan X | North India's Largest Student-Run Hackathon | IEEE DTU",
-  description: "The 10th edition of North India's largest student-run hackathon, presented by IEEE DTU.",
+  description:
+    "The 10th edition of North India's largest student-run hackathon, presented by IEEE DTU.",
   icons: {
-    icon: '/favicon.png',
+    icon: "/favicon.png",
   },
 };
 

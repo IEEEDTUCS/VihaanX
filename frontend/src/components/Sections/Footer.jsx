@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
 export default function Footer() {
   return (
     <footer className="relative border-t border-white/10 bg-[#04060d] py-12 px-4 sm:px-8 text-white select-none">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        
         {/* Brand */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
           <img
@@ -63,7 +62,6 @@ export default function Footer() {
         <div className="text-[0.68rem] text-white/40 font-mono">
           &copy; {new Date().getFullYear()} IEEE DTU. ALL RIGHTS RESERVED.
         </div>
-
       </div>
     </footer>
   );

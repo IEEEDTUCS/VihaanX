@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 // Target hackathon date: 14th November 2026 (00:00:00 IST)
-const DEFAULT_TARGET = new Date('2026-11-14T00:00:00+05:30');
+const DEFAULT_TARGET = new Date("2026-11-14T00:00:00+05:30");
 
 function getRemaining(target) {
   const difference = +new Date(target) - Date.now();
@@ -31,10 +31,26 @@ export default function Countdown({ targetDate = DEFAULT_TARGET }) {
   }, [targetDate]);
 
   const units = [
-    { id: 'vx-days', label: 'DAYS', value: String(timeLeft.days).padStart(2, '0') },
-    { id: 'vx-hours', label: 'HOURS', value: String(timeLeft.hours).padStart(2, '0') },
-    { id: 'vx-minutes', label: 'MINUTES', value: String(timeLeft.minutes).padStart(2, '0') },
-    { id: 'vx-seconds', label: 'SECONDS', value: String(timeLeft.seconds).padStart(2, '0') },
+    {
+      id: "vx-days",
+      label: "DAYS",
+      value: String(timeLeft.days).padStart(2, "0"),
+    },
+    {
+      id: "vx-hours",
+      label: "HOURS",
+      value: String(timeLeft.hours).padStart(2, "0"),
+    },
+    {
+      id: "vx-minutes",
+      label: "MINUTES",
+      value: String(timeLeft.minutes).padStart(2, "0"),
+    },
+    {
+      id: "vx-seconds",
+      label: "SECONDS",
+      value: String(timeLeft.seconds).padStart(2, "0"),
+    },
   ];
 
   return (
@@ -70,7 +86,6 @@ export default function Countdown({ targetDate = DEFAULT_TARGET }) {
 
       {/* Glassmorphic Countdown Box */}
       <div className="relative flex items-center justify-center rounded-2xl border border-white/15 bg-[#091129]/60 px-6 py-4 sm:px-10 sm:py-5 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.45)]">
-        
         {/* Subtle cyan/pink inner glow border */}
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/10 via-transparent to-pink-500/10 pointer-events-none" />
 

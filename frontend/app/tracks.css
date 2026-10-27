@@ -1,0 +1,1236 @@
+/* ---------- keyframes ---------- */
+@keyframes vxt-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes vxt-spinrev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes vxt-warp {
+  from {
+    opacity: 0;
+    transform: scale(0.86) rotate(-10deg);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes vxt-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes vxt-rise-d {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes vxt-rise-m {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes vxt-drift {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes vxt-bob-d {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes vxt-bob-m {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+@keyframes vxt-aura-d {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+@keyframes vxt-aura-m {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.07);
+  }
+}
+@keyframes vxt-tw {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+@keyframes vxt-dash {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+@keyframes vxt-blink {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes vxt-scan {
+  0% {
+    top: -20%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+  }
+}
+@keyframes vxt-ping-card {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+@keyframes vxt-ping-node {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+@keyframes vxt-travel {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+@keyframes vxt-idle {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+  }
+  85% {
+    opacity: 0.7;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+@keyframes vxt-shoot {
+  0%,
+  74% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(145deg);
+  }
+  76% {
+    opacity: 1;
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: translate(-560px, 388px) rotate(145deg);
+  }
+}
+
+/* ---------- section root ----------
+   The design assumes Inter for body copy. Site-wide, `font-sans` on <body> wins over the
+   base-layer rule so body text renders in system sans (see docs/03-design-system.md); that
+   bug is left alone and Inter is applied here only. */
+.vxt {
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* ---------- ambient ---------- */
+.vxt .star {
+  position: absolute;
+  border-radius: 50%;
+  background: #dcefff;
+  box-shadow: 0 0 6px rgba(140, 200, 255, 0.8);
+  animation: vxt-tw 4s ease-in-out infinite;
+}
+.vxt .shoot {
+  position: absolute;
+  width: 150px;
+  height: 2px;
+  opacity: 0;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(120, 200, 255, 0),
+    rgba(220, 240, 255, 0.5) 60%,
+    #fff
+  );
+  filter: drop-shadow(0 0 5px #80d4ff);
+  animation: vxt-shoot 10s linear infinite;
+  pointer-events: none;
+}
+.vxt .reveal {
+  animation: vxt-rise-d 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.vxt .bob-d {
+  animation: vxt-bob-d 9s ease-in-out infinite;
+}
+.vxt .bob-m {
+  animation: vxt-bob-m 8s ease-in-out infinite;
+}
+.vxt .aura-d {
+  animation: vxt-aura-d 7s ease-in-out infinite;
+}
+.vxt .aura-m {
+  animation: vxt-aura-m 6s ease-in-out infinite;
+}
+.vxt .bands {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200%;
+  height: 100%;
+}
+.vxt .bands-d {
+  animation: vxt-drift 70s linear infinite;
+}
+.vxt .bands-m {
+  animation: vxt-drift 50s linear infinite;
+}
+
+/* ---------- desktop composition ----------
+   These were inline styles on TracksDesktop; they live here so the tablet media blocks at the
+   bottom of this file can vary them. --scene-scale sizes the fixed 600x760 orbit map: the box
+   reserves the scaled footprint, the scene itself is scaled in place from its top-left corner. */
+.vxt .dwrap {
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 1240px;
+  gap: 56px;
+}
+.vxt .dmain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 48px;
+}
+.vxt .dcol {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 520px;
+  max-width: 640px;
+  gap: 20px;
+}
+.vxt .scene-box {
+  position: relative;
+  flex: none;
+  width: calc(600px * var(--scene-scale, 1));
+  height: calc(760px * var(--scene-scale, 1));
+}
+.vxt .scene {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 600px;
+  height: 760px;
+  transform: scale(var(--scene-scale, 1));
+  transform-origin: 0 0;
+}
+
+/* ---------- orbit system (shared) ---------- */
+.vxt .system {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-origin: 255px 310px;
+}
+.vxt .warp {
+  animation: vxt-warp 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.vxt .ticks {
+  position: absolute;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    rgba(255, 255, 255, 0.22) 0deg 0.5deg,
+    transparent 0.5deg 6deg
+  );
+  -webkit-mask: radial-gradient(
+    circle closest-side,
+    transparent calc(100% - 8px),
+    #000 calc(100% - 7px)
+  );
+  mask: radial-gradient(
+    circle closest-side,
+    transparent calc(100% - 8px),
+    #000 calc(100% - 7px)
+  );
+}
+.vxt .ticks-m {
+  background: repeating-conic-gradient(
+    rgba(255, 255, 255, 0.22) 0deg 0.6deg,
+    transparent 0.6deg 7.5deg
+  );
+  -webkit-mask: radial-gradient(
+    circle closest-side,
+    transparent calc(100% - 6px),
+    #000 calc(100% - 5px)
+  );
+  mask: radial-gradient(
+    circle closest-side,
+    transparent calc(100% - 6px),
+    #000 calc(100% - 5px)
+  );
+}
+.vxt .radar {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.55;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 290deg,
+    color-mix(in srgb, var(--acc) 30%, transparent) 360deg
+  );
+  -webkit-mask: radial-gradient(circle closest-side, transparent 30%, #000 31%);
+  mask: radial-gradient(circle closest-side, transparent 30%, #000 31%);
+  animation: vxt-spin 8s linear infinite;
+}
+.vxt .oring {
+  position: absolute;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.vxt .spin {
+  animation: vxt-spin 90s linear infinite;
+}
+.vxt .spin-rev {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+  animation: vxt-spinrev 90s linear infinite;
+}
+.vxt .ccw {
+  animation-name: vxt-spinrev;
+}
+.vxt .ccw .spin-rev {
+  animation-name: vxt-spin;
+}
+/* §3 pause rule: every ring and counter-rotation stops while a NODE is hovered or
+   focus-visible (desktop) or pressed/focused (mobile). Hovering elsewhere does nothing. */
+.vxt .system:has(.node-d:hover) .spin,
+.vxt .system:has(.node-d:hover) .spin-rev,
+.vxt .system:has(.node-d:focus-visible) .spin,
+.vxt .system:has(.node-d:focus-visible) .spin-rev,
+.vxt .stage:has(.node-m:active) .spin,
+.vxt .stage:has(.node-m:active) .spin-rev,
+.vxt .stage:has(.node-m:focus-visible) .spin,
+.vxt .stage:has(.node-m:focus-visible) .spin-rev {
+  animation-play-state: paused;
+}
+
+/* ---------- orbit node, desktop ---------- */
+.vxt .node-d {
+  position: absolute;
+  left: -12px;
+  top: -22px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px;
+  margin: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: auto;
+  animation: vxt-pop 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.35) both;
+}
+.vxt .node-d .ndot {
+  position: relative;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: #0c1433;
+  border: 2px solid var(--acc);
+  box-shadow: 0 0 12px var(--acc);
+  transition: transform 0.3s;
+}
+.vxt .node-d .nlbl {
+  font-family: var(--font-orbitron), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(9, 17, 41, 0.78);
+  backdrop-filter: blur(8px);
+  transition:
+    border-color 0.25s,
+    background 0.25s,
+    box-shadow 0.25s;
+}
+.vxt .node-d:hover .nlbl,
+.vxt .node-d:focus-visible .nlbl {
+  border-color: var(--acc);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--acc) 45%, transparent);
+}
+.vxt .node-d:hover .ndot {
+  transform: scale(1.25);
+}
+.vxt .node-d:focus-visible {
+  outline: none;
+}
+.vxt .node-d:focus-visible .nlbl {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+.vxt .node-d.is-active .ndot {
+  background: var(--acc);
+}
+.vxt .node-d.is-active .ndot::before,
+.vxt .node-d.is-active .ndot::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid var(--acc);
+  animation: vxt-ping-node 2.4s cubic-bezier(0.1, 0.5, 0.3, 1) infinite;
+}
+.vxt .node-d.is-active .ndot::after {
+  animation-delay: 1.2s;
+}
+.vxt .node-d.is-active .nlbl {
+  border-color: var(--acc);
+  background: color-mix(in srgb, var(--acc) 22%, #091129);
+  box-shadow: 0 0 26px color-mix(in srgb, var(--acc) 55%, transparent);
+}
+
+/* ---------- orbit node, mobile (name centred under the dot) ---------- */
+.vxt .node-m {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -7px);
+  display: block;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+  pointer-events: auto;
+}
+/* the pop sits on the inner wrapper: .node-m itself owns the positioning transform */
+.vxt .node-m .nin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  animation: vxt-pop 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.35) both;
+}
+.vxt .node-m .dot {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: #0c1433;
+  border: 2px solid var(--acc);
+  box-shadow: 0 0 10px var(--acc);
+}
+.vxt .node-m .lbl {
+  font-family: var(--font-orbitron), system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: center;
+  width: max-content;
+  max-width: 92px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(9, 17, 41, 0.8);
+}
+.vxt .node-m:focus-visible {
+  outline: none;
+}
+.vxt .node-m:focus-visible .lbl {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.vxt .node-m.is-active .dot {
+  background: var(--acc);
+}
+.vxt .node-m.is-active .dot::before,
+.vxt .node-m.is-active .dot::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid var(--acc);
+  animation: vxt-ping-node 2.4s cubic-bezier(0.1, 0.5, 0.3, 1) infinite;
+}
+.vxt .node-m.is-active .dot::after {
+  animation-delay: 1.2s;
+}
+.vxt .node-m.is-active .lbl {
+  border-color: var(--acc);
+  background: color-mix(in srgb, var(--acc) 24%, #091129);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--acc) 55%, transparent);
+}
+
+/* ---------- world planets (desktop buttons) ---------- */
+.vxt .world {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    left 0.95s cubic-bezier(0.65, 0, 0.25, 1),
+    top 0.95s cubic-bezier(0.65, 0, 0.25, 1),
+    width 0.95s cubic-bezier(0.65, 0, 0.25, 1),
+    height 0.95s cubic-bezier(0.65, 0, 0.25, 1);
+}
+.vxt .world .globe {
+  position: absolute;
+  inset: 0;
+  transition:
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 0.9s ease;
+}
+.vxt .world.off .globe {
+  filter: saturate(0.5) brightness(0.58);
+}
+.vxt .world.off:hover .globe {
+  transform: scale(1.06);
+  filter: saturate(0.8) brightness(0.85);
+}
+.vxt .plate {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(7, 11, 25, 0.78);
+  backdrop-filter: blur(10px);
+  transition:
+    top 0.95s cubic-bezier(0.65, 0, 0.25, 1),
+    border-color 0.5s,
+    box-shadow 0.5s;
+}
+.vxt .world.on .plate {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 4px 12px;
+  pointer-events: none;
+}
+.vxt .world.off .plate {
+  left: auto;
+  right: calc(100% + 14px);
+  top: 50% !important;
+  transform: translateY(-50%);
+}
+.vxt .world.off .plate::after {
+  content: "CLICK TO TRAVEL →";
+  margin-top: 4px;
+  font-family: var(--font-orbitron), system-ui, sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--wacc);
+}
+.vxt .world.off:hover .plate {
+  border-color: var(--wacc);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--wacc) 35%, transparent);
+}
+.vxt .world:focus-visible {
+  outline: none;
+}
+.vxt .world:focus-visible .plate {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+.vxt .plate .pdot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+}
+.vxt .world.on .plate .pdot {
+  background: var(--wacc);
+  box-shadow: 0 0 8px var(--wacc);
+  animation: vxt-blink 1.6s ease-in-out infinite;
+}
+
+/* ---------- transfer path, comet, idle dot ---------- */
+.vxt .fwd-d {
+  offset-path: path("M 524 684 C 610 560, 520 400, 255 310");
+  offset-rotate: auto;
+  offset-anchor: 100% 50%;
+}
+.vxt .fwd-m {
+  offset-path: path("M 330 326 C 362 250, 282 168, 179 179");
+  offset-rotate: auto;
+  offset-anchor: 100% 50%;
+}
+.vxt .comet-d,
+.vxt .comet-m {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), #fff);
+  pointer-events: none;
+}
+.vxt .comet-d {
+  width: 56px;
+  height: 4px;
+  filter: drop-shadow(0 0 8px #fff) drop-shadow(0 0 16px var(--acc));
+  animation: vxt-travel 1.5s cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+.vxt .comet-m {
+  width: 40px;
+  height: 3px;
+  filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 12px var(--acc));
+  animation: vxt-travel 1.1s cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+.vxt .idler {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px #fff;
+  opacity: 0;
+  animation: vxt-idle 7s linear infinite;
+  pointer-events: none;
+}
+
+/* ---------- desktop track cards ---------- */
+/* The spec's 3-column grid gives a name ~106px at 1280px, but "Sustainability" needs 138px
+   at the specified type (and 109px even at 10px), so three columns cannot hold these names.
+   Two columns keep the approved 12.5px/.05em type with every name on one line. */
+.vxt .grid3 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.vxt .card {
+  --acc: #ff3b6c;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 78px;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    160deg,
+    rgba(14, 25, 64, 0.66),
+    rgba(9, 17, 41, 0.58)
+  );
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.3s,
+    box-shadow 0.3s,
+    background 0.3s;
+  animation: vxt-rise-d 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.vxt .card.hw {
+  --acc: #38bdf8;
+}
+.vxt .card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.09) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.9s ease;
+  pointer-events: none;
+}
+.vxt .card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--acc) 55%, transparent);
+}
+.vxt .card:hover::before {
+  transform: translateX(120%);
+}
+.vxt .card:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.vxt .card.on {
+  border-color: var(--acc);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--acc) 22%, #0c1433),
+    rgba(9, 17, 41, 0.7)
+  );
+  box-shadow: 0 0 28px color-mix(in srgb, var(--acc) 25%, transparent);
+}
+.vxt .port {
+  position: relative;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--acc);
+  background: radial-gradient(
+    circle at 35% 30%,
+    color-mix(in srgb, var(--acc) 32%, #0c1433),
+    #070b19 78%
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--acc) 45%, transparent);
+}
+.vxt .card.on .port::before,
+.vxt .card.on .port::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1.5px solid var(--acc);
+  animation: vxt-ping-card 2.4s cubic-bezier(0.1, 0.5, 0.3, 1) infinite;
+}
+.vxt .card.on .port::after {
+  animation-delay: 1.2s;
+}
+/* a flex item's default min-width:auto would let the name push the card wider than its
+   column, so the text block must be allowed to shrink before .cname can wrap */
+.vxt .cmeta {
+  min-width: 0;
+}
+.vxt .cnum {
+  display: block;
+  font-family: var(--font-orbitron), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--acc);
+}
+.vxt .cname {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-orbitron), system-ui, sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+/* ---------- brief panels ---------- */
+.vxt .brief {
+  position: relative;
+  overflow: hidden;
+}
+.vxt .scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--acc) 22%, transparent),
+    transparent
+  );
+  animation: vxt-scan 1.1s ease-out both;
+}
+.vxt .scanline-d {
+  height: 70px;
+}
+.vxt .scanline-m {
+  height: 60px;
+}
+.vxt .r1-d {
+  animation: vxt-rise-d 0.5s 0.05s ease-out both;
+}
+.vxt .r2-d {
+  animation: vxt-rise-d 0.5s 0.14s ease-out both;
+}
+.vxt .r3-d {
+  animation: vxt-rise-d 0.5s 0.23s ease-out both;
+}
+.vxt .r4-d {
+  animation: vxt-rise-d 0.5s 0.32s ease-out both;
+}
+.vxt .r1-m {
+  animation: vxt-rise-m 0.5s 0.05s ease-out both;
+}
+.vxt .r2-m {
+  animation: vxt-rise-m 0.5s 0.15s ease-out both;
+}
+.vxt .r3-m {
+  animation: vxt-rise-m 0.5s 0.25s ease-out both;
+}
+.vxt .r4-m {
+  animation: vxt-rise-m 0.5s 0.35s ease-out both;
+}
+
+/* ---------- buttons ---------- */
+.vxt .ibtn {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(7, 11, 25, 0.6);
+  color: #fff;
+  cursor: pointer;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+.vxt .ibtn:hover {
+  border-color: var(--acc);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--acc) 40%, transparent);
+}
+.vxt .ibtn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.vxt .cta-m {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #ff3b6c;
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--font-orbitron), system-ui, sans-serif;
+  font-weight: 700;
+  gap: 8px;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  box-shadow: 0 0 22px rgba(255, 59, 108, 0.6);
+}
+.vxt .cta-m:hover {
+  background: #ff1e56;
+  color: #fff;
+}
+.vxt .cta-m:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+.vxt .ghost-m {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(7, 11, 25, 0.6);
+  color: #fff;
+  cursor: pointer;
+  font-family: var(--font-orbitron), system-ui, sans-serif;
+  font-weight: 700;
+  flex: none;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 14px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+.vxt .ghost-m:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ---------- world switch tabs ---------- */
+.vxt .tab-d,
+.vxt .tab-m {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(12, 20, 51, 0.45);
+  color: #fff;
+  cursor: pointer;
+  transition:
+    border-color 0.3s,
+    background 0.3s,
+    box-shadow 0.3s,
+    transform 0.3s;
+}
+.vxt .tab-d {
+  min-width: 230px;
+  gap: 6px;
+  padding: 16px 22px 18px;
+  border-radius: 18px;
+  backdrop-filter: blur(14px);
+}
+.vxt .tab-m {
+  min-width: 0;
+  gap: 3px;
+  padding: 10px 12px 12px;
+  border-radius: 14px;
+}
+.vxt .tab-d:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.vxt .tab-d:focus-visible,
+.vxt .tab-m:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+.vxt .tab-d.on,
+.vxt .tab-m.on {
+  border-color: var(--tacc);
+  background: color-mix(in srgb, var(--tacc) 14%, #0c1433);
+}
+.vxt .tab-d.on {
+  box-shadow: 0 0 32px color-mix(in srgb, var(--tacc) 30%, transparent);
+}
+.vxt .tab-m.on {
+  box-shadow: 0 0 26px color-mix(in srgb, var(--tacc) 28%, transparent);
+}
+.vxt .tdot {
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+}
+.vxt .tab-d .tdot {
+  width: 7px;
+  height: 7px;
+}
+.vxt .tab-m .tdot {
+  width: 6px;
+  height: 6px;
+}
+.vxt .tab-d.on .tdot,
+.vxt .tab-m.on .tdot {
+  background: var(--tacc);
+  box-shadow: 0 0 10px var(--tacc);
+  animation: vxt-blink 1.6s ease-in-out infinite;
+}
+
+/* ---------- mobile chip strip ---------- */
+.vxt .chip {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(12, 20, 51, 0.5);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    border-color 0.25s,
+    background 0.25s,
+    box-shadow 0.25s;
+}
+.vxt .chip:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.vxt .chip.on {
+  border-color: var(--acc);
+  background: color-mix(in srgb, var(--acc) 18%, #0c1433);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--acc) 30%, transparent);
+}
+.vxt .strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 2px 14px 6px;
+  margin: 0 6px;
+  scroll-padding-inline: 14px;
+  scroll-snap-type: x proximity;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 12px,
+    #000 calc(100% - 28px),
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 12px,
+    #000 calc(100% - 28px),
+    transparent
+  );
+}
+.vxt .strip::-webkit-scrollbar {
+  display: none;
+}
+.vxt .strip .chip {
+  scroll-snap-align: start;
+}
+
+/* ---------- mobile stage extras ---------- */
+.vxt .stage {
+  position: relative;
+  width: min(358px, 100%);
+  aspect-ratio: 1;
+}
+.vxt .readout {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 64.5%;
+  margin: 0 auto;
+  width: 180px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  pointer-events: none;
+  animation: vxt-rise-m 0.4s ease-out both;
+}
+.vxt .ro-name {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 10px #070b19,
+    0 0 4px #070b19;
+}
+.vxt .mini {
+  position: absolute;
+  right: -2px;
+  bottom: -4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 56px;
+  min-height: 56px;
+  padding: 2px;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+}
+.vxt .mini:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+.vxt .mini-globe {
+  display: block;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  filter: saturate(0.6) brightness(0.7);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--macc) 45%, transparent);
+  transition:
+    filter 0.3s,
+    transform 0.3s;
+}
+.vxt .mini:hover .mini-globe,
+.vxt .mini:active .mini-globe {
+  filter: none;
+  transform: scale(1.1);
+}
+.vxt .mini-lbl {
+  font-family: var(--font-orbitron), system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--macc);
+  white-space: nowrap;
+}
+
+/* ---------- tablet (768-1279) ----------
+   The desktop components, sized to fit, instead of the mobile column. The orbit map is a fixed
+   600x760 box of hardcoded offsets, so it can only be scaled as a whole: at 0.8 it is 480x608.
+   Below 1024 there is no room for the map beside the panel (it would need ~40% scale, taking the
+   11px node labels to 4px), so the column stacks underneath at full type size instead. */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .vxt {
+    --scene-scale: 0.8;
+  }
+}
+
+/* stacked: map centred on top, brief panel and card grid full width beneath */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .vxt .dwrap {
+    gap: 40px;
+  }
+  .vxt .dcol {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+  .vxt .grid3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* side by side: 480 map + 32 gap + 464 column = 976, the content width at 1024.
+   The desktop's 48px gap would leave the column 137px for a name that needs 138. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .vxt .dmain {
+    gap: 32px;
+  }
+  .vxt .dcol {
+    flex: 1 1 440px;
+  }
+}
+
+/* ---------- off-screen ----------
+   Nothing here is visible when it applies: an IntersectionObserver adds .vxt-idle while the
+   section is outside the viewport, so the looping decorations stop ticking instead of burning
+   frames behind the hero. Pausing is not restarting, so rings resume mid-rotation.
+   The one-shot entry animations (warp, pop, rise, scan) are deliberately NOT listed, so the
+   section's entry choreography is unchanged. */
+.vxt-idle .spin,
+.vxt-idle .spin-rev,
+.vxt-idle .radar,
+.vxt-idle .star,
+.vxt-idle .shoot,
+.vxt-idle .aura-d,
+.vxt-idle .aura-m,
+.vxt-idle .bob-d,
+.vxt-idle .bob-m,
+.vxt-idle .bands,
+.vxt-idle .idler,
+.vxt-idle .ndot::before,
+.vxt-idle .ndot::after,
+.vxt-idle .dot::before,
+.vxt-idle .dot::after,
+.vxt-idle .port::before,
+.vxt-idle .port::after,
+.vxt-idle .tdot,
+.vxt-idle .pdot {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vxt *,
+  .vxt *::before,
+  .vxt *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .vxt .comet-d,
+  .vxt .comet-m,
+  .vxt .idler {
+    display: none;
+  }
+}

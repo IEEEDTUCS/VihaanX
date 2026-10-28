@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 const NAV_ITEMS = [
-  { label: "HOME", href: "#home" },
-  // { label: 'ABOUT', href: '#about' },
-  // { label: 'GALLERY', href: '#gallery' },
+  { label: 'HOME', href: '#home' },
+  { label: 'ABOUT', href: '#about' },
+  { label: 'GALLERY', href: '#gallery' },
   { label: "TRACKS", href: "#tracks" },
   // { label: 'PRIZES', href: '#prizes' },
   // { label: 'SPONSORS', href: '#sponsors' },
@@ -13,7 +13,7 @@ const NAV_ITEMS = [
 ];
 
 export default function Navbar() {
-  const [activeSection, setActiveSection] = useState("#home");
+  const [activeSection, setActiveSection] = useState('#home');
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -36,8 +36,8 @@ export default function Navbar() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleScrollTo = (e, href) => {
@@ -45,7 +45,7 @@ export default function Navbar() {
     setMobileMenuOpen(false);
     const target = document.querySelector(href);
     if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
+      target.scrollIntoView({ behavior: 'smooth' });
       setActiveSection(href);
     }
   };
@@ -157,6 +157,7 @@ export default function Navbar() {
             )}
           </button>
         </div>
+
       </div>
 
       {/* Mobile Drawer */}

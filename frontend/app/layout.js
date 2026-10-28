@@ -1,5 +1,6 @@
-import { Orbitron, Inter } from "next/font/google";
-import "./globals.css";
+import { Orbitron, Inter } from 'next/font/google';
+import './globals.css';
+import './gallery.css';
 import "./tracks.css";
 
 const orbitron = Orbitron({

@@ -54,8 +54,8 @@ export default function PrizesSection() {
       <div className="relative z-10 max-w-6xl mx-auto w-full">
         {/*Header Tag*/}
         <div className="flex items-center gap-3 mb-3">
-          <span className="h-px w-8 bg-amber-400 shadow-[0_0_8px_#fbbf24]" />
-          <span className="font-tech text-xs tracking-[0.3em] text-amber-400 uppercase">
+          <span className="h-px w-8 bg-[#ff3b6c] shadow-[0_0_8px_#ff3b6c]" />
+          <span className="font-tech text-xs tracking-[0.3em] text-[#ff3b6c] uppercase">
             // REWARDS & BOUNTIES
           </span>
         </div>
@@ -128,7 +128,7 @@ export default function PrizesSection() {
         </div>
         */}
         
-        <p className="py-24 text-center font-semibold tracking-[0.22em] text-xs tracking-[0.3em] text-2xl sm:text-4xl font-bold tracking-wider text-white">
+        <p className="py-24 text-center font-semibold tracking-[0.22em] text-xs tracking-[0.3em] text-2xl sm:text-4xl font-bold tracking-wider text-white hover:text-[#ff3b6c] transition-colors">
           TO BE REVEALED SOON..
         </p>
     

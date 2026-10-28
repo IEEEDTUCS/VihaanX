@@ -131,3 +131,33 @@
 .animate-logo-glow {
   animation: glowShimmer 4s ease-in-out infinite;
 }
+.feature-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin: 14px auto 0;
+  color: #edf0ff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-align: center;
+}
+
+.feature-line span + span {
+  border-left: 1px solid #ff3678;
+  padding-left: 16px;
+}
+
+@media (max-width: 600px) {
+  .feature-line {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .feature-line span + span {
+    border-left: 0;
+    padding-left: 0;
+  }
+}

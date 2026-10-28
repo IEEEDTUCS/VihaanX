@@ -1,6 +1,7 @@
 "use client";
 
 export default function PrizesSection() {
+  /*
   const prizes = [
     {
       rank: "02",
@@ -43,6 +44,7 @@ export default function PrizesSection() {
       ],
     },
   ];
+  */
 
   return (
     <section
@@ -50,7 +52,7 @@ export default function PrizesSection() {
       className="relative min-h-screen w-full flex flex-col justify-center px-4 sm:px-8 py-24 bg-[#070b19] overflow-hidden"
     >
       <div className="relative z-10 max-w-6xl mx-auto w-full">
-        {/* Header Tag */}
+        {/*Header Tag*/}
         <div className="flex items-center gap-3 mb-3">
           <span className="h-px w-8 bg-amber-400 shadow-[0_0_8px_#fbbf24]" />
           <span className="font-tech text-xs tracking-[0.3em] text-amber-400 uppercase">
@@ -58,7 +60,7 @@ export default function PrizesSection() {
           </span>
         </div>
 
-        {/* Section Heading */}
+        {/*Section Heading*/}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <h2 className="font-tech text-3xl sm:text-5xl font-black tracking-wider text-white">
@@ -69,12 +71,12 @@ export default function PrizesSection() {
               pipelines, and credits sponsored by our technology partners.
             </p>
           </div>
-          <div className="text-xs font-mono text-amber-300/80 bg-amber-950/40 border border-amber-500/20 px-4 py-2 rounded-full self-start md:self-auto">
+          {/* <div className="text-xs font-mono text-amber-300/80 bg-amber-950/40 border border-amber-500/20 px-4 py-2 rounded-full self-start md:self-auto">
             TOTAL POOL: ₹5,00,000+
-          </div>
+          </div> */}
         </div>
 
-        {/* Podium Grid */}
+      {/*Podium Grid
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch mb-12">
           {prizes.map((p) => (
             <div
@@ -124,8 +126,13 @@ export default function PrizesSection() {
             </div>
           ))}
         </div>
-
-        {/* Special Category Bounties */}
+        */}
+        
+        <p className="py-24 text-center font-semibold tracking-[0.22em] text-xs tracking-[0.3em] text-2xl sm:text-4xl font-bold tracking-wider text-white">
+          TO BE REVEALED SOON..
+        </p>
+    
+        Special Category Bounties
         <div className="rounded-2xl border border-white/10 bg-[#091129]/40 p-6 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <span className="text-xl">🌟</span>
@@ -139,6 +146,7 @@ export default function PrizesSection() {
               </p>
             </div>
           </div>
+  
           <span className="text-xs font-mono text-[#ff3b6c] font-bold tracking-widest">
             MORE DETAILS SOON
           </span>

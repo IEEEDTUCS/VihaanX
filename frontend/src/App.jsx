@@ -1,10 +1,10 @@
 'use client';
 
-import Navbar from './components/Navbar/Navbar';
-import Hero from './components/Hero/Hero';
+import Navbar from "./components/Navbar/Navbar";
+import Hero from "./components/Hero/Hero";
 import AboutSection from './components/Sections/AboutSection';
 import GallerySection from './components/Sections/GallerySection';
-// import TracksSection from './components/Sections/TracksSection';
+import TracksSection from "./components/Sections/TracksSection";
 // import PrizesSection from './components/Sections/PrizesSection';
 // import SponsorsSection from './components/Sections/SponsorsSection';
 // import TeamSection from './components/Sections/TeamSection';
@@ -17,12 +17,12 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-         <AboutSection />
+        <AboutSection />
         <GallerySection />
-        {/* <TracksSection /> */}
-        {/* <PrizesSection /> */}
-        {/* <SponsorsSection /> */}
-        {/* <TeamSection /> */}
+        <TracksSection />
+        {/*<PrizesSection />*/}
+        {/*<SponsorsSection />*/}
+        {/*<TeamSection />*/}
         <RegisterSection />
       </main>
       <Footer />

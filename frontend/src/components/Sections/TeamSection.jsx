@@ -1,13 +1,43 @@
-'use client';
+"use client";
 
 export default function TeamSection() {
   const teams = [
-    { name: 'LEADERSHIP', role: 'Mission Commanders', count: 'Executive Council', icon: '⚡' },
-    { name: 'TECHNICAL LEAD', role: 'System Engineers', count: 'Platform & Judging', icon: '💻' },
-    { name: 'CREATIVE & DESIGN', role: 'Visual Architects', count: 'UI/UX & Branding', icon: '🎨' },
-    { name: 'CORPORATE RELATIONS', role: 'Alliance Officers', count: 'Sponsors & Mentors', icon: '🤝' },
-    { name: 'LOGISTICS & OPERATIONS', role: 'Base Station Ops', count: 'Event Experience', icon: '🛰️' },
-    { name: 'PUBLICITY & OUTREACH', role: 'Transmission Relay', count: 'Social & Media', icon: '📢' },
+    {
+      name: "LEADERSHIP",
+      role: "Mission Commanders",
+      count: "Executive Council",
+      icon: "⚡",
+    },
+    {
+      name: "TECHNICAL LEAD",
+      role: "System Engineers",
+      count: "Platform & Judging",
+      icon: "💻",
+    },
+    {
+      name: "CREATIVE & DESIGN",
+      role: "Visual Architects",
+      count: "UI/UX & Branding",
+      icon: "🎨",
+    },
+    {
+      name: "CORPORATE RELATIONS",
+      role: "Alliance Officers",
+      count: "Sponsors & Mentors",
+      icon: "🤝",
+    },
+    {
+      name: "LOGISTICS & OPERATIONS",
+      role: "Base Station Ops",
+      count: "Event Experience",
+      icon: "🛰️",
+    },
+    {
+      name: "PUBLICITY & OUTREACH",
+      role: "Transmission Relay",
+      count: "Social & Media",
+      icon: "📢",
+    },
   ];
 
   return (
@@ -16,7 +46,6 @@ export default function TeamSection() {
       className="relative min-h-screen w-full flex flex-col justify-center px-4 sm:px-8 py-24 bg-[#070b19] overflow-hidden"
     >
       <div className="relative z-10 max-w-6xl mx-auto w-full">
-        
         {/* Header Tag */}
         <div className="flex items-center gap-3 mb-3">
           <span className="h-px w-8 bg-[#ff3b6c] shadow-[0_0_8px_#ff3b6c]" />
@@ -32,7 +61,8 @@ export default function TeamSection() {
               ORGANIZING CREW
             </h2>
             <p className="mt-2 text-sm sm:text-base text-white/60 max-w-xl font-light leading-relaxed">
-              Meet the student organizers from IEEE DTU dedicating months to make Vihaan X an unforgettable launchpad for innovators.
+              Meet the student organizers from IEEE DTU dedicating months to
+              make Vihaan X an unforgettable launchpad for innovators.
             </p>
           </div>
           <div className="text-xs font-mono text-white/40 border border-white/10 px-4 py-2 rounded-full self-start md:self-auto">
@@ -64,7 +94,6 @@ export default function TeamSection() {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

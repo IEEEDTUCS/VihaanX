@@ -1,14 +1,16 @@
-'use client';
+"use client";
 
-import SpaceCanvas from './SpaceCanvas';
-import ObjectAnimations from './ObjectAnimations';
-import LeftHUD from './LeftHUD';
-import Countdown from './Countdown';
+import SpaceCanvas from "./SpaceCanvas";
+import ObjectAnimations from "./ObjectAnimations";
+import LeftHUD from "./LeftHUD";
+import Countdown from "./Countdown";
 
 export default function Hero() {
   return (
-    <section id="home" className="relative flex min-h-screen min-h-[100dvh] w-full flex-col items-center justify-between overflow-hidden pt-28 pb-10 px-4 sm:px-6 select-none">
-      
+    <section
+      id="home"
+      className="relative flex min-h-screen min-h-[100dvh] w-full flex-col items-center justify-between overflow-hidden pt-28 pb-10 px-4 sm:px-6 select-none"
+    >
       {/* ── 1. Background Artwork ── */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img
@@ -20,7 +22,8 @@ export default function Hero() {
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'radial-gradient(circle at 50% 40%, rgba(7, 11, 25, 0.2) 0%, rgba(7, 11, 25, 0.45) 80%, rgba(7, 11, 25, 0.75) 100%)',
+            background:
+              "radial-gradient(circle at 50% 40%, rgba(7, 11, 25, 0.2) 0%, rgba(7, 11, 25, 0.45) 80%, rgba(7, 11, 25, 0.75) 100%)",
           }}
         />
       </div>
@@ -36,7 +39,6 @@ export default function Hero() {
 
       {/* ── 5. Main Center Hero Content ── */}
       <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center my-auto">
-        
         {/* PRESENTS */}
         <p className="font-tech text-[0.62rem] sm:text-[0.72rem] tracking-[0.38em] text-white/60 mb-1">
           PRESENTS
@@ -67,7 +69,6 @@ export default function Hero() {
 
         {/* Action Buttons: REGISTER NOW & PREVIOUS EDITIONS */}
         <div className="mt-6 sm:mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
-          
           {/* Primary CTA: Register Now */}
           <a
             href="#register"
@@ -81,7 +82,11 @@ export default function Hero() {
               stroke="currentColor"
               strokeWidth={2.5}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
             </svg>
           </a>
 
@@ -100,7 +105,11 @@ export default function Hero() {
               stroke="currentColor"
               strokeWidth={2.5}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
             </svg>
           </a>
         </div>
@@ -109,7 +118,6 @@ export default function Hero() {
         <div className="mt-6 sm:mt-8 w-full flex justify-center">
           <Countdown />
         </div>
-
       </div>
 
       {/* ── 6. Bottom Scroll Indicator ── */}
@@ -125,7 +133,6 @@ export default function Hero() {
           <span className="h-1.5 w-0.5 animate-bounce rounded-full bg-white/60 group-hover:bg-cyan-300 transition-colors" />
         </div>
       </a>
-
     </section>
   );
 }

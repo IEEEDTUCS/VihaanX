@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export default function SpaceCanvas() {
   const canvasRef = useRef(null);
@@ -8,7 +8,7 @@ export default function SpaceCanvas() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     let animationFrameId;
 
     let width = (canvas.width = window.innerWidth);
@@ -18,7 +18,7 @@ export default function SpaceCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Starfield
     const numStars = 70;
@@ -78,8 +78,8 @@ export default function SpaceCanvas() {
         const tailY = this.y - Math.sin(this.angle) * this.len;
 
         const grad = c.createLinearGradient(tailX, tailY, this.x, this.y);
-        grad.addColorStop(0, 'rgba(120, 200, 255, 0)');
-        grad.addColorStop(0.6, 'rgba(210, 235, 255, 0.4)');
+        grad.addColorStop(0, "rgba(120, 200, 255, 0)");
+        grad.addColorStop(0.6, "rgba(210, 235, 255, 0.4)");
         grad.addColorStop(1, `rgba(255, 255, 255, ${this.opacity})`);
 
         c.strokeStyle = grad;
@@ -90,7 +90,7 @@ export default function SpaceCanvas() {
 
         // Glow head
         c.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-        c.shadowColor = '#80d4ff';
+        c.shadowColor = "#80d4ff";
         c.shadowBlur = 8;
         c.beginPath();
         c.arc(this.x, this.y, 1.8, 0, Math.PI * 2);
@@ -100,7 +100,11 @@ export default function SpaceCanvas() {
       }
     }
 
-    const shootingStars = [new ShootingStar(), new ShootingStar(), new ShootingStar()];
+    const shootingStars = [
+      new ShootingStar(),
+      new ShootingStar(),
+      new ShootingStar(),
+    ];
 
     let time = 0;
     const render = () => {
@@ -109,9 +113,11 @@ export default function SpaceCanvas() {
 
       // Draw subtle twinkling stars in the sky
       for (const s of stars) {
-        s.alpha = s.baseAlpha + Math.sin(time * s.twinkleSpeed * 10 + s.twinkleOffset) * 0.3;
+        s.alpha =
+          s.baseAlpha +
+          Math.sin(time * s.twinkleSpeed * 10 + s.twinkleOffset) * 0.3;
         ctx.fillStyle = `rgba(220, 240, 255, ${Math.max(0.1, Math.min(1, s.alpha))})`;
-        ctx.shadowColor = '#60a5fa';
+        ctx.shadowColor = "#60a5fa";
         ctx.shadowBlur = s.radius > 1.2 ? 4 : 0;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
@@ -130,7 +136,7 @@ export default function SpaceCanvas() {
     render();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

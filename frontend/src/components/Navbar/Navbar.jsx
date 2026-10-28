@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 const NAV_ITEMS = [
   { label: 'HOME', href: '#home' },
-  // { label: 'ABOUT', href: '#about' },
+  { label: 'ABOUT', href: '#about' },
   { label: 'GALLERY', href: '#gallery' },
   // { label: 'TRACKS', href: '#tracks' },
   // { label: 'PRIZES', href: '#prizes' },
@@ -43,7 +43,7 @@ export default function Navbar() {
     setMobileMenuOpen(false);
     const target = document.querySelector(href);
     if (target) {
-      target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      target.scrollIntoView({ behavior: 'smooth' });
       setActiveSection(href);
     }
   };

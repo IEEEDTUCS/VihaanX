@@ -1,107 +1,106 @@
 'use client';
 
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { galleryPhotos, pastEditions } from '../../data/gallery.js';
+import ArchiveMedia from '../Gallery/ArchiveMedia';
+import GalleryAtmosphere from '../Gallery/GalleryAtmosphere';
+import ViewfinderCarousel from '../Gallery/ViewfinderCarousel';
+
+function CloseIcon() {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5"><path strokeLinecap="round" d="M5 5l14 14M19 5 5 19" /></svg>;
+}
+
+function ArrowIcon({ reverse = false }) {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`h-5 w-5 ${reverse ? 'rotate-180' : ''}`}><path strokeLinecap="round" strokeLinejoin="round" d="m9 5 7 7-7 7" /></svg>;
+}
+
+
+function PhotoLightbox({ items, index, onClose, onNavigate }) {
+  const dialog = useRef(null);
+  useEffect(() => {
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    dialog.current.showModal();
+    return () => { document.body.style.overflow = previousOverflow; previousFocus?.focus(); };
+  }, []);
+  const active = items[index];
+  return <dialog ref={dialog} aria-label="Gallery photo viewer" onCancel={onClose}
+    onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    onKeyDown={(e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); onNavigate(e.key === 'ArrowRight' ? 1 : -1); } }}
+    className="m-auto w-[94vw] max-w-6xl rounded-2xl border border-white/20 bg-[#070b19] p-5 text-white backdrop:bg-black/90">
+    <div className="mb-4 flex items-center justify-between"><span>{index + 1} / {items.length}</span><button type="button" onClick={onClose} aria-label="Close photo viewer" className="grid h-11 w-11 place-items-center rounded-full border border-white/30"><CloseIcon /></button></div>
+    <div className="flex items-center gap-3"><button type="button" onClick={() => onNavigate(-1)} aria-label="Previous photo" className="grid h-11 w-11 shrink-0 place-items-center"><ArrowIcon reverse /></button><img src={active.src} alt={active.alt} className="max-h-[70dvh] min-w-0 flex-1 object-contain" /><button type="button" onClick={() => onNavigate(1)} aria-label="Next photo" className="grid h-11 w-11 shrink-0 place-items-center"><ArrowIcon /></button></div>
+    <p className="mt-4 text-center text-white/70">{[active.caption, active.year].filter(Boolean).join(' · ')}</p>
+  </dialog>;
+}
+
+function EditionCard({ edition, index }) {
+  const pointer = (event) => {
+    if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const card = event.currentTarget;
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--light-x', `${event.clientX - rect.left}px`);
+    card.style.setProperty('--light-y', `${event.clientY - rect.top}px`);
+    card.style.setProperty('--tilt-x', `${((0.5 - (event.clientY - rect.top) / rect.height) * 5).toFixed(2)}deg`);
+    card.style.setProperty('--tilt-y', `${((((event.clientX - rect.left) / rect.width) - 0.5) * 6).toFixed(2)}deg`);
+  };
+  const resetTilt = (event) => {
+    event.currentTarget.style.setProperty('--tilt-x', '0deg');
+    event.currentTarget.style.setProperty('--tilt-y', '0deg');
+  };
+  return <article className="edition-card archive-reveal" style={{ '--reveal-delay': `${index * 100}ms` }} onPointerMove={pointer} onPointerLeave={resetTilt}>
+    <span className="edition-halo" aria-hidden="true" />
+    <div className="edition-thumbnail"><ArchiveMedia src={edition.src} alt={edition.alt || `VIHAAN ${edition.edition} archive`} label="Edition image coming soon" /></div>
+    <h4 className="font-tech">VIHAAN {edition.edition}</h4>
+    <p>{edition.year || 'Year to be added'}</p>
+    <p>{edition.theme || 'Theme to be added'}</p>
+    {edition.href && <a className="edition-link" href={edition.href} target="_blank" rel="noopener noreferrer">Visit VIHAAN {edition.edition}<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>}
+  </article>;
+}
+
 export default function GallerySection() {
-  const editions = [
-    {
-      year: 'VIHAAN 09',
-      theme: 'Quantum Horizons',
-      date: '2024 Edition',
-      link: 'https://9.vihaan.ieeedtu.in/',
-      desc: 'Over 2,200 registrations, 65 prototype submissions, and groundbreaking projects in generative AI and cloud infrastructure.',
-    },
-    {
-      year: 'VIHAAN 08',
-      theme: 'Cybernetic Evolution',
-      date: '2023 Edition',
-      link: 'https://9.vihaan.ieeedtu.in/',
-      desc: 'A 24-hour hybrid hackathon pushing the frontiers of Web3, edge computing, and accessible assistive hardware.',
-    },
-    {
-      year: 'VIHAAN 07',
-      theme: 'Infinite Realities',
-      date: '2022 Edition',
-      link: 'https://9.vihaan.ieeedtu.in/',
-      desc: 'Uniting passionate engineering minds across top national universities with extensive mentor reviews.',
-    },
-  ];
-
-  return (
-    <section
-      id="gallery"
-      className="relative min-h-screen w-full flex flex-col justify-center px-4 sm:px-8 py-24 bg-[#070b19] overflow-hidden"
-    >
-      <div className="relative z-10 max-w-6xl mx-auto w-full">
-        
-        {/* Header Tag */}
-        <div className="flex items-center gap-3 mb-3">
-          <span className="h-px w-8 bg-cyan-400 shadow-[0_0_8px_#38bdf8]" />
-          <span className="font-tech text-xs tracking-[0.3em] text-cyan-400 uppercase">
-            // HISTORICAL ARCHIVES
-          </span>
-        </div>
-
-        {/* Section Heading */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div>
-            <h2 className="font-tech text-3xl sm:text-5xl font-black tracking-wider text-white">
-              EVENT GALLERY
-            </h2>
-            <p className="mt-2 text-sm sm:text-base text-white/60 max-w-xl font-light leading-relaxed">
-              Explore footprints from our previous editions. Relive the keynote speeches, midnight code sprints, and prize ceremonies.
-            </p>
-          </div>
-          <a
-            href="https://9.vihaan.ieeedtu.in/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-950/40 px-5 py-2.5 text-xs font-bold tracking-widest text-cyan-300 hover:border-cyan-400 hover:bg-cyan-500/20 transition-all self-start md:self-auto"
-          >
-            <span>EXPLORE VIHAAN 09 SITE</span>
-            <span>&rarr;</span>
-          </a>
-        </div>
-
-        {/* Edition Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {editions.map((ed, idx) => (
-            <div
-              key={idx}
-              className="group relative flex flex-col justify-between rounded-3xl border border-white/10 bg-[#091129]/60 p-8 backdrop-blur-xl transition-all duration-300 hover:border-cyan-400/60 hover:shadow-[0_0_30px_rgba(56,189,248,0.2)] hover:-translate-y-1.5"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-xs font-mono tracking-widest text-[#ff3b6c] font-bold">
-                    {ed.date}
-                  </span>
-                  <span className="text-[0.62rem] font-mono tracking-widest text-white/40 border border-white/10 px-2 py-0.5 rounded-full">
-                    ARCHIVED
-                  </span>
-                </div>
-                <h3 className="font-tech text-2xl font-black tracking-wider text-white group-hover:text-cyan-300 transition-colors">
-                  {ed.year}
-                </h3>
-                <p className="text-xs font-mono text-white/50 tracking-wider mb-4">
-                  {ed.theme}
-                </p>
-                <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-light mb-6">
-                  {ed.desc}
-                </p>
-              </div>
-
-              <a
-                href={ed.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest text-cyan-400 group-hover:text-cyan-300 transition-colors pt-4 border-t border-white/5"
-              >
-                <span>VIEW TRANSMISSION ARCHIVE</span>
-                <span className="transform transition-transform group-hover:translate-x-1">&rarr;</span>
-              </a>
-            </div>
-          ))}
-        </div>
-
+  const [openedIndex, setOpenedIndex] = useState(null);
+  const root = useRef(null);
+  const viewable = galleryPhotos.filter(photo => photo.src && photo.alt);
+  const close = useCallback(() => setOpenedIndex(null), []);
+  const count = viewable.length;
+  const navigate = useCallback((delta) => setOpenedIndex(current => current === null || !count ? null : (current + delta + count) % count), [count]);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12 });
+    const nodes = root.current.querySelectorAll('.archive-reveal');
+    nodes.forEach(node => { node.classList.add('reveal-ready'); observer.observe(node); });
+    return () => observer.disconnect();
+  }, []);
+  return <section id="gallery" ref={root} aria-labelledby="gallery-title" className="gallery-experience relative isolate scroll-mt-20 overflow-hidden px-4 py-24 sm:px-8 sm:py-28">
+    <GalleryAtmosphere />
+    <div className="gallery-content relative z-10 mx-auto w-full max-w-6xl">
+      <div>
+        <header className="archive-heading archive-reveal text-center">
+          <p className="font-tech">// ARCHIVES</p>
+          <h3 id="gallery-title" className="font-tech">GALLERY</h3>
+          <span>Moments from past editions.</span>
+        </header>
+        <ViewfinderCarousel items={galleryPhotos} onOpen={(index) => {
+          const photoIndex = viewable.indexOf(galleryPhotos[index]);
+          if (photoIndex >= 0) setOpenedIndex(photoIndex);
+        }} />
       </div>
-    </section>
-  );
+
+      <div className="archive-divider" aria-hidden="true" />
+
+      <section id="past-editions" aria-labelledby="editions-title" className="scroll-mt-24">
+        <h3 id="editions-title" className="archive-editions-title archive-reveal font-tech text-center">PAST EDITIONS</h3>
+        <div className="edition-grid">{pastEditions.map((edition, index) => <EditionCard key={edition.edition} edition={edition} index={index} />)}</div>
+      </section>
+
+      {openedIndex !== null && count > 0 && createPortal(<PhotoLightbox items={viewable} index={openedIndex} onClose={close} onNavigate={navigate} />, document.body)}
+    </div>
+  </section>;
 }

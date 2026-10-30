@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 // Lightweight trails inspired by Aceternity's Shooting Stars on 21st.dev.
 // CSS handles the motion; the observer suspends it outside the viewport.
-export default function GalleryAtmosphere() {
+export default function GalleryAtmosphere({ minimal = false }) {
   const atmosphere = useRef(null);
   useEffect(() => {
     const element = atmosphere.current;
@@ -17,7 +17,7 @@ export default function GalleryAtmosphere() {
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', onVisibility); };
   }, []);
   return <div ref={atmosphere} className="gallery-atmosphere" aria-hidden="true">
-    <div className="gallery-boundary gallery-boundary-top" />
+    {!minimal && <div className="gallery-boundary gallery-boundary-top" />}
     <div className="gallery-stars">
       {Array.from({ length: 72 }, (_, i) => <i key={i} style={{
         '--star-x': `${(i * 37 + 11) % 100}%`,
@@ -27,10 +27,10 @@ export default function GalleryAtmosphere() {
         '--star-duration': `${3.2 + (i % 7) * 0.65}s`,
       }} />)}
     </div>
-    <div className="gallery-nebula" />
-    <div className="gallery-orbit" />
-    <div className="gallery-horizon" />
+    {!minimal && <div className="gallery-nebula" />}
+    {!minimal && <div className="gallery-orbit" />}
+    {!minimal && <div className="gallery-horizon" />}
     {Array.from({ length: 12 }, (_, i) => <i key={i} className="gallery-meteor" style={{ left: `${18 + (i * 23) % 88}%`, top: `${2 + (i * 17) % 86}%`, animationDelay: `${i * -1.85}s`, animationDuration: `${7 + i % 4 * 1.3}s` }} />)}
-    <div className="gallery-boundary gallery-boundary-bottom" />
+    {!minimal && <div className="gallery-boundary gallery-boundary-bottom" />}
   </div>;
 }

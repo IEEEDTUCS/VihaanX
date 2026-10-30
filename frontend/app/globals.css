@@ -131,33 +131,82 @@
 .animate-logo-glow {
   animation: glowShimmer 4s ease-in-out infinite;
 }
-.feature-line {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px 16px;
-  margin: 14px auto 0;
-  color: #edf0ff;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-align: center;
+/* Holographic projections around the hero perimeter */
+.projection-field {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-.feature-line span + span {
-  border-left: 1px solid #ff3678;
-  padding-left: 16px;
+.projection-wrap {
+  position: absolute;
+  width: min(19rem, 22vw);
+  animation: projectionFloat 6s ease-in-out infinite;
 }
 
-@media (max-width: 600px) {
-  .feature-line {
-    flex-direction: column;
-    gap: 8px;
-  }
+.projection--north { top: 17%; left: 5%; animation-delay: -1.2s; }
+.projection--east { top: 25%; right: 4%; animation-delay: -3.8s; }
+.projection--west { bottom: 19%; left: 7%; animation-delay: -4.8s; }
+.projection--south { right: 7%; bottom: 17%; animation-delay: -2.5s; }
 
-  .feature-line span + span {
-    border-left: 0;
-    padding-left: 0;
-  }
+.projection-card {
+  position: relative;
+  min-height: 7.7rem;
+  padding: 1rem 1rem 0.85rem;
+  overflow: hidden;
+  border: 1px solid rgba(108, 233, 255, 0.55);
+  background: linear-gradient(135deg, rgba(20, 75, 105, 0.35), rgba(8, 12, 35, 0.58) 65%, rgba(20, 10, 50, 0.3));
+  box-shadow: inset 0 0 22px rgba(42, 216, 255, 0.11), 0 0 22px rgba(25, 203, 255, 0.12);
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  backdrop-filter: blur(7px);
+}
+
+.projection-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent 0 5px, rgba(117, 237, 255, 0.055) 6px 7px);
+  opacity: 0.65;
+  mix-blend-mode: screen;
+}
+
+.projection-card--pink {
+  border-color: rgba(255, 75, 142, 0.62);
+  background: linear-gradient(135deg, rgba(111, 22, 78, 0.36), rgba(8, 12, 35, 0.6) 65%, rgba(41, 10, 50, 0.32));
+  box-shadow: inset 0 0 22px rgba(255, 59, 108, 0.13), 0 0 22px rgba(255, 59, 108, 0.12);
+}
+
+.projection-eyebrow, .projection-title, .projection-copy, .projection-status { position: relative; z-index: 1; }
+.projection-eyebrow, .projection-status { margin: 0; font-family: var(--font-display); font-size: 0.48rem; letter-spacing: 0.2em; color: rgba(157, 242, 255, 0.76); }
+.projection-card--pink .projection-eyebrow, .projection-card--pink .projection-status { color: rgba(255, 151, 187, 0.8); }
+.projection-title { margin: 0.55rem 0 0.38rem; font-family: var(--font-display); font-size: clamp(0.68rem, 1vw, 0.82rem); font-weight: 700; letter-spacing: 0.12em; color: #fff; text-shadow: 0 0 9px rgba(113, 239, 255, 0.55); }
+.projection-card--pink .projection-title { text-shadow: 0 0 9px rgba(255, 93, 157, 0.55); }
+.projection-copy { max-width: 16rem; margin: 0; color: rgba(233, 244, 255, 0.72); font-size: 0.64rem; line-height: 1.5; }
+.projection-status { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.7rem; font-size: 0.42rem; opacity: 0.7; }
+.projection-status i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; box-shadow: 0 0 7px currentColor; animation: pulseCyanBeacon 1.8s ease-in-out infinite; }
+.projection-corner { position: absolute; z-index: 2; width: 9px; height: 9px; border-color: currentColor; opacity: 0.8; }
+.projection-corner--top { top: 7px; right: 8px; border-top: 1px solid; border-right: 1px solid; color: #85efff; }
+.projection-corner--bottom { bottom: 7px; left: 8px; border-bottom: 1px solid; border-left: 1px solid; color: #85efff; }
+.projection-card--pink .projection-corner { color: #ff75aa; }
+
+.projection-drone { position: relative; display: block; width: 100%; height: 1.2rem; margin-bottom: -0.05rem; opacity: 0.85; filter: drop-shadow(0 0 5px currentColor); color: #6eeaff; }
+.projection-drone--pink { color: #ff5795; }
+.drone-body { position: absolute; left: calc(50% - 13px); top: 0.28rem; width: 26px; height: 9px; border: 1px solid currentColor; border-radius: 50% 50% 40% 40%; background: rgba(140, 242, 255, 0.2); }
+.drone-rotor { position: absolute; top: 0.14rem; width: 24px; height: 5px; border-top: 1px solid currentColor; border-radius: 50%; animation: rotorBlur 0.45s linear infinite; }
+.drone-rotor--left { left: calc(50% - 36px); } .drone-rotor--right { right: calc(50% - 36px); }
+.drone-beam { position: absolute; left: calc(50% - 11px); top: 0.9rem; width: 22px; height: 0.32rem; background: linear-gradient(90deg, transparent, currentColor, transparent); opacity: 0.55; clip-path: polygon(35% 0, 65% 0, 100% 100%, 0 100%); }
+
+@keyframes projectionFloat { 0%, 100% { transform: translateY(0) rotate(-0.5deg); } 50% { transform: translateY(-9px) rotate(0.5deg); } }
+@keyframes rotorBlur { to { transform: rotateX(70deg) scaleX(1.25); opacity: 0.45; } }
+
+@media (max-width: 1279px) {
+  .projection-wrap { width: 15rem; }
+  .projection--north { left: 2%; } .projection--east { right: 2%; }
+  .projection--west { left: 2%; } .projection--south { right: 2%; }
+}
+
+@media (max-width: 1023px) {
+  .projection-field { display: none; }
 }

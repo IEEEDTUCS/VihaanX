@@ -13,8 +13,8 @@ export const galleryPhotos = Array.from({ length: 6 }, () => ({
 }));
 
 export const pastEditions = [
-  { src: '', alt: '', edition: '07', year: null, theme: '', href: '' },
-  { src: '', alt: '', edition: '08', year: null, theme: '', href: '' },
+  { src: '', alt: '', edition: '07', year: null, theme: '', href: 'https://7.vihaan.ieeedtu.in/' },
+  { src: '', alt: '', edition: '08', year: null, theme: '', href: 'https://8.vihaan.ieeedtu.in/' },
   {
     src: '',
     alt: '',

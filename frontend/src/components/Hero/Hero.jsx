@@ -2,7 +2,7 @@
 
 import SpaceCanvas from "./SpaceCanvas";
 import ObjectAnimations from "./ObjectAnimations";
-import LeftHUD from "./LeftHUD";
+import ProjectionBlobs from "./ProjectionBlobs";
 import Countdown from "./Countdown";
 
 export default function Hero() {
@@ -34,8 +34,8 @@ export default function Hero() {
       {/* ── 3. Live Object Animations (Radar signals, tower beacons, planetary aura) ── */}
       <ObjectAnimations />
 
-      {/* ── 4. Left HUD Telemetry Text ── */}
-      <LeftHUD />
+      {/* ── 4. Peripheral drone projections ── */}
+      <ProjectionBlobs />
 
       {/* ── 5. Main Center Hero Content ── */}
       <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center my-auto">
@@ -54,7 +54,7 @@ export default function Hero() {
           <img
             src="/logos/vihaan_full.png"
             alt="VIHAAN-X Hackathon Logo"
-            className="w-full h-auto object-contain transition-transform duration-500 hover:scale-[1.03]"
+            className="w-7xl h-auto object-contain transition-transform duration-500 hover:scale-[1.03]"
           />
         </div>
 
@@ -65,11 +65,6 @@ export default function Hero() {
             NORTH INDIA&apos;S LARGEST STUDENT&#8209;RUN HACKATHON
           </p>
           <span className="h-px w-6 sm:w-12 bg-[#ff3b6c] shrink-0 shadow-[0_0_8px_#ff3b6c]" />
-        </div>
-        <div className="feature-line">
-        <span>24-HOUR INNOVATION &amp; PROTOTYPING</span>
-        <span>DUAL-TRACK &amp; DOMAIN DIVERSITY</span>
-        <span>MENTORSHIP &amp; ECOSYSTEM GROWTH</span>
         </div>
         {/* Action Buttons: REGISTER NOW & PREVIOUS EDITIONS */}
         <div className="mt-6 sm:mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
@@ -94,11 +89,9 @@ export default function Hero() {
             </svg>
           </a>
 
-          {/* Secondary CTA: Previous Editions -> https://9.vihaan.ieeedtu.in/ */}
+          {/* Secondary CTA: Scroll to Previous Editions in the gallery */}
           <a
-            href="https://9.vihaan.ieeedtu.in/"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#past-editions"
             className="group relative inline-flex items-center gap-2 rounded-full border border-white/30 bg-[#070b19]/60 backdrop-blur-md px-6 py-3 text-xs sm:text-[0.8rem] font-bold tracking-[0.16em] text-white/90 transition-all duration-300 hover:border-cyan-400 hover:text-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95"
           >
             <span>PREVIOUS EDITIONS</span>

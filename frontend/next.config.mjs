@@ -8,8 +8,6 @@ const nextConfig = {
   outputFileTracingRoot: __dirname,
   async redirects() {
     return [
-      // Add permanent or temporary URL redirects here as Vihaan grows.
-      // { source: '/register', destination: 'https://example.com', permanent: false },
       {
         source: "/wa",
         destination: "https://chat.whatsapp.com/LOuOW4gzGJFAE3OdheHVQw",

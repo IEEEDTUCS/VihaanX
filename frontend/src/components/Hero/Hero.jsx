@@ -66,7 +66,11 @@ export default function Hero() {
           </p>
           <span className="h-px w-6 sm:w-12 bg-[#ff3b6c] shrink-0 shadow-[0_0_8px_#ff3b6c]" />
         </div>
-
+        <div className="feature-line">
+        <span>24-HOUR INNOVATION &amp; PROTOTYPING</span>
+        <span>DUAL-TRACK &amp; DOMAIN DIVERSITY</span>
+        <span>MENTORSHIP &amp; ECOSYSTEM GROWTH</span>
+        </div>
         {/* Action Buttons: REGISTER NOW & PREVIOUS EDITIONS */}
         <div className="mt-6 sm:mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
           {/* Primary CTA: Register Now */}

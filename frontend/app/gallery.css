@@ -26,10 +26,10 @@
 .archive-heading > span { display: block; margin-top: 12px; color: #c1c6d5; font-size: clamp(15px, 2vw, 23px); font-weight: 300; }
 .viewfinder { --photo-width: clamp(220px, 40vw, 500px); --folded-width: calc(var(--photo-width) * .59); --photo-height: calc(var(--photo-width) * .69); outline: none; }
 .viewfinder:focus-visible { outline: 2px solid #38bdf8; outline-offset: 6px; border-radius: 20px; }
-.viewfinder-window { overflow: hidden; padding: 45px 0 28px; touch-action: pan-y; user-select: none; }
+.viewfinder-window { overflow: clip; padding: 45px 0 28px; touch-action: pan-y; user-select: none; }
 .viewfinder-stage { width: var(--photo-width); height: var(--photo-height); margin: auto; }
 .viewfinder-strip { display: flex; width: max-content; transition: transform 1080ms cubic-bezier(.2,.8,.2,1); transition-timing-function: var(--strip-ease); }
-.viewfinder-strip-reset { transition: none; }
+.viewfinder-strip-reset, .viewfinder-strip-reset .viewfinder-holder { transition: none; }
 .viewfinder-slot { perspective: 1100px; }
 .viewfinder-holder { display: flex; justify-content: center; flex-shrink: 0; height: var(--photo-height); transition: width 850ms cubic-bezier(.45,0,.2,1), transform 850ms cubic-bezier(.45,0,.2,1); }
 .viewfinder-photo { width: var(--photo-width); height: var(--photo-height); flex-shrink: 0; border-radius: 20px; overflow: hidden; border: 1px solid #a4b0c04d; background: linear-gradient(125deg, #3b4554, #1e283a); color: #d5dce5; padding: 0; cursor: pointer; box-shadow: 0 20px 35px #0005; transition: border-color .7s, box-shadow .7s, filter .7s; filter: brightness(.72); }
@@ -41,8 +41,10 @@
 .archive-placeholder > span { font-size: 11px; color: #c3ccda; letter-spacing: .06em; }
 .viewfinder-caption { text-align: center; color: #c9cedb; font-size: clamp(14px, 1.8vw, 20px); margin: 0 0 20px; }
 .viewfinder-controls { width: min(390px, 85%); margin: auto; display: flex; align-items: center; gap: 28px; padding: 6px; border: 1px solid #71809b66; border-radius: 999px; background: #0b132655; }
-.viewfinder-controls button { width: 48px; height: 44px; flex-shrink: 0; display: grid; place-items: center; border-radius: 50%; border: 1px solid #71809b66; background: #ffffff05; color: white; font-size: 32px; line-height: 1; cursor: pointer; transition: background .25s, opacity .25s; }
+.viewfinder-controls button { width: 44px; height: 44px; padding: 0; flex-shrink: 0; display: grid; place-items: center; border-radius: 50%; border: 1px solid #71809b66; background: #ffffff05; color: white; cursor: pointer; transition: background .25s, opacity .25s; }
+.viewfinder-controls button svg { display: block; width: 20px; height: 20px; }
 .viewfinder-controls button:hover { background: #ff3b6c22; }
+.viewfinder-controls button:disabled { opacity: .4; cursor: default; }
 .viewfinder-progress { flex: 1; height: 6px; background: #354056; border-radius: 10px; overflow: hidden; }
 .viewfinder-progress span { display: block; height: 100%; background: #f478ae; border-radius: inherit; transition: transform .85s cubic-bezier(.2,.8,.2,1); }
 .archive-divider { height: 1px; margin: clamp(50px, 7vw, 85px) 0; background: linear-gradient(90deg, transparent, #55617c55 25%, #f578b6bb, #55617c55 75%, transparent); position: relative; }

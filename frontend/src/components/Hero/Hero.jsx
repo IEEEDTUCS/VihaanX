@@ -70,7 +70,9 @@ export default function Hero() {
         <div className="mt-6 sm:mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
           {/* Primary CTA: Register Now */}
           <a
-            href="#register"
+            href="https://unstop.com/college-fests/vihaan-x-ieee-dtu-delhi-technological-university-dtu-new-delhi-519244"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group relative inline-flex items-center gap-2 rounded-full bg-[#ff3b6c] px-7 py-3 text-xs sm:text-[0.8rem] font-bold tracking-[0.16em] text-white transition-all duration-300 shadow-[0_0_24px_rgba(255,59,108,0.65)] hover:bg-[#ff1e56] hover:shadow-[0_0_36px_rgba(255,59,108,0.9)] hover:scale-105 active:scale-95"
           >
             <span>REGISTER NOW</span>

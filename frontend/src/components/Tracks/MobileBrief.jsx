@@ -116,7 +116,13 @@ export default function MobileBrief({
           >
             <Chevron dir="right" />
           </button>
-          <a className="cta-m" href="/register" style={{ flex: 1 }}>
+          <a
+            className="cta-m"
+            href="https://unstop.com/college-fests/vihaan-x-ieee-dtu-delhi-technological-university-dtu-new-delhi-519244"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ flex: 1 }}
+          >
             REGISTER <ArrowRight size={13} />
           </a>
         </div>

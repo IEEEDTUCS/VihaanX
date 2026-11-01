@@ -7,7 +7,7 @@ import GallerySection from './components/Sections/GallerySection';
 import TracksSection from "./components/Sections/TracksSection";
 import PrizesSection from './components/Sections/PrizesSection';
 // import SponsorsSection from './components/Sections/SponsorsSection';
-// import TeamSection from './components/Sections/TeamSection';
+import TeamSection from './components/Sections/TeamSection';
 // import RegisterSection from './components/Sections/RegisterSection';
 import Footer from './components/Sections/Footer';
 
@@ -22,7 +22,7 @@ export default function App() {
         <TracksSection />
         <PrizesSection />
         {/*<SponsorsSection />*/}
-        {/*<TeamSection />*/}
+        <TeamSection />
         {/* <RegisterSection /> */}
       </main>
       <Footer />

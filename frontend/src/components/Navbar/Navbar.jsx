@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { label: "TRACKS", href: "#tracks" },
   { label: 'PRIZES', href: '#prizes' },
   // { label: 'SPONSORS', href: '#sponsors' },
-  // { label: 'TEAM', href: '#team' },
+  { label: 'TEAM', href: '#team' },
 ];
 
 export default function Navbar() {

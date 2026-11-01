@@ -1,0 +1,202 @@
+/**
+ * Vihaan X Organizing Team Data — Celestial Planetary Crew
+ *
+ * Real team members loaded from drive:
+ * - 4 Event Leads (public/team/event-leads/)
+ * - 9 Department Leads (public/team/dept-leads/)
+ */
+
+export const eventLeads = [
+  {
+    id: "lead-1",
+    name: "Bhavya Goel",
+    role: "Lead Organizer",
+    tagline: "Mission Director",
+    code: "CMD // 01",
+    planetName: "NOVA PRIME",
+    color: "#ff3b6c",
+    ringColor: "rgba(255, 59, 108, 0.5)",
+    glowColor: "rgba(255, 59, 108, 0.35)",
+    image: "/team/event-leads/bhavya-goel.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+      twitter: "https://x.com",
+      email: "mailto:bhavya@ieeedtu.in",
+    },
+  },
+  {
+    id: "lead-2",
+    name: "Hardik Aggarwal",
+    role: "Lead Organizer",
+    tagline: "Operations Commander",
+    code: "CMD // 02",
+    planetName: "CYAN PULSAR",
+    color: "#38bdf8",
+    ringColor: "rgba(56, 189, 248, 0.5)",
+    glowColor: "rgba(56, 189, 248, 0.35)",
+    image: "/team/event-leads/hardik-aggarwal.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+      twitter: "https://x.com",
+      email: "mailto:hardik@ieeedtu.in",
+    },
+  },
+  {
+    id: "lead-3",
+    name: "Vansh",
+    role: "Co-Lead Organizer",
+    tagline: "Technical Director",
+    code: "CMD // 03",
+    planetName: "ASTRAEA IX",
+    color: "#a855f7",
+    ringColor: "rgba(168, 85, 247, 0.5)",
+    glowColor: "rgba(168, 85, 247, 0.35)",
+    image: "/team/event-leads/vansh.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+      twitter: "https://x.com",
+      email: "mailto:vansh@ieeedtu.in",
+    },
+  },
+  {
+    id: "lead-4",
+    name: "Manit Vig",
+    role: "Co-Lead Organizer",
+    tagline: "Strategic Lead",
+    code: "CMD // 04",
+    planetName: "HELIOS CORE",
+    color: "#fbbf24",
+    ringColor: "rgba(251, 191, 36, 0.5)",
+    glowColor: "rgba(251, 191, 36, 0.35)",
+    image: "/team/event-leads/manit-vig.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+      twitter: "https://x.com",
+      email: "mailto:manit@ieeedtu.in",
+    },
+  },
+];
+
+export const departmentLeads = [
+  {
+    id: "dept-1",
+    name: "Shritij Raman",
+    role: "Technical Lead",
+    department: "Platform & Infrastructure",
+    planet: "CYBER-01",
+    color: "#38bdf8",
+    image: "/team/dept-leads/shritij-raman.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+    },
+  },
+  {
+    id: "dept-2",
+    name: "Drishti Kaushik",
+    role: "Design Lead",
+    department: "Creative & Visual Identity",
+    planet: "AURA-02",
+    color: "#ec4899",
+    image: "/team/dept-leads/drishti-kaushik.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+    },
+  },
+  {
+    id: "dept-3",
+    name: "Mayank Kanojia",
+    role: "Web Lead",
+    department: "Web Experience & Systems",
+    planet: "SYNTH-03",
+    color: "#a855f7",
+    image: "/team/dept-leads/mayank-kanojia.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+    },
+  },
+  {
+    id: "dept-4",
+    name: "Navya Gupta",
+    role: "Operations Lead",
+    department: "Event Logistics & Workflow",
+    planet: "VORTEX-04",
+    color: "#f97316",
+    image: "/team/dept-leads/navya-gupta.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+    },
+  },
+  {
+    id: "dept-5",
+    name: "Md Talha Irfan",
+    role: "Sponsorship Lead",
+    department: "Corporate Partnerships",
+    planet: "AURUM-05",
+    color: "#fbbf24",
+    image: "/team/dept-leads/md-talha-irfan.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+    },
+  },
+  {
+    id: "dept-6",
+    name: "Rahul",
+    role: "Public Relations Lead",
+    department: "Outreach & Communications",
+    planet: "TITAN-06",
+    color: "#34d399",
+    image: "/team/dept-leads/rahul.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+    },
+  },
+  {
+    id: "dept-7",
+    name: "Vishal",
+    role: "Marketing Lead",
+    department: "Media & Digital Growth",
+    planet: "TERRA-07",
+    color: "#38bdf8",
+    image: "/team/dept-leads/vishal.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+    },
+  },
+  {
+    id: "dept-8",
+    name: "Amlan Biswal",
+    role: "Logistics Lead",
+    department: "Hospitality & Venue",
+    planet: "PULSAR-08",
+    color: "#c084fc",
+    image: "/team/dept-leads/amlan-biswal.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+    },
+  },
+  {
+    id: "dept-9",
+    name: "Aditya Malladi",
+    role: "Mentorship Lead",
+    department: "Judging & Mentorship",
+    planet: "BEACON-09",
+    color: "#f43f5e",
+    image: "/team/dept-leads/aditya-malladi.jpg",
+    socials: {
+      linkedin: "https://linkedin.com",
+      github: "https://github.com",
+    },
+  },
+];

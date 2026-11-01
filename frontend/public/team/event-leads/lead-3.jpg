@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a122c"/>
+      <stop offset="50%" stop-color="#070b19"/>
+      <stop offset="100%" stop-color="#140a24"/>
+    </linearGradient>
+    <linearGradient id="pinkCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff3b6c"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="visorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#ff3b6c" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0c1433" stop-opacity="0.9"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff3b6c" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#ff3b6c" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(56, 189, 248, 0.08)" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="400" fill="url(#bgGrad)"/>
+  <rect width="400" height="400" fill="url(#grid)"/>
+  <circle cx="200" cy="200" r="180" fill="url(#glow)"/>
+
+  <!-- Orbital Rings -->
+  <circle cx="200" cy="200" r="160" fill="none" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="8 6" opacity="0.3"/>
+  <circle cx="200" cy="200" r="140" fill="none" stroke="#ff3b6c" stroke-width="1.5" stroke-dasharray="14 8" opacity="0.4"/>
+  <circle cx="200" cy="200" r="115" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+  <!-- Tech Crosshairs / HUD Marks -->
+  <line x1="200" y1="20" x2="200" y2="40" stroke="#ff3b6c" stroke-width="2"/>
+  <line x1="200" y1="360" x2="200" y2="380" stroke="#ff3b6c" stroke-width="2"/>
+  <line x1="20" y1="200" x2="40" y2="200" stroke="#38bdf8" stroke-width="2"/>
+  <line x1="360" y1="200" x2="380" y2="200" stroke="#38bdf8" stroke-width="2"/>
+
+  <!-- Helmet / Avatar Silhouette -->
+  <!-- Shoulders -->
+  <path d="M 100 370 C 100 290 140 260 200 260 C 260 260 300 290 300 370 Z" fill="#0c183a" stroke="#38bdf8" stroke-width="1.5" opacity="0.8"/>
+  <path d="M 130 370 C 130 310 160 280 200 280 C 240 280 270 310 270 370 Z" fill="#111f4d" stroke="#ff3b6c" stroke-width="1" opacity="0.6"/>
+
+  <!-- Helmet Base -->
+  <ellipse cx="200" cy="180" rx="72" ry="85" fill="#0b1638" stroke="url(#pinkCyan)" stroke-width="2.5"/>
+
+  <!-- Visor -->
+  <ellipse cx="200" cy="178" rx="55" ry="52" fill="url(#visorGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+  <!-- Visor Highlight reflection -->
+  <path d="M 165 145 Q 195 130 225 145 Q 185 160 165 145 Z" fill="#ffffff" opacity="0.45"/>
+  <circle cx="170" cy="155" r="4" fill="#ffffff" opacity="0.6"/>
+
+  <!-- Neck collar -->
+  <path d="M 160 250 L 240 250 L 230 275 L 170 275 Z" fill="#142147" stroke="#38bdf8" stroke-width="1.2"/>
+
+  <!-- Center Badge / Emblem -->
+  <polygon points="200,285 208,295 200,305 192,295" fill="#ff3b6c"/>
+  <circle cx="200" cy="295" r="2" fill="#ffffff"/>
+
+  <!-- Lead Commander HUD indicator -->
+  <rect x="130" y="325" width="140" height="22" rx="4" fill="#070b19" stroke="#ff3b6c" stroke-width="1" opacity="0.85"/>
+  <text x="200" y="340" fill="#ff3b6c" font-family="monospace" font-size="9" font-weight="bold" letter-spacing="3" text-anchor="middle">EVENT LEAD</text>
+</svg>

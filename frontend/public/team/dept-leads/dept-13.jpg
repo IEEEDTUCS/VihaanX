@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGradDept" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#081432"/>
+      <stop offset="50%" stop-color="#070b19"/>
+      <stop offset="100%" stop-color="#0a1d3b"/>
+    </linearGradient>
+    <linearGradient id="cyanBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="visorGradDept" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.85"/>
+      <stop offset="60%" stop-color="#0284c7" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#081028" stop-opacity="0.9"/>
+    </linearGradient>
+    <radialGradient id="glowCyan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="gridDept" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(56, 189, 248, 0.07)" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="400" fill="url(#bgGradDept)"/>
+  <rect width="400" height="400" fill="url(#gridDept)"/>
+  <circle cx="200" cy="200" r="180" fill="url(#glowCyan)"/>
+
+  <!-- Orbital Rings -->
+  <circle cx="200" cy="200" r="155" fill="none" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="10 6" opacity="0.4"/>
+  <circle cx="200" cy="200" r="130" fill="none" stroke="#818cf8" stroke-width="1" stroke-dasharray="6 6" opacity="0.3"/>
+
+  <!-- Corner Brackets -->
+  <path d="M 40 70 L 40 40 L 70 40" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.6"/>
+  <path d="M 330 40 L 360 40 L 360 70" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.6"/>
+  <path d="M 40 330 L 40 360 L 70 360" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.6"/>
+  <path d="M 360 330 L 360 360 L 330 360" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.6"/>
+
+  <!-- Tech Crosshairs / HUD Marks -->
+  <line x1="200" y1="24" x2="200" y2="44" stroke="#38bdf8" stroke-width="2"/>
+  <line x1="200" y1="356" x2="200" y2="376" stroke="#38bdf8" stroke-width="2"/>
+  <line x1="24" y1="200" x2="44" y2="200" stroke="#38bdf8" stroke-width="2"/>
+  <line x1="356" y1="200" x2="376" y2="200" stroke="#38bdf8" stroke-width="2"/>
+
+  <!-- Shoulders -->
+  <path d="M 105 370 C 105 295 145 265 200 265 C 255 265 295 295 295 370 Z" fill="#091536" stroke="#38bdf8" stroke-width="1.5" opacity="0.85"/>
+  <path d="M 135 370 C 135 315 165 285 200 285 C 235 285 265 315 265 370 Z" fill="#0f2252" stroke="#818cf8" stroke-width="1" opacity="0.6"/>
+
+  <!-- Helmet Base -->
+  <ellipse cx="200" cy="180" rx="70" ry="82" fill="#09183d" stroke="url(#cyanBlue)" stroke-width="2"/>
+
+  <!-- Visor -->
+  <ellipse cx="200" cy="178" rx="54" ry="50" fill="url(#visorGradDept)" stroke="#38bdf8" stroke-width="1.5"/>
+  <!-- Visor Highlight reflection -->
+  <path d="M 165 145 Q 195 132 225 145 Q 185 158 165 145 Z" fill="#ffffff" opacity="0.5"/>
+  <circle cx="172" cy="154" r="3.5" fill="#ffffff" opacity="0.6"/>
+
+  <!-- Neck collar -->
+  <path d="M 165 250 L 235 250 L 225 272 L 175 272 Z" fill="#11244d" stroke="#38bdf8" stroke-width="1.2"/>
+
+  <!-- Dept HUD indicator badge -->
+  <rect x="120" y="325" width="160" height="22" rx="4" fill="#070b19" stroke="#38bdf8" stroke-width="1" opacity="0.9"/>
+  <text x="200" y="340" fill="#38bdf8" font-family="monospace" font-size="9" font-weight="bold" letter-spacing="3" text-anchor="middle">DEPT LEAD</text>
+</svg>

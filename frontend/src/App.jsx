@@ -18,8 +18,8 @@ export default function App() {
       <main>
         <Hero />
         <AboutSection />
-        <GallerySection />
         <TracksSection />
+        <GallerySection />
         <PrizesSection />
         {/*<SponsorsSection />*/}
         <TeamSection />

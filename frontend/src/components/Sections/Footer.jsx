@@ -46,17 +46,6 @@ export default function Footer() {
       ),
     },
     {
-      name: 'Email Support',
-      href: 'mailto:contact@ieeedtu.in',
-      handle: 'contact@ieeedtu.in',
-      color: '#a855f7',
-      icon: (
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-        </svg>
-      ),
-    },
-    {
       name: 'Previous Edition',
       href: 'https://9.vihaan.ieeedtu.in/',
       handle: 'Vihaan 9.0 Site',
@@ -67,6 +56,13 @@ export default function Footer() {
         </svg>
       ),
     },
+  ];
+
+  const eventLeadContacts = [
+    ['Bhavya Goel', '+91 79829 69225'],
+    ['Hardik Aggarwal', '+91 93191 73701'],
+    ['Manit Vig', '+91 95605 66938'],
+    ['Vansh Soni', '+91 96805 40055'],
   ];
 
   return (
@@ -90,7 +86,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-14 border-b border-white/10">
           
           {/* ── Column 1: Brand & Organization Info (5 cols) ── */}
-          <div className="lg:col-span-5 flex flex-col items-start">
+          <div className="lg:col-span-4 flex flex-col items-start">
             <a
               href="#home"
               onClick={(e) => handleScrollTo(e, '#home')}
@@ -135,8 +131,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ── Column 2: Quick Jump Navigation (4 cols) ── */}
-          <div className="lg:col-span-4 flex flex-col">
+          {/* ── Column 2: Quick Jump Navigation (2 cols) ── */}
+          <div className="lg:col-span-2 flex flex-col">
             <div className="flex items-center gap-2.5 mb-5">
               <span className="h-px w-5 bg-[#ff3b6c]" style={{ boxShadow: '0 0 6px #ff3b6c' }} />
               <span className="font-tech text-xs tracking-[0.25em] text-[#ff3b6c] uppercase">
@@ -161,7 +157,41 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* ── Column 3: Transmissions & Socials (3 cols) ── */}
+          {/* ── Column 3: Event Lead Contacts (3 cols) ── */}
+          <div className="lg:col-span-3 flex flex-col">
+            <div className="flex items-center gap-2.5 mb-5">
+              <span className="h-px w-5 bg-[#a855f7]" style={{ boxShadow: '0 0 6px #a855f7' }} />
+              <span className="font-tech text-xs tracking-[0.25em] text-[#a855f7] uppercase">
+                // EVENT LEADS
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-2.5">
+              {eventLeadContacts.map(([name, phone]) => (
+                <a
+                  key={name}
+                  href={`tel:${phone.replace(/\s/g, '')}`}
+                  className="group flex items-center gap-2.5 p-2.5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-white/15 transition-all"
+                >
+                  <span className="p-1.5 rounded-lg bg-white/5 text-[#a855f7] transition-colors group-hover:scale-105">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372a1.125 1.125 0 00-.852-1.094l-4.423-1.106a1.125 1.125 0 00-1.173.417l-.97 1.293a1.125 1.125 0 01-1.21.38 12.035 12.035 0 01-7.24-7.24 1.125 1.125 0 01.38-1.21l1.293-.97a1.125 1.125 0 00.417-1.173L6.916 3.102A1.125 1.125 0 005.822 2.25H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                    </svg>
+                  </span>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-xs font-medium text-white/90 group-hover:text-white transition-colors">
+                      {name}
+                    </span>
+                    <span className="text-[0.62rem] font-mono text-white/40 whitespace-nowrap">
+                      {phone}
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Column 4: Transmissions & Socials (3 cols) ── */}
           <div className="lg:col-span-3 flex flex-col">
             <div className="flex items-center gap-2.5 mb-5">
               <span className="h-px w-5 bg-[#38bdf8]" style={{ boxShadow: '0 0 6px #38bdf8' }} />
@@ -175,8 +205,8 @@ export default function Footer() {
                 <a
                   key={s.name}
                   href={s.href}
-                  target={s.href.startsWith('mailto') ? '_self' : '_blank'}
-                  rel="noopener noreferrer"
+                  target={s.href.startsWith('http') ? '_blank' : undefined}
+                  rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className="group flex items-center justify-between p-2.5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-white/15 transition-all"
                 >
                   <div className="flex items-center gap-2.5">

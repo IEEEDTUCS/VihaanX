@@ -2,8 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { galleryPhotos, pastEditions } from '../../data/gallery.js';
-import ArchiveMedia from '../Gallery/ArchiveMedia';
+import { galleryPhotos } from '../../data/gallery.js';
 import GalleryAtmosphere from '../Gallery/GalleryAtmosphere';
 import ViewfinderCarousel from '../Gallery/ViewfinderCarousel';
 
@@ -34,30 +33,6 @@ function PhotoLightbox({ items, index, onClose, onNavigate }) {
     <div className="flex items-center gap-3"><button type="button" onClick={() => onNavigate(-1)} aria-label="Previous photo" className="grid h-11 w-11 shrink-0 place-items-center"><ArrowIcon reverse /></button><img src={active.src} alt={active.alt} className="max-h-[70dvh] min-w-0 flex-1 object-contain" /><button type="button" onClick={() => onNavigate(1)} aria-label="Next photo" className="grid h-11 w-11 shrink-0 place-items-center"><ArrowIcon /></button></div>
     <p className="mt-4 text-center text-white/70">{[active.caption, active.year].filter(Boolean).join(' · ')}</p>
   </dialog>;
-}
-
-function EditionCard({ edition, index }) {
-  const pointer = (event) => {
-    if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const card = event.currentTarget;
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--light-x', `${event.clientX - rect.left}px`);
-    card.style.setProperty('--light-y', `${event.clientY - rect.top}px`);
-    card.style.setProperty('--tilt-x', `${((0.5 - (event.clientY - rect.top) / rect.height) * 5).toFixed(2)}deg`);
-    card.style.setProperty('--tilt-y', `${((((event.clientX - rect.left) / rect.width) - 0.5) * 6).toFixed(2)}deg`);
-  };
-  const resetTilt = (event) => {
-    event.currentTarget.style.setProperty('--tilt-x', '0deg');
-    event.currentTarget.style.setProperty('--tilt-y', '0deg');
-  };
-  return <article className="edition-card archive-reveal" style={{ '--reveal-delay': `${index * 100}ms` }} onPointerMove={pointer} onPointerLeave={resetTilt}>
-    <span className="edition-halo" aria-hidden="true" />
-    <div className="edition-thumbnail"><ArchiveMedia src={edition.src} alt={edition.alt || `VIHAAN ${edition.edition} archive`} label="Edition image coming soon" /></div>
-    <h4 className="font-tech">VIHAAN {edition.edition}</h4>
-    <p>{edition.year || 'Year to be added'}</p>
-    <p>{edition.theme || 'Theme to be added'}</p>
-    {edition.href && <a className="edition-link" href={edition.href} target="_blank" rel="noopener noreferrer">Visit VIHAAN {edition.edition}<span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>}
-  </article>;
 }
 
 export default function GallerySection() {
@@ -92,13 +67,6 @@ export default function GallerySection() {
           if (photoIndex >= 0) setOpenedIndex(photoIndex);
         }} />
       </div>
-
-      <div className="archive-divider" aria-hidden="true" />
-
-      <section id="past-editions" aria-labelledby="editions-title" className="scroll-mt-24">
-        <h3 id="editions-title" className="archive-editions-title archive-reveal font-tech text-center">PAST EDITIONS</h3>
-        <div className="edition-grid">{pastEditions.map((edition, index) => <EditionCard key={edition.edition} edition={edition} index={index} />)}</div>
-      </section>
 
       {openedIndex !== null && count > 0 && createPortal(<PhotoLightbox items={viewable} index={openedIndex} onClose={close} onNavigate={navigate} />, document.body)}
     </div>

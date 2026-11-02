@@ -1,11 +1,34 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import SpaceCanvas from "./SpaceCanvas";
 import ObjectAnimations from "./ObjectAnimations";
 import ProjectionBlobs from "./ProjectionBlobs";
 import Countdown from "./Countdown";
+import { pastEditions } from "../../data/gallery.js";
 
 export default function Hero() {
+  const [previousEditionsOpen, setPreviousEditionsOpen] = useState(false);
+  const previousEditionsRef = useRef(null);
+
+  useEffect(() => {
+    const handlePointerDown = (event) => {
+      if (!previousEditionsRef.current?.contains(event.target)) {
+        setPreviousEditionsOpen(false);
+      }
+    };
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setPreviousEditionsOpen(false);
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <section
       id="home"
@@ -89,26 +112,51 @@ export default function Hero() {
             </svg>
           </a>
 
-          {/* Secondary CTA: Scroll to Previous Editions in the gallery */}
-          <a
-            href="#past-editions"
-            className="group relative inline-flex items-center gap-2 rounded-full border border-white/30 bg-[#070b19]/60 backdrop-blur-md px-6 py-3 text-xs sm:text-[0.8rem] font-bold tracking-[0.16em] text-white/90 transition-all duration-300 hover:border-cyan-400 hover:text-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95"
-          >
-            <span>PREVIOUS EDITIONS</span>
-            <svg
-              className="w-3.5 h-3.5 transform transition-transform group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2.5}
+          {/* Secondary CTA: Show links to previous editions */}
+          <div ref={previousEditionsRef} className="relative">
+            <button
+              type="button"
+              aria-expanded={previousEditionsOpen}
+              aria-controls="previous-editions-menu"
+              onClick={() => setPreviousEditionsOpen((open) => !open)}
+              className="group relative inline-flex items-center gap-2 rounded-full border border-white/30 bg-[#070b19]/60 backdrop-blur-md px-6 py-3 text-xs sm:text-[0.8rem] font-bold tracking-[0.16em] text-white/90 transition-all duration-300 hover:border-cyan-400 hover:text-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:scale-105 active:scale-95"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
-              />
-            </svg>
-          </a>
+              <span>PREVIOUS EDITIONS</span>
+              <svg
+                className={`w-3.5 h-3.5 transition-transform ${previousEditionsOpen ? "rotate-180" : ""}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            {previousEditionsOpen && (
+              <div
+                id="previous-editions-menu"
+                role="menu"
+                aria-label="Previous Vihaan editions"
+                className="absolute left-1/2 top-full z-20 mt-3 w-64 -translate-x-1/2 rounded-2xl border border-white/15 bg-[#070b19]/95 p-2 text-left shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl"
+              >
+                {pastEditions.map((edition) => (
+                  <a
+                    key={edition.edition}
+                    role="menuitem"
+                    href={edition.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setPreviousEditionsOpen(false)}
+                    className="flex items-center justify-between rounded-xl px-4 py-3 text-sm text-white/80 transition-colors hover:bg-white/10 hover:text-cyan-300"
+                  >
+                    <span>VIHAAN {edition.edition}</span>
+                    <span aria-hidden="true" className="text-white/50">↗</span>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Live Glassmorphic Countdown */}

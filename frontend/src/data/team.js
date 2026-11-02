@@ -46,7 +46,7 @@ export const eventLeads = [
   {
     id: "lead-3",
     name: "Vansh",
-    role: "Co-Lead Organizer",
+    role: "Lead Organizer",
     tagline: "Technical Director",
     code: "CMD // 03",
     planetName: "ASTRAEA IX",
@@ -64,7 +64,7 @@ export const eventLeads = [
   {
     id: "lead-4",
     name: "Manit Vig",
-    role: "Co-Lead Organizer",
+    role: "Lead Organizer",
     tagline: "Strategic Lead",
     code: "CMD // 04",
     planetName: "HELIOS CORE",

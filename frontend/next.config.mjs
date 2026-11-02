@@ -10,7 +10,7 @@ const nextConfig = {
     return [
       {
         source: "/wa",
-        destination: "https://chat.whatsapp.com/LOuOW4gzGJFAE3OdheHVQw",
+        destination: "https://chat.whatsapp.com/GnHFcnkUApS36wGED8ArKb",
         permanent: true,
       },
       {

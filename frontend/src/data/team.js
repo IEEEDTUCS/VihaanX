@@ -98,7 +98,7 @@ export const departmentLeads = [
   {
     id: "dept-2",
     name: "Drishti Kaushik",
-    role: "Design Lead",
+    role: "Outreach Lead",
     department: "Creative & Visual Identity",
     planet: "AURA-02",
     color: "#ec4899",
@@ -111,7 +111,7 @@ export const departmentLeads = [
   {
     id: "dept-3",
     name: "Mayank Kanojia",
-    role: "Web Lead",
+    role: "Social Media Lead",
     department: "Web Experience & Systems",
     planet: "SYNTH-03",
     color: "#a855f7",
@@ -124,7 +124,7 @@ export const departmentLeads = [
   {
     id: "dept-4",
     name: "Navya Gupta",
-    role: "Operations Lead",
+    role: "Technical Lead",
     department: "Event Logistics & Workflow",
     planet: "VORTEX-04",
     color: "#f97316",
@@ -137,7 +137,7 @@ export const departmentLeads = [
   {
     id: "dept-5",
     name: "Md Talha Irfan",
-    role: "Sponsorship Lead",
+    role: "Technical Lead",
     department: "Corporate Partnerships",
     planet: "AURUM-05",
     color: "#fbbf24",
@@ -163,7 +163,7 @@ export const departmentLeads = [
   {
     id: "dept-7",
     name: "Vishal",
-    role: "Marketing Lead",
+    role: "Operations Lead",
     department: "Media & Digital Growth",
     planet: "TERRA-07",
     color: "#38bdf8",
@@ -176,7 +176,7 @@ export const departmentLeads = [
   {
     id: "dept-8",
     name: "Amlan Biswal",
-    role: "Logistics Lead",
+    role: "Public Relations Lead",
     department: "Hospitality & Venue",
     planet: "PULSAR-08",
     color: "#c084fc",
@@ -189,7 +189,7 @@ export const departmentLeads = [
   {
     id: "dept-9",
     name: "Aditya Malladi",
-    role: "Mentorship Lead",
+    role: "Public Relations Lead",
     department: "Judging & Mentorship",
     planet: "BEACON-09",
     color: "#f43f5e",

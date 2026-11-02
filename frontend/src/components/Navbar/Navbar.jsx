@@ -98,8 +98,8 @@ export default function Navbar() {
         {/* Right: Register Now Pill Button (Scrolls to #register) */}
         <div className="hidden sm:flex items-center gap-4">
           <a
-            href="#register"
-            onClick={(e) => handleScrollTo(e, "#register")}
+            href="/register"
+            // onClick={(e) => handleScrollTo(e, "/register")}
             className="group relative inline-flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-xs font-bold tracking-[0.16em] text-slate-900 transition-all duration-300 hover:bg-[#ff3b6c] hover:text-white hover:shadow-[0_0_24px_rgba(255,59,108,0.7)] hover:scale-105 active:scale-95 cursor-pointer"
           >
             <span>REGISTER NOW</span>
@@ -183,8 +183,8 @@ export default function Navbar() {
             })}
             <div className="pt-3 border-t border-white/10 mt-2">
               <a
-                href="#register"
-                onClick={(e) => handleScrollTo(e, "#register")}
+                href="/register"
+                // onClick={(e) => handleScrollTo(e, "#register")}
                 className="w-full justify-center flex items-center gap-2 rounded-full bg-[#ff3b6c] px-6 py-3 text-xs font-bold tracking-[0.16em] text-white shadow-[0_0_18px_rgba(255,59,108,0.5)] cursor-pointer"
               >
                 <span>REGISTER NOW</span>

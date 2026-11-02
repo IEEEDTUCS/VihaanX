@@ -4,7 +4,39 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { eventLeads, departmentLeads } from "../../data/team";
 
-/* eslint-disable no-unused-vars */
+// Social Icons as clean SVGs
+function LinkedInIcon({ className = "w-4 h-4" }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+    </svg>
+  );
+}
+
+function GithubIcon({ className = "w-4 h-4" }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+      <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+    </svg>
+  );
+}
+
+function TwitterIcon({ className = "w-4 h-4" }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
+function EmailIcon({ className = "w-4 h-4" }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+  );
+}
+
 // Background space particles
 function SpaceAtmosphere() {
   return (
@@ -108,11 +140,7 @@ function EventLeadsGrid() {
               >
                 {lead.role}
               </p>
-              <p className="font-mono text-[0.68rem] text-white/50 tracking-wider mt-0.5">
-                // {lead.tagline}
-              </p>
             </div>
-
           </div>
         </motion.div>
       ))}
@@ -162,6 +190,45 @@ function DeptLeadsCarousel() {
 
   return (
     <div className="relative w-full">
+      {/* Top Controls: Pause + Prev / Next Nav */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsPaused((prev) => !prev)}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 font-mono text-[0.65rem] text-white/80 hover:text-white hover:border-cyan-400 transition-all cursor-pointer"
+          >
+            <span
+              className="h-1.5 w-1.5 rounded-full"
+              style={{ backgroundColor: isPaused ? "#fbbf24" : "#10b981" }}
+            />
+            {isPaused ? "RESUME DRIFT" : "PAUSE DRIFT"}
+          </button>
+          <span className="font-mono text-[0.62rem] text-white/40 tracking-widest hidden sm:inline">
+            HOVER OR DRAG TO PAUSE · SCROLL WITH ARROWS
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => scrollBy(-320)}
+            aria-label="Scroll left"
+            className="grid h-8 w-8 place-items-center rounded-xl border border-white/15 bg-white/5 text-white/70 hover:text-white hover:border-cyan-400 hover:bg-cyan-400/20 transition-all cursor-pointer"
+          >
+            &#x2190;
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollBy(320)}
+            aria-label="Scroll right"
+            className="grid h-8 w-8 place-items-center rounded-xl border border-white/15 bg-white/5 text-white/70 hover:text-white hover:border-cyan-400 hover:bg-cyan-400/20 transition-all cursor-pointer"
+          >
+            &#x2192;
+          </button>
+        </div>
+      </div>
+
       {/* Drift Carousel Track */}
       <div
         ref={scrollRef}
@@ -333,7 +400,13 @@ export default function TeamSection() {
                 <h3 className="font-tech text-lg sm:text-xl font-bold tracking-wider text-white">
                   EVENT LEADS
                 </h3>
+                <span className="font-mono text-[0.65rem] text-[#ff3b6c] px-2.5 py-0.5 rounded-full border border-[#ff3b6c]/30 bg-[#ff3b6c]/10">
+                  0{eventLeads.length} COMMANDERS
+                </span>
               </div>
+              <span className="font-mono text-[0.65rem] text-white/40 tracking-widest hidden sm:inline">
+                APEX MISSION CONTROL
+              </span>
             </div>
 
             <EventLeadsGrid />
@@ -351,7 +424,13 @@ export default function TeamSection() {
                 <h3 className="font-tech text-lg sm:text-xl font-bold tracking-wider text-white">
                   DEPARTMENT LEADS
                 </h3>
-                  </div>
+                <span className="font-mono text-[0.65rem] text-cyan-300 px-2.5 py-0.5 rounded-full border border-cyan-400/30 bg-cyan-400/10">
+                  0{departmentLeads.length} ORBITAL WINGS
+                </span>
+              </div>
+              <span className="font-mono text-[0.65rem] text-white/40 tracking-widest hidden sm:inline">
+                CONTINUOUS ORBIT DRIFT · DRAG OR USE ARROWS
+              </span>
             </div>
 
             <DeptLeadsCarousel />

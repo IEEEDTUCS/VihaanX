@@ -31,7 +31,7 @@ export default function RegisterSection() {
         {/* Action Button */}
         <div className="flex flex-wrap items-center justify-center gap-4 mb-14">
           <a
-            href="https://unstop.com/college-fests/vihaan-x-ieee-dtu-delhi-technological-university-dtu-new-delhi-519244"
+            href="/register"
             target="_blank"
             rel="noopener noreferrer"
             className="group relative inline-flex items-center gap-2 rounded-full bg-[#ff3b6c] px-9 py-4 text-sm font-bold tracking-[0.18em] text-white transition-all duration-300 shadow-[0_0_35px_rgba(255,59,108,0.7)] hover:bg-[#ff1e56] hover:shadow-[0_0_50px_rgba(255,59,108,1)] hover:scale-105 active:scale-95"

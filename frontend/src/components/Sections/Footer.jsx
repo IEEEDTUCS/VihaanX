@@ -19,7 +19,7 @@ export default function Footer() {
     { label: 'PRIZE POOL', href: '#prizes' },
     { label: 'OUR SPONSORS', href: '#sponsors' },
     { label: 'CORE TEAM', href: '#team' },
-    { label: 'PORTAL REGISTRATION', href: 'https://unstop.com/college-fests/vihaan-x-ieee-dtu-delhi-technological-university-dtu-new-delhi-519244' },
+    { label: 'PORTAL REGISTRATION', href: '#register' },
   ];
 
   const socialLinks = [
@@ -145,26 +145,19 @@ export default function Footer() {
             </div>
 
             <nav className="grid grid-cols-2 gap-x-4 gap-y-2.5">
-              {navLinks.map((link) => {
-                const isExternal = link.href.startsWith('http');
-                return (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target={isExternal ? '_blank' : undefined}
-                    rel={isExternal ? 'noopener noreferrer' : undefined}
-                    onClick={(e) => {
-                      if (!isExternal) handleScrollTo(e, link.href);
-                    }}
-                    className="group flex items-center gap-2 text-xs font-mono tracking-wider text-white/60 hover:text-white transition-all py-1 cursor-pointer"
-                  >
-                    <span className="h-1 w-1 rounded-full bg-white/20 group-hover:bg-[#ff3b6c] group-hover:scale-150 transition-all shrink-0" />
-                    <span className="group-hover:translate-x-1 transition-transform">
-                      {link.label}
-                    </span>
-                  </a>
-                );
-              })}
+              {navLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={(e) => handleScrollTo(e, link.href)}
+                  className="group flex items-center gap-2 text-xs font-mono tracking-wider text-white/60 hover:text-white transition-all py-1 cursor-pointer"
+                >
+                  <span className="h-1 w-1 rounded-full bg-white/20 group-hover:bg-[#ff3b6c] group-hover:scale-150 transition-all shrink-0" />
+                  <span className="group-hover:translate-x-1 transition-transform">
+                    {link.label}
+                  </span>
+                </a>
+              ))}
             </nav>
           </div>
 

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { eventLeads, departmentLeads } from "@/data/team.js";
+import { eventLeads, departmentLeads, councilLeads } from "@/data/team.js";
 
 // Social Icons as clean SVGs
 // function LinkedInIcon({ className = "w-4 h-4" }) {
@@ -103,7 +103,8 @@ function EventLeadsGrid() {
               src={lead.image}
               alt={lead.name}
               className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
-              loading="lazy"
+              loading="eager"
+              decoding="async"
             />
 
             {/* Subtle sci-fi gradient vignette at base */}
@@ -272,7 +273,8 @@ function DeptLeadsCarousel() {
                 src={lead.image}
                 alt={lead.name}
                 className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
-                loading="lazy"
+                loading="eager"
+                decoding="async"
               />
 
               {/* Gradient Vignette at bottom */}
@@ -319,10 +321,140 @@ function DeptLeadsCarousel() {
 }
 
 // =========================================================================
+// 3. IEEE DTU COUNCIL (Continuous Orbital Drift + Council Cards)
+// =========================================================================
+function CouncilCarousel() {
+  const scrollRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    let animId;
+    const speed = 0.65;
+    const step = () => {
+      if (!isPaused && el) {
+        el.scrollLeft += speed;
+        const halfWidth = el.scrollWidth / 2;
+        if (el.scrollLeft >= halfWidth) el.scrollLeft -= halfWidth;
+      }
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [isPaused]);
+
+  const scrollBy = (offset) => {
+    scrollRef.current?.scrollBy({ left: offset, behavior: "smooth" });
+  };
+
+  const duplicatedCouncil = [...councilLeads, ...councilLeads];
+
+  return (
+    <div className="relative w-full">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsPaused((prev) => !prev)}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 font-mono text-[0.65rem] text-white/80 hover:text-white hover:border-pink-400 transition-all cursor-pointer"
+          >
+            <span
+              className="h-1.5 w-1.5 rounded-full"
+              style={{ backgroundColor: isPaused ? "#fbbf24" : "#10b981" }}
+            />
+            {isPaused ? "RESUME DRIFT" : "PAUSE DRIFT"}
+          </button>
+          <span className="font-mono text-[0.62rem] text-white/40 tracking-widest hidden sm:inline">
+            HOVER OR DRAG TO PAUSE · SCROLL WITH ARROWS
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => scrollBy(-320)}
+            aria-label="Scroll left through IEEE DTU council"
+            className="grid h-8 w-8 place-items-center rounded-xl border border-white/15 bg-white/5 text-white/70 hover:text-white hover:border-pink-400 hover:bg-pink-400/20 transition-all cursor-pointer"
+          >
+            &#x2190;
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollBy(320)}
+            aria-label="Scroll right through IEEE DTU council"
+            className="grid h-8 w-8 place-items-center rounded-xl border border-white/15 bg-white/5 text-white/70 hover:text-white hover:border-pink-400 hover:bg-pink-400/20 transition-all cursor-pointer"
+          >
+            &#x2192;
+          </button>
+        </div>
+      </div>
+
+      <div
+        ref={scrollRef}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
+        className="flex gap-5 sm:gap-6 overflow-x-auto no-scrollbar py-3 px-1 select-none cursor-grab active:cursor-grabbing"
+        style={{ scrollBehavior: "auto" }}
+      >
+        {duplicatedCouncil.map((member, idx) => (
+          <div
+            key={`${member.id}-${idx}`}
+            className="group relative w-[250px] sm:w-[270px] shrink-0 rounded-3xl border border-white/15 bg-gradient-to-b from-[#180f2d]/90 via-[#0d1028]/95 to-[#070b19] p-3.5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-white/35"
+            style={{ boxShadow: `0 0 30px -12px ${member.color}40` }}
+          >
+            <div className="flex items-center justify-between px-1.5 pb-2 gap-2">
+              <span className="font-mono text-[0.62rem] tracking-widest font-bold uppercase truncate" style={{ color: member.color }}>
+                {member.planet}
+              </span>
+              <span className="font-mono text-[0.58rem] tracking-wider px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-white/60 truncate">
+                COUNCIL
+              </span>
+            </div>
+
+            <div className="relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden border border-white/15 bg-[#050914]">
+              <div className="absolute inset-0 opacity-15 blur-lg transition-opacity duration-300 group-hover:opacity-35" style={{ backgroundColor: member.color }} />
+              <img
+                src={member.image}
+                alt={member.name}
+                className="h-full w-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
+                loading="eager"
+                decoding="async"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#070b19] via-transparent to-transparent opacity-60" />
+              <div className="absolute top-2 left-2 h-3 w-3 border-t-2 border-l-2 opacity-70" style={{ borderColor: member.color }} />
+              <div className="absolute top-2 right-2 h-3 w-3 border-t-2 border-r-2 opacity-70" style={{ borderColor: member.color }} />
+              <div className="absolute bottom-2 left-2 h-3 w-3 border-b-2 border-l-2 opacity-70" style={{ borderColor: member.color }} />
+              <div className="absolute bottom-2 right-2 h-3 w-3 border-b-2 border-r-2 opacity-70" style={{ borderColor: member.color }} />
+            </div>
+
+            <div className="pt-3 px-1.5 pb-0.5">
+              <h4 className="font-tech text-lg sm:text-xl font-black tracking-wider text-white group-hover:text-pink-300 transition-colors">
+                {member.name}
+              </h4>
+              <p className="font-mono text-[0.7rem] uppercase font-bold tracking-wider mt-0.5" style={{ color: member.color }}>
+                {member.role}
+              </p>
+              <p className="font-mono text-[0.58rem] uppercase tracking-wider text-white/40 mt-1 truncate">
+                {member.chapter}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// =========================================================================
 // MAIN TEAM SECTION COMPONENT
 // =========================================================================
 export default function TeamSection() {
-  const [activeTab, setActiveTab] = useState("all"); // "all" | "event" | "dept"
+  const [activeTab, setActiveTab] = useState("all"); // "all" | "event" | "dept" | "council"
 
   return (
     <section
@@ -386,6 +518,17 @@ export default function TeamSection() {
             >
               DEPT LEADS ({departmentLeads.length})
             </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab("council")}
+              className={`px-3.5 py-1.5 rounded-full font-mono text-[0.68rem] tracking-wider transition-all cursor-pointer ${
+                activeTab === "council"
+                  ? "bg-pink-500 text-white font-bold shadow-[0_0_15px_rgba(236,72,153,0.5)]"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
+              COUNCIL ({councilLeads.length})
+            </button>
           </div>
         </div>
 
@@ -434,6 +577,30 @@ export default function TeamSection() {
             </div>
 
             <DeptLeadsCarousel />
+          </div>
+        )}
+
+        {/* ============================================================== */}
+        {/* VIEW 3: IEEE DTU COUNCIL (Continuous Orbital Conveyor Drift)   */}
+        {/* ============================================================== */}
+        {(activeTab === "all" || activeTab === "council") && (
+          <div className="mt-16">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-pink-400 shadow-[0_0_8px_#ec4899]" />
+                <h3 className="font-tech text-lg sm:text-xl font-bold tracking-wider text-white">
+                  IEEE DTU COUNCIL
+                </h3>
+                <span className="font-mono text-[0.65rem] text-pink-300 px-2.5 py-0.5 rounded-full border border-pink-400/30 bg-pink-400/10">
+                  {councilLeads.length} COUNCIL MEMBERS
+                </span>
+              </div>
+              <span className="font-mono text-[0.65rem] text-white/40 tracking-widest hidden sm:inline">
+                BRANCH LEADERSHIP · DRAG OR USE ARROWS
+              </span>
+            </div>
+
+            <CouncilCarousel />
           </div>
         )}
       </div>

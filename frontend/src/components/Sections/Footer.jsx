@@ -17,6 +17,7 @@ export default function Footer() {
     { label: 'EVENT GALLERY', href: '#gallery' },
     { label: 'HACKATHON TRACKS', href: '#tracks' },
     { label: 'PRIZE POOL', href: '#prizes' },
+    { label: 'FAQS & RULES', href: '#faqs' },
     { label: 'OUR SPONSORS', href: '#sponsors' },
     { label: 'CORE TEAM', href: '#team' },
     { label: 'PORTAL REGISTRATION', href: '#register' },
@@ -82,10 +83,10 @@ export default function Footer() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Main Grid: 3 Columns */}
+        {/* Main Grid: 4 Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-14 border-b border-white/10">
           
-          {/* ── Column 1: Brand & Organization Info (5 cols) ── */}
+          {/* ── Column 1: Brand & Organization Info (4 cols) ── */}
           <div className="lg:col-span-4 flex flex-col items-start">
             <a
               href="#home"
@@ -157,8 +158,8 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* ── Column 3: Event Lead Contacts (3 cols) ── */}
-          <div className="lg:col-span-3 flex flex-col">
+          {/* ── Column 3: Event Lead Contacts (3 cols) with Anchor ID ── */}
+          <div id="footer-event-leads" className="lg:col-span-3 flex flex-col scroll-mt-28">
             <div className="flex items-center gap-2.5 mb-5">
               <span className="h-px w-5 bg-[#a855f7]" style={{ boxShadow: '0 0 6px #a855f7' }} />
               <span className="font-tech text-xs tracking-[0.25em] text-[#a855f7] uppercase">
@@ -171,7 +172,7 @@ export default function Footer() {
                 <a
                   key={name}
                   href={`tel:${phone.replace(/\s/g, '')}`}
-                  className="group flex items-center gap-2.5 p-2.5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-white/15 transition-all"
+                  className="footer-lead-card group flex items-center gap-2.5 p-2.5 rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.06] hover:border-white/15 transition-all"
                 >
                   <span className="p-1.5 rounded-lg bg-white/5 text-[#a855f7] transition-colors group-hover:scale-105">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

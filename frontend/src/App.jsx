@@ -6,6 +6,7 @@ import AboutSection from './components/Sections/AboutSection';
 import GallerySection from './components/Sections/GallerySection';
 import TracksSection from "./components/Sections/TracksSection";
 import PrizesSection from './components/Sections/PrizesSection';
+import FAQSection from './components/Sections/FAQSection';
 // import SponsorsSection from './components/Sections/SponsorsSection';
 import TeamSection from './components/Sections/TeamSection';
 // import RegisterSection from './components/Sections/RegisterSection';
@@ -21,6 +22,7 @@ export default function App() {
         <GallerySection />
         <TracksSection />
         <PrizesSection />
+        <FAQSection />
         {/*<SponsorsSection />*/}
         <TeamSection />
         {/* <RegisterSection /> */}

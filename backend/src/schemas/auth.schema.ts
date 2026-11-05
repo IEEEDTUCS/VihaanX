@@ -1,0 +1,33 @@
+import { z } from "zod";
+
+import { ADMIN_ROLES, AUTH_KINDS } from "../config/constants";
+import { objectIdSchema, passwordSchema, usernameSchema } from "./admin.schema";
+
+export const adminLoginBody = z
+  .object({
+    username: usernameSchema,
+    password: passwordSchema,
+  })
+  .strict();
+
+export const refreshBody = z
+  .object({
+    refreshToken: z.string().min(1).max(4096),
+  })
+  .strict();
+
+export const accessTokenPayloadSchema = z.object({
+  sub: objectIdSchema,
+  kind: z.enum(AUTH_KINDS),
+  role: z.enum(ADMIN_ROLES),
+  ver: z.number().int().min(0),
+});
+
+export const refreshTokenPayloadSchema = z.object({
+  sub: objectIdSchema,
+  kind: z.enum(AUTH_KINDS),
+  jti: z.string().min(1),
+});
+
+export type AdminLoginBody = z.infer<typeof adminLoginBody>;
+export type RefreshBody = z.infer<typeof refreshBody>;

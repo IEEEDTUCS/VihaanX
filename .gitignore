@@ -1,2 +1,29 @@
+# Repo-wide only. frontend/ and backend/ each have their own .gitignore.
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Editors
 .idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# Archives - a zipped copy of a workspace folder is easy to commit by accident
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# Secrets, wherever they land
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log

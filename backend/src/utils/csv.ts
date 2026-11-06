@@ -1,7 +1,11 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import type { Response } from "express";
+
 import { parse } from "csv-parse/sync";
+
+import { CSV_BOM, CSV_CONTENT_TYPE } from "../config/constants";
 
 export const EXPORTS_DIRECTORY = path.resolve(
   import.meta.dirname,
@@ -54,13 +58,39 @@ export const toCsv = (rows: string[][]) =>
     .map((row) => row.map((cell) => quote(defuseFormula(cell))).join(","))
     .join("\r\n")}\r\n`;
 
+export const withBom = (text: string) => `${CSV_BOM}${text}`;
+
+export const exportFilename = (prefix: string, now: Date) =>
+  `${prefix}-${now.toISOString().slice(0, 10)}.csv`;
+
+export const sendCsvAttachment = (
+  res: Response,
+  prefix: string,
+  table: CsvTable,
+  now = new Date(),
+) => {
+  res.setHeader("Content-Type", CSV_CONTENT_TYPE);
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename="${exportFilename(prefix, now)}"`,
+  );
+  res.status(200).send(withBom(toCsv([table.header, ...table.rows])));
+};
+
 export const resolveExportPath = (given: string) =>
   path.isAbsolute(given) ? given : path.join(EXPORTS_DIRECTORY, given);
 
-export const writeExport = async (given: string, rows: string[][]) => {
+export type WriteExportOptions = { bom?: boolean };
+
+export const writeExport = async (
+  given: string,
+  rows: string[][],
+  options: WriteExportOptions = {},
+) => {
   const target = resolveExportPath(given);
+  const body = toCsv(rows);
   await mkdir(path.dirname(target), { recursive: true });
-  await writeFile(target, toCsv(rows), "utf8");
+  await writeFile(target, options.bom ? withBom(body) : body, "utf8");
   return target;
 };
 

@@ -2,13 +2,18 @@ import type { RequestHandler } from "express";
 
 import { getAuth } from "../middlewares/authenticate";
 import { ERROR_CODES } from "../config/constants";
-import type { ListParticipantsQuery } from "../schemas/participant.schema";
+import type {
+  ExportParticipantsQuery,
+  ListParticipantsQuery,
+} from "../schemas/participant.schema";
 import {
   getParticipantWithTeam,
+  listParticipantRowsForExport,
   listParticipants,
 } from "../services/participant.service";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
+import { sendCsvAttachment } from "../utils/csv";
 
 export const getMe: RequestHandler = async (req, res) => {
   const auth = getAuth(req);
@@ -32,4 +37,12 @@ export const getParticipants: RequestHandler = async (req, res) => {
   const result = await listParticipants(query);
 
   res.status(200).json(new ApiResponse(result));
+};
+
+export const getParticipantsExport: RequestHandler = async (req, res) => {
+  const query = req.validated?.query as ExportParticipantsQuery;
+
+  const table = await listParticipantRowsForExport(query);
+
+  sendCsvAttachment(res, "participants", table);
 };

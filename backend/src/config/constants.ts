@@ -33,6 +33,12 @@ export type TeamWorld = (typeof TEAM_WORLDS)[number];
 export const TEAM_CATEGORIES = ["WOMEN", "FRESHERS", "IEEE"] as const;
 export type TeamCategory = (typeof TEAM_CATEGORIES)[number];
 
+export const TEAM_CATEGORY_LABELS: Record<TeamCategory, string> = {
+  WOMEN: "Women",
+  FRESHERS: "Freshers",
+  IEEE: "IEEE",
+};
+
 export const ROOM_STATUSES = [
   "ALLOCATED",
   "ALREADY_HAD_ROOM",
@@ -53,6 +59,31 @@ export type CheckpointAutoStatus = (typeof CHECKPOINT_AUTO_STATUSES)[number];
 export const CHECKPOINT_REVIEW_STATUSES = ["APPROVED", "FLAGGED"] as const;
 export type CheckpointReviewStatus =
   (typeof CHECKPOINT_REVIEW_STATUSES)[number];
+
+export const TEAM_STATUS_FILTERS = [
+  "SUSPICIOUS",
+  "CHECK_FAILED",
+  "UNREVIEWED",
+] as const;
+export type TeamStatusFilter = (typeof TEAM_STATUS_FILTERS)[number];
+
+export const ACTIVITY_ACTIONS = [
+  "CARD_LINKED",
+  "CHECKED_IN",
+  "CHECK_IN_UNDONE",
+  "MEAL_SERVED",
+  "MEAL_UNDONE",
+  "BEDSHEETS_SET",
+  "ROOM_ALLOCATED",
+  "ROOM_CHANGED",
+  "TEAM_UPDATED",
+  "PROJECT_REVIEWED",
+  "CHECKPOINT_REVIEWED",
+  "CHECK_RERUN",
+  "VOLUNTEER_CREATED",
+  "VOLUNTEER_DELETED",
+] as const;
+export type ActivityAction = (typeof ACTIVITY_ACTIONS)[number];
 
 export const ERROR_CODES = {
   BAD_REQUEST: "BAD_REQUEST",
@@ -75,6 +106,8 @@ export const ERROR_CODES = {
   NO_ROOM_AVAILABLE: "NO_ROOM_AVAILABLE",
   TEAM_WORLD_NOT_SET: "TEAM_WORLD_NOT_SET",
   PROJECT_NOT_SUBMITTED: "PROJECT_NOT_SUBMITTED",
+  NOT_SUBMITTED: "NOT_SUBMITTED",
+  NOTHING_TO_CHECK: "NOTHING_TO_CHECK",
   WINDOW_CLOSED: "WINDOW_CLOSED",
   UPLOAD_FAILED: "UPLOAD_FAILED",
   PAYLOAD_TOO_LARGE: "PAYLOAD_TOO_LARGE",
@@ -101,6 +134,15 @@ export const MAX_VOLUNTEERS_RETURNED = 200;
 export const ADMIN_PAGE_SIZE = 25;
 export const SEARCH_MAX_LENGTH = 100;
 export const MAX_PAGE = 10_000;
+export const EXPORT_MAX_ROWS = 5_000;
+
+export const PANEL_MAX_LENGTH = 20;
+export const POINTS_MIN = 0;
+export const POINTS_MAX = 100;
+export const POINTS_DECIMALS = 2;
+export const STARS_MIN = 0;
+export const STARS_MAX = 5;
+export const REVIEW_NOTE_MAX_LENGTH = 500;
 
 export const UNSTOP_TEAM_ID_PATTERN = /^U[A-Z0-9]{7}$/;
 export const TEAM_NAME_MAX_LENGTH = 120;
@@ -192,3 +234,6 @@ export const SUBMISSION_GRACE_SECONDS_MAX = 3_600;
 export const PROJECT_PUBLIC_ID = "project";
 export const CHECKPOINT_PUBLIC_ID_PREFIX = "checkpoint-";
 export const IMAGE_REVIEWED_NOTE = "Image: reviewed manually";
+
+export const CSV_BOM = "\uFEFF";
+export const CSV_CONTENT_TYPE = "text/csv; charset=utf-8";

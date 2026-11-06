@@ -56,6 +56,7 @@ export const emptyProject = (): Project => ({
   reviewStatus: null,
   reviewNote: null,
   reviewedBy: null,
+  reviewedAt: null,
 });
 
 export const emptyCheckpoint = (round: number): Checkpoint => ({
@@ -69,6 +70,7 @@ export const emptyCheckpoint = (round: number): Checkpoint => ({
   reviewStatus: null,
   reviewNote: null,
   reviewedBy: null,
+  reviewedAt: null,
 });
 
 export const projectOf = (team: Pick<Team, "project">): Project =>
@@ -108,12 +110,14 @@ export const toAdminProject = (project: Project) => ({
   ...toParticipantProject(project),
   reviewNote: project.reviewNote,
   reviewedBy: project.reviewedBy ? String(project.reviewedBy) : null,
+  reviewedAt: project.reviewedAt ?? null,
 });
 
 export const toAdminCheckpoint = (checkpoint: Checkpoint) => ({
   ...toParticipantCheckpoint(checkpoint),
   reviewNote: checkpoint.reviewNote,
   reviewedBy: checkpoint.reviewedBy ? String(checkpoint.reviewedBy) : null,
+  reviewedAt: checkpoint.reviewedAt ?? null,
 });
 
 type TeamMember = {
@@ -253,12 +257,12 @@ const saveProject = async (teamId: string, fields: ProjectFields) => {
   if (result.matchedCount === 0) throw teamNotFound();
 };
 
-const saveProjectResult = async (
+export const saveProjectResult = async (
   teamId: string,
   submittedAt: Date,
   result: CheckResult,
-) => {
-  await TeamModel.updateOne(
+) =>
+  TeamModel.updateOne(
     { _id: teamId, "project.submittedAt": submittedAt },
     {
       $set: {
@@ -268,7 +272,6 @@ const saveProjectResult = async (
       },
     },
   );
-};
 
 type CheckpointFields = {
   url: string;
@@ -314,13 +317,13 @@ const saveCheckpoint = async (
   if (retried.matchedCount === 0) throw teamNotFound();
 };
 
-const saveCheckpointResult = async (
+export const saveCheckpointResult = async (
   teamId: string,
   round: CheckpointRound,
   submittedAt: Date,
   result: CheckResult,
-) => {
-  await TeamModel.updateOne(
+) =>
+  TeamModel.updateOne(
     {
       _id: teamId,
       checkpoints: { $elemMatch: { round, submittedAt } },
@@ -336,7 +339,6 @@ const saveCheckpointResult = async (
       },
     },
   );
-};
 
 const loadTeam = async (teamId: string) => {
   const team = await TeamModel.findById(teamId).lean();

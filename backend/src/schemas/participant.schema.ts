@@ -42,14 +42,18 @@ export const participantLoginBody = z
   })
   .strict();
 
+const participantFilters = {
+  search: optionalQuery(searchQuery),
+  present: optionalQuery(booleanQuery),
+  role: optionalQuery(z.enum(PARTICIPANT_ROLES)),
+};
+
 export const listParticipantsQuery = z
-  .object({
-    search: optionalQuery(searchQuery),
-    present: optionalQuery(booleanQuery),
-    role: optionalQuery(z.enum(PARTICIPANT_ROLES)),
-    page: pageQuery,
-  })
+  .object({ ...participantFilters, page: pageQuery })
   .strict();
+
+export const exportParticipantsQuery = z.object(participantFilters).strict();
 
 export type ParticipantLoginBody = z.infer<typeof participantLoginBody>;
 export type ListParticipantsQuery = z.infer<typeof listParticipantsQuery>;
+export type ExportParticipantsQuery = z.infer<typeof exportParticipantsQuery>;

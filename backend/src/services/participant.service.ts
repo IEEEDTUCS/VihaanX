@@ -3,13 +3,17 @@ import { Types } from "mongoose";
 import {
   ADMIN_PAGE_SIZE,
   ERROR_CODES,
+  EXPORT_MAX_ROWS,
   RSVP_CODE_MAX_ATTEMPTS,
 } from "../config/constants";
 import type { ParticipantRole, TeamWorld } from "../config/constants";
 import { ParticipantModel } from "../models/participant.model";
 import type { Participant } from "../models/participant.model";
 import { TeamModel } from "../models/team.model";
-import type { ListParticipantsQuery } from "../schemas/participant.schema";
+import type {
+  ExportParticipantsQuery,
+  ListParticipantsQuery,
+} from "../schemas/participant.schema";
 import { toParticipantTeam } from "./submission.service";
 import { ApiError } from "../utils/ApiError";
 import { escapeRegex } from "../utils/regex";
@@ -149,7 +153,7 @@ const teamSummaries = async (teamIds: Types.ObjectId[]) => {
   );
 };
 
-export const listParticipants = async (query: ListParticipantsQuery) => {
+export const participantFilter = async (query: ExportParticipantsQuery) => {
   const filter: Record<string, unknown> = {};
 
   if (query.role) filter.role = query.role;
@@ -171,6 +175,12 @@ export const listParticipants = async (query: ListParticipantsQuery) => {
         : []),
     ];
   }
+
+  return filter;
+};
+
+export const listParticipants = async (query: ListParticipantsQuery) => {
+  const filter = await participantFilter(query);
 
   const [rows, total] = await Promise.all([
     ParticipantModel.find(filter)
@@ -320,4 +330,50 @@ export const listParticipantsForExport = async () => {
     role: row.role,
     rsvpCode: row.rsvpCode,
   }));
+};
+
+export const PARTICIPANT_EXPORT_HEADER = [
+  "Name",
+  "Email",
+  "Team Name",
+  "Unstop ID",
+  "Role",
+  "College",
+  "Leader Phone",
+  "RSVP Code",
+  "Checked In",
+  "Meals Taken",
+];
+
+export const listParticipantRowsForExport = async (
+  query: ExportParticipantsQuery,
+) => {
+  const filter = await participantFilter(query);
+
+  const participants = await ParticipantModel.find(filter)
+    .select("+rsvpCode +phone")
+    .sort({ name: 1, _id: 1 })
+    .limit(EXPORT_MAX_ROWS)
+    .lean();
+
+  const teams = await teamSummaries(participants.map((row) => row.teamId));
+
+  const rows = participants.map((row) => {
+    const team = teams.get(String(row.teamId));
+
+    return [
+      row.name,
+      row.email,
+      team?.name ?? "",
+      team?.unstopId ?? "",
+      row.role,
+      row.college,
+      row.phone ?? "",
+      row.rsvpCode,
+      row.checkedIn ? "yes" : "no",
+      row.mealsTaken.join(";"),
+    ];
+  });
+
+  return { header: PARTICIPANT_EXPORT_HEADER, rows };
 };

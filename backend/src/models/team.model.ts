@@ -4,7 +4,11 @@ import {
   CHECKPOINT_AUTO_STATUSES,
   CHECKPOINT_REVIEW_STATUSES,
   CHECKPOINT_ROUNDS,
+  POINTS_MAX,
+  POINTS_MIN,
   PROJECT_TRACKS_MAX,
+  STARS_MAX,
+  STARS_MIN,
   TEAM_CATEGORIES,
   TEAM_DESCRIPTION_MAX_LENGTH,
   TEAM_NAME_MAX_LENGTH,
@@ -22,6 +26,7 @@ export type SubmissionReview = {
   reviewStatus: CheckpointReviewStatus | null;
   reviewNote: string | null;
   reviewedBy: Types.ObjectId | null;
+  reviewedAt: Date | null;
 };
 
 export type SubmissionResult = {
@@ -84,6 +89,7 @@ const reviewFields = {
   },
   reviewNote: { type: String, default: null },
   reviewedBy: { type: Schema.Types.ObjectId, ref: "Admin", default: null },
+  reviewedAt: { type: Date, default: null },
 };
 
 const projectSchema = new Schema<Project>(
@@ -140,6 +146,7 @@ const emptyCheckpoints = (): Checkpoint[] =>
     reviewStatus: null,
     reviewNote: null,
     reviewedBy: null,
+    reviewedAt: null,
   }));
 
 const teamSchema = new Schema<Team>(
@@ -186,8 +193,8 @@ const teamSchema = new Schema<Team>(
       },
     },
     panel: { type: String, default: null },
-    points: { type: Number, default: 0, min: 0 },
-    stars: { type: Number, default: 0, min: 0, max: 5 },
+    points: { type: Number, default: 0, min: POINTS_MIN, max: POINTS_MAX },
+    stars: { type: Number, default: 0, min: STARS_MIN, max: STARS_MAX },
     checkpoints: { type: [checkpointSchema], default: emptyCheckpoints },
   },
   {
@@ -197,5 +204,6 @@ const teamSchema = new Schema<Team>(
 );
 
 teamSchema.index({ world: 1, points: -1 });
+teamSchema.index({ points: -1, name: 1 });
 
 export const TeamModel = model<Team>("Team", teamSchema);

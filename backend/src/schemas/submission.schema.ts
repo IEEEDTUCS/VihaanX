@@ -73,18 +73,20 @@ export const softwareCheckpointBody = z
 
 export const hardwareCheckpointBody = z.object({}).strict();
 
+export const checkpointRoundField = z.coerce
+  .number()
+  .int()
+  .refine(
+    (round): round is (typeof CHECKPOINT_ROUNDS)[number] =>
+      CHECKPOINT_ROUNDS.some((valid) => valid === round),
+    {
+      error: `round must be one of ${CHECKPOINT_ROUNDS.join(", ")}`,
+    },
+  );
+
 export const checkpointRoundParams = z
   .object({
-    round: z.coerce
-      .number()
-      .int()
-      .refine(
-        (round): round is (typeof CHECKPOINT_ROUNDS)[number] =>
-          CHECKPOINT_ROUNDS.some((valid) => valid === round),
-        {
-          error: `round must be one of ${CHECKPOINT_ROUNDS.join(", ")}`,
-        },
-      ),
+    round: checkpointRoundField,
   })
   .strict();
 

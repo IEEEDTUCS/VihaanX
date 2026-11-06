@@ -4,8 +4,15 @@ import { authenticate } from "../middlewares/authenticate";
 import { requireKind } from "../middlewares/requireKind";
 import { requireRole } from "../middlewares/requireRole";
 import { validate } from "../middlewares/validate";
-import { getMe, getParticipants } from "../controllers/participant.controller";
-import { listParticipantsQuery } from "../schemas/participant.schema";
+import {
+  getMe,
+  getParticipants,
+  getParticipantsExport,
+} from "../controllers/participant.controller";
+import {
+  exportParticipantsQuery,
+  listParticipantsQuery,
+} from "../schemas/participant.schema";
 
 const me = Router();
 
@@ -27,6 +34,12 @@ adminParticipants.get(
   "/",
   validate({ query: listParticipantsQuery }),
   getParticipants,
+);
+
+adminParticipants.get(
+  "/export",
+  validate({ query: exportParticipantsQuery }),
+  getParticipantsExport,
 );
 
 export const adminParticipantsRouter = adminParticipants;

@@ -12,14 +12,20 @@ const clusterHost = () => {
   }
 };
 
+export const describeTarget = () => {
+  const database = DATABASE_NAMES[env.NODE_ENV];
+
+  console.log(`Target: ${database} on ${clusterHost()}`);
+
+  return database;
+};
+
 export type ConfirmOptions = {
   assumeYes: boolean;
 };
 
 export const confirmTarget = async ({ assumeYes }: ConfirmOptions) => {
-  const database = DATABASE_NAMES[env.NODE_ENV];
-
-  console.log(`Target: ${database} on ${clusterHost()}`);
+  describeTarget();
 
   if (assumeYes) {
     console.log("Confirmed by --yes.");

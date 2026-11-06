@@ -1,22 +1,7 @@
 import { Schema, Types, model } from "mongoose";
 
-export const ACTIVITY_ACTIONS = [
-  "CARD_LINKED",
-  "CHECKED_IN",
-  "CHECK_IN_UNDONE",
-  "MEAL_SERVED",
-  "MEAL_UNDONE",
-  "BEDSHEETS_SET",
-  "ROOM_ALLOCATED",
-  "ROOM_CHANGED",
-  "TEAM_UPDATED",
-  "CHECKPOINT_REVIEWED",
-  "CHECK_RERUN",
-  "VOLUNTEER_CREATED",
-  "VOLUNTEER_DELETED",
-] as const;
-
-export type ActivityAction = (typeof ACTIVITY_ACTIONS)[number];
+import { ACTIVITY_ACTIONS } from "../config/constants";
+import type { ActivityAction } from "../config/constants";
 
 export type Activity = {
   actorId: Types.ObjectId;

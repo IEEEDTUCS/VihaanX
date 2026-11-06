@@ -40,6 +40,8 @@ const TRACKS_BY_ID = new Map<string, TrackWithWorld>(
   ),
 );
 
+export const ALL_TRACK_IDS = [...TRACKS_BY_ID.keys()] as [string, ...string[]];
+
 export const isTrackOfWorld = (id: string, world: TeamWorld) =>
   TRACKS_BY_ID.get(id)?.world === world;
 

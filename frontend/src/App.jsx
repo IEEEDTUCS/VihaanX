@@ -22,9 +22,9 @@ export default function App() {
         <TracksSection />
         <GallerySection />
         <PrizesSection />
+        <TeamSection />
         <FAQSection />
         {/*<SponsorsSection />*/}
-        <TeamSection />
         {/* <RegisterSection /> */}
       </main>
       <Footer />

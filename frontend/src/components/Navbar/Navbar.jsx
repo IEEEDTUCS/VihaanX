@@ -5,12 +5,12 @@ import { useState, useEffect } from 'react';
 const NAV_ITEMS = [
   { label: 'HOME', href: '#home' },
   { label: 'ABOUT', href: '#about' },
+  { label: 'TRACKS', href: '#tracks' },
   { label: 'GALLERY', href: '#gallery' },
-  { label: "TRACKS", href: "#tracks" },
   { label: 'PRIZES', href: '#prizes' },
+  { label: 'TEAM', href: '#team' },
   { label: 'FAQS', href: '#faqs' },
   // { label: 'SPONSORS', href: '#sponsors' },
-  { label: 'TEAM', href: '#team' },
 ];
 
 export default function Navbar() {

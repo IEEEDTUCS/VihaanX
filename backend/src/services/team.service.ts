@@ -14,6 +14,12 @@ import {
   listTeamMembersForAdmin,
 } from "./participant.service";
 import {
+  checkpointsOf,
+  projectOf,
+  toAdminCheckpoint,
+  toAdminProject,
+} from "./submission.service";
+import {
   releaseSpacesInRoom,
   reserveSpacesInRoom,
   teamSpaces,
@@ -152,10 +158,8 @@ export const getTeamForAdmin = async (id: string) => {
       name: team.name,
       world: team.world,
       categories: team.categories,
-      tracks: team.tracks,
-      description: team.description,
-      repoUrl: team.repoUrl,
-      imageUrl: team.imageUrl,
+      project: toAdminProject(projectOf(team)),
+      checkpoints: checkpointsOf(team).map(toAdminCheckpoint),
       room: team.room,
       bedsheetsIssued: team.bedsheetsIssued ?? 0,
       memberCount: members.length,

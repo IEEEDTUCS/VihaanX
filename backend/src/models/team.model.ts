@@ -3,6 +3,8 @@ import { Schema, Types, model } from "mongoose";
 import {
   CHECKPOINT_AUTO_STATUSES,
   CHECKPOINT_REVIEW_STATUSES,
+  CHECKPOINT_ROUNDS,
+  PROJECT_TRACKS_MAX,
   TEAM_CATEGORIES,
   TEAM_DESCRIPTION_MAX_LENGTH,
   TEAM_NAME_MAX_LENGTH,
@@ -16,29 +18,41 @@ import type {
   TeamWorld,
 } from "../config/constants";
 
-export type Checkpoint = {
-  round: number;
-  url: string;
-  commitSha: string | null;
-  submittedAt: Date;
-  autoStatus: CheckpointAutoStatus;
-  autoFlags: string[];
+export type SubmissionReview = {
   reviewStatus: CheckpointReviewStatus | null;
   reviewNote: string | null;
   reviewedBy: Types.ObjectId | null;
 };
+
+export type SubmissionResult = {
+  autoStatus: CheckpointAutoStatus;
+  autoFlags: string[];
+  autoNotes: string[];
+};
+
+export type Project = SubmissionResult &
+  SubmissionReview & {
+    tracks: string[];
+    description: string;
+    repoUrl: string | null;
+    imageUrl: string | null;
+    submittedAt: Date | null;
+  };
+
+export type Checkpoint = SubmissionResult &
+  SubmissionReview & {
+    round: number;
+    url: string | null;
+    commitSha: string | null;
+    submittedAt: Date | null;
+  };
 
 export type Team = {
   unstopId: string;
   name: string;
   world: TeamWorld;
   categories: TeamCategory[];
-  tracks: string[];
-  description: string;
-  repoUrl: string | null;
-  imageUrl: string | null;
-  projectAutoStatus: CheckpointAutoStatus | null;
-  projectAutoFlags: string[];
+  project: Project;
   room: string | null;
   bedsheetsIssued: number;
   panel: string | null;
@@ -48,31 +62,85 @@ export type Team = {
   createdAt: Date;
 };
 
-const checkpointSchema = new Schema<Checkpoint>(
+const hasNoDuplicates = (values: string[]) =>
+  new Set(values).size === values.length;
+
+const resultFields = {
+  autoStatus: {
+    type: String,
+    required: true,
+    enum: [...CHECKPOINT_AUTO_STATUSES],
+    default: "NOT_SUBMITTED" as CheckpointAutoStatus,
+  },
+  autoFlags: { type: [String], default: [] as string[] },
+  autoNotes: { type: [String], default: [] as string[] },
+};
+
+const reviewFields = {
+  reviewStatus: {
+    type: String,
+    default: null,
+    enum: [...CHECKPOINT_REVIEW_STATUSES, null],
+  },
+  reviewNote: { type: String, default: null },
+  reviewedBy: { type: Schema.Types.ObjectId, ref: "Admin", default: null },
+};
+
+const projectSchema = new Schema<Project>(
   {
-    round: { type: Number, required: true, min: 1 },
-    url: { type: String, required: true },
-    commitSha: { type: String, default: null },
-    submittedAt: { type: Date, required: true },
-    autoStatus: {
-      type: String,
-      required: true,
-      enum: CHECKPOINT_AUTO_STATUSES,
+    tracks: {
+      type: [String],
+      default: [] as string[],
+      validate: [
+        {
+          validator: hasNoDuplicates,
+          message: "tracks must not repeat",
+        },
+        {
+          validator: (values: string[]) => values.length <= PROJECT_TRACKS_MAX,
+          message: `a team can pick at most ${PROJECT_TRACKS_MAX} tracks`,
+        },
+      ],
     },
-    autoFlags: { type: [String], default: [] },
-    reviewStatus: {
+    description: {
       type: String,
-      default: null,
-      enum: [...CHECKPOINT_REVIEW_STATUSES, null],
+      default: "",
+      maxlength: TEAM_DESCRIPTION_MAX_LENGTH,
     },
-    reviewNote: { type: String, default: null },
-    reviewedBy: { type: Schema.Types.ObjectId, ref: "Admin", default: null },
+    repoUrl: { type: String, default: null },
+    imageUrl: { type: String, default: null },
+    submittedAt: { type: Date, default: null },
+    ...resultFields,
+    ...reviewFields,
   },
   { _id: false },
 );
 
-const hasNoDuplicates = (values: string[]) =>
-  new Set(values).size === values.length;
+const checkpointSchema = new Schema<Checkpoint>(
+  {
+    round: { type: Number, required: true, min: 1 },
+    url: { type: String, default: null },
+    commitSha: { type: String, default: null },
+    submittedAt: { type: Date, default: null },
+    ...resultFields,
+    ...reviewFields,
+  },
+  { _id: false },
+);
+
+const emptyCheckpoints = (): Checkpoint[] =>
+  CHECKPOINT_ROUNDS.map((round) => ({
+    round,
+    url: null,
+    commitSha: null,
+    submittedAt: null,
+    autoStatus: "NOT_SUBMITTED",
+    autoFlags: [],
+    autoNotes: [],
+    reviewStatus: null,
+    reviewNote: null,
+    reviewedBy: null,
+  }));
 
 const teamSchema = new Schema<Team>(
   {
@@ -103,27 +171,10 @@ const teamSchema = new Schema<Team>(
         message: "categories must not repeat",
       },
     },
-    tracks: {
-      type: [String],
-      default: [],
-      validate: {
-        validator: hasNoDuplicates,
-        message: "tracks must not repeat",
-      },
+    project: {
+      type: projectSchema,
+      default: () => ({}),
     },
-    description: {
-      type: String,
-      default: "",
-      maxlength: TEAM_DESCRIPTION_MAX_LENGTH,
-    },
-    repoUrl: { type: String, default: null },
-    imageUrl: { type: String, default: null },
-    projectAutoStatus: {
-      type: String,
-      default: null,
-      enum: [...CHECKPOINT_AUTO_STATUSES, null],
-    },
-    projectAutoFlags: { type: [String], default: [] },
     room: { type: String, default: null },
     bedsheetsIssued: {
       type: Number,
@@ -137,7 +188,7 @@ const teamSchema = new Schema<Team>(
     panel: { type: String, default: null },
     points: { type: Number, default: 0, min: 0 },
     stars: { type: Number, default: 0, min: 0, max: 5 },
-    checkpoints: { type: [checkpointSchema], default: [] },
+    checkpoints: { type: [checkpointSchema], default: emptyCheckpoints },
   },
   {
     collection: "teams",

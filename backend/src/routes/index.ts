@@ -7,6 +7,7 @@ import { healthRouter } from "./health.routes";
 import { adminParticipantsRouter, meRouter } from "./participant.routes";
 import { roomsRouter } from "./room.routes";
 import { scheduleRouter } from "./schedule.routes";
+import { meTeamRouter } from "./submission.routes";
 import { adminTeamsRouter, deskTeamsRouter } from "./team.routes";
 
 const router = Router();
@@ -14,6 +15,7 @@ const router = Router();
 router.use("/health", healthRouter);
 router.use("/schedule", scheduleRouter);
 router.use("/auth", authRouter);
+router.use("/me/team", meTeamRouter);
 router.use("/me", meRouter);
 router.use("/cards", cardsRouter);
 router.use("/participants", checkinParticipantsRouter);

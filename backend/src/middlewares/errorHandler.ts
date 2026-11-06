@@ -1,6 +1,10 @@
 import type { ErrorRequestHandler } from "express";
 
-import { ERROR_CODES } from "../config/constants";
+import {
+  ERROR_CODES,
+  IMAGE_FIELD_NAME,
+  IMAGE_MAX_BYTES,
+} from "../config/constants";
 import type { ErrorCode } from "../config/constants";
 import { env } from "../config/env";
 import { ApiError } from "../utils/ApiError";
@@ -38,6 +42,33 @@ const asBodyParserError = (error: unknown): Mapped | null => {
       type === "entity.too.large"
         ? ERROR_CODES.PAYLOAD_TOO_LARGE
         : ERROR_CODES.BAD_REQUEST,
+  };
+};
+
+const UPLOAD_MESSAGES: Record<string, string> = {
+  LIMIT_FILE_SIZE: `Image must be at most ${IMAGE_MAX_BYTES / 1024} KB`,
+  LIMIT_FILE_COUNT: "Send exactly one image",
+  LIMIT_UNEXPECTED_FILE: `The image must be sent as the "${IMAGE_FIELD_NAME}" field`,
+};
+
+const asUploadError = (error: unknown): Mapped | null => {
+  const record = asRecord(error);
+  if (!record || record.name !== "MulterError") return null;
+
+  const code = typeof record.code === "string" ? record.code : "";
+
+  if (code === "LIMIT_FILE_SIZE") {
+    return {
+      status: 413,
+      message: UPLOAD_MESSAGES[code]!,
+      code: ERROR_CODES.PAYLOAD_TOO_LARGE,
+    };
+  }
+
+  return {
+    status: 400,
+    message: UPLOAD_MESSAGES[code] ?? "Invalid image upload",
+    code: ERROR_CODES.VALIDATION_ERROR,
   };
 };
 
@@ -100,11 +131,13 @@ export const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
       success: false,
       message: error.message,
       ...(error.code === undefined ? {} : { code: error.code }),
+      ...(error.details === undefined ? {} : { details: error.details }),
     });
     return;
   }
 
-  const mapped = asBodyParserError(error) ?? asMongooseError(error);
+  const mapped =
+    asBodyParserError(error) ?? asUploadError(error) ?? asMongooseError(error);
   if (mapped) {
     // A bad request, not a server fault: one log line, no stack.
     const name = asRecord(error)?.type ?? asRecord(error)?.name ?? "error";

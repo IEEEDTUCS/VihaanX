@@ -42,6 +42,7 @@ export const ROOM_STATUSES = [
 export type RoomStatus = (typeof ROOM_STATUSES)[number];
 
 export const CHECKPOINT_AUTO_STATUSES = [
+  "NOT_SUBMITTED",
   "PENDING_CHECK",
   "VERIFIED",
   "SUSPICIOUS",
@@ -72,6 +73,10 @@ export const ERROR_CODES = {
   NOT_CHECKED_IN: "NOT_CHECKED_IN",
   ROOM_NOT_FOUND: "ROOM_NOT_FOUND",
   NO_ROOM_AVAILABLE: "NO_ROOM_AVAILABLE",
+  TEAM_WORLD_NOT_SET: "TEAM_WORLD_NOT_SET",
+  PROJECT_NOT_SUBMITTED: "PROJECT_NOT_SUBMITTED",
+  WINDOW_CLOSED: "WINDOW_CLOSED",
+  UPLOAD_FAILED: "UPLOAD_FAILED",
   PAYLOAD_TOO_LARGE: "PAYLOAD_TOO_LARGE",
   RATE_LIMITED: "RATE_LIMITED",
 } as const;
@@ -122,3 +127,68 @@ export const ROOM_CAPACITY_MAX = 1_000;
 export const MAX_ROOMS_RETURNED = 200;
 
 export const PHONE_COUNTRY_CODE = "+91";
+
+export const CHECKPOINT_ROUNDS = [1, 2, 3, 4] as const;
+export type CheckpointRound = (typeof CHECKPOINT_ROUNDS)[number];
+export const CHECKPOINT_ROUND_COUNT = CHECKPOINT_ROUNDS.length;
+
+export const PROJECT_TRACKS_MIN = 1;
+export const PROJECT_TRACKS_MAX = 2;
+
+export const GITHUB_API_BASE_URL = "https://api.github.com";
+export const GITHUB_API_ACCEPT = "application/vnd.github+json";
+export const GITHUB_API_VERSION = "2022-11-28";
+export const GITHUB_TIMEOUT_MS = 5_000;
+export const GITHUB_ACTIVITY_PAGE_SIZE = 100;
+
+export const REPO_URL_PATTERN =
+  /^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}))\/([A-Za-z0-9_.-]{1,100}?)(?:\.git)?\/?$/;
+export const COMMIT_URL_PATTERN =
+  /^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}))\/([A-Za-z0-9_.-]{1,100}?)(?:\.git)?\/commit\/([0-9a-fA-F]{7,40})\/?$/;
+export const URL_MAX_LENGTH = 300;
+
+export const PROJECT_MAX_EARLY_COMMITS = 3;
+export const PROJECT_MAX_REPO_SIZE_KB = 500;
+
+export const CHECKPOINT_MAX_CHANGED_LINES = 500;
+export const CHECKPOINT_CODE_DUMP_LINES = 2_000;
+export const CHECKPOINT_MAX_BINARY_SHARE = 0.8;
+export const CHECKPOINT_GENERIC_MESSAGE_LINES = 200;
+export const GENERIC_COMMIT_MESSAGES = [
+  "update",
+  "updates",
+  "updated",
+  "final",
+  "final commit",
+  "done",
+  "fix",
+  "fixes",
+  "fixed",
+  "changes",
+  "change",
+  "commit",
+  "wip",
+  "test",
+  "temp",
+  "asdf",
+  "misc",
+  "stuff",
+  "work",
+  ".",
+] as const;
+
+export const IMAGE_MAX_BYTES = 400 * 1024;
+export const IMAGE_FIELD_NAME = "image";
+export const IMAGE_MIME_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+] as const;
+export const CLOUDINARY_ROOT_FOLDER = "vihaanx";
+export const CLOUDINARY_TIMEOUT_MS = 10_000;
+
+export const SUBMISSION_GRACE_SECONDS_MAX = 3_600;
+
+export const PROJECT_PUBLIC_ID = "project";
+export const CHECKPOINT_PUBLIC_ID_PREFIX = "checkpoint-";
+export const IMAGE_REVIEWED_NOTE = "Image: reviewed manually";

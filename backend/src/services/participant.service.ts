@@ -10,6 +10,7 @@ import { ParticipantModel } from "../models/participant.model";
 import type { Participant } from "../models/participant.model";
 import { TeamModel } from "../models/team.model";
 import type { ListParticipantsQuery } from "../schemas/participant.schema";
+import { toParticipantTeam } from "./submission.service";
 import { ApiError } from "../utils/ApiError";
 import { escapeRegex } from "../utils/regex";
 import { generateRsvpCode } from "../utils/rsvpCode";
@@ -109,21 +110,15 @@ export const getParticipantWithTeam = async (
       checkedInAt: participant.checkedInAt,
       mealsTaken: participant.mealsTaken,
     },
-    team: {
-      id: String(team._id),
-      name: team.name,
-      world: team.world,
-      categories: team.categories,
-      room: team.room,
-      bedsheetsIssued: team.bedsheetsIssued ?? 0,
-      memberCount: members.length,
-      members: members.map((member) => ({
+    team: toParticipantTeam(
+      team,
+      members.map((member) => ({
         id: String(member._id),
         name: member.name,
         role: member.role,
         checkedIn: member.checkedIn,
       })),
-    },
+    ),
   };
 };
 

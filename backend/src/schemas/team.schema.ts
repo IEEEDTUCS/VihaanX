@@ -26,6 +26,12 @@ export const listTeamsQuery = z
   })
   .strict();
 
+export const setBedsheetsBody = z
+  .object({
+    count: z.number().int().min(0),
+  })
+  .strict();
+
 export const teamIdParams = z
   .object({
     id: objectIdSchema,
@@ -33,4 +39,5 @@ export const teamIdParams = z
   .strict();
 
 export type ListTeamsQuery = z.infer<typeof listTeamsQuery>;
+export type SetBedsheetsBody = z.infer<typeof setBedsheetsBody>;
 export type TeamIdParams = z.infer<typeof teamIdParams>;

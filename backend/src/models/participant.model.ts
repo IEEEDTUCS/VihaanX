@@ -21,7 +21,6 @@ export type Participant = {
   checkedIn: boolean;
   checkedInAt: Date | null;
   mealsTaken: string[];
-  bedsheetIssued: boolean;
   refreshTokenHash: string | null;
   tokenVersion: number;
   createdAt: Date;
@@ -87,10 +86,6 @@ const participantSchema = new Schema<Participant>(
     mealsTaken: {
       type: [String],
       default: [],
-    },
-    bedsheetIssued: {
-      type: Boolean,
-      default: false,
     },
     refreshTokenHash: {
       type: String,

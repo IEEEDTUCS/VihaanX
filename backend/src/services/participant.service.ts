@@ -23,7 +23,6 @@ export type PublicParticipant = {
   checkedIn: boolean;
   checkedInAt: Date | null;
   mealsTaken: string[];
-  bedsheetIssued: boolean;
   createdAt: Date;
 };
 
@@ -40,7 +39,6 @@ export const toPublicParticipant = (
   checkedIn: participant.checkedIn,
   checkedInAt: participant.checkedInAt,
   mealsTaken: participant.mealsTaken,
-  bedsheetIssued: participant.bedsheetIssued,
   createdAt: participant.createdAt,
 });
 
@@ -80,6 +78,9 @@ export const revokeParticipantTokens = async (id: string) => {
   );
 };
 
+export const countTeamMembers = async (teamId: string) =>
+  ParticipantModel.countDocuments({ teamId });
+
 export const getParticipantWithTeam = async (
   participantId: string,
   teamId: string,
@@ -107,7 +108,6 @@ export const getParticipantWithTeam = async (
       checkedIn: participant.checkedIn,
       checkedInAt: participant.checkedInAt,
       mealsTaken: participant.mealsTaken,
-      bedsheetIssued: participant.bedsheetIssued,
     },
     team: {
       id: String(team._id),
@@ -115,6 +115,8 @@ export const getParticipantWithTeam = async (
       world: team.world,
       categories: team.categories,
       room: team.room,
+      bedsheetsIssued: team.bedsheetsIssued ?? 0,
+      memberCount: members.length,
       members: members.map((member) => ({
         id: String(member._id),
         name: member.name,
@@ -199,7 +201,6 @@ export const listParticipants = async (query: ListParticipantsQuery) => {
       checkedIn: row.checkedIn,
       checkedInAt: row.checkedInAt,
       mealsTaken: row.mealsTaken,
-      bedsheetIssued: row.bedsheetIssued,
       team: teams.get(String(row.teamId)) ?? null,
     })),
     page: query.page,
@@ -226,7 +227,6 @@ export const listTeamMembersForAdmin = async (teamId: string) => {
     checkedIn: member.checkedIn,
     checkedInAt: member.checkedInAt,
     mealsTaken: member.mealsTaken,
-    bedsheetIssued: member.bedsheetIssued,
   }));
 };
 

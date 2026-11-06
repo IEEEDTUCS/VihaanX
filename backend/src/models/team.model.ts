@@ -40,6 +40,7 @@ export type Team = {
   projectAutoStatus: CheckpointAutoStatus | null;
   projectAutoFlags: string[];
   room: string | null;
+  bedsheetsIssued: number;
   panel: string | null;
   points: number;
   stars: number;
@@ -124,6 +125,15 @@ const teamSchema = new Schema<Team>(
     },
     projectAutoFlags: { type: [String], default: [] },
     room: { type: String, default: null },
+    bedsheetsIssued: {
+      type: Number,
+      default: 0,
+      min: 0,
+      validate: {
+        validator: Number.isInteger,
+        message: "bedsheetsIssued must be a whole number",
+      },
+    },
     panel: { type: String, default: null },
     points: { type: Number, default: 0, min: 0 },
     stars: { type: Number, default: 0, min: 0, max: 5 },

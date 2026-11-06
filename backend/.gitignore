@@ -29,7 +29,8 @@ exports/
 
 
 
-# Printable RSVP / QR card codes (scripts/generateQrCodes, Open #3)
+# Printable QR card codes (scripts/generateCards writes into exports/, which is
+# already ignored above; qr-codes/ covers any images a printer asks for later)
 qr-codes/
 
 # Logs

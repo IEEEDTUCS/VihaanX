@@ -1,12 +1,23 @@
 import { ADMIN_PAGE_SIZE, ERROR_CODES } from "../config/constants";
 import type { TeamCategory, TeamWorld } from "../config/constants";
 import { ParticipantModel } from "../models/participant.model";
+import { RoomModel } from "../models/room.model";
 import { TeamModel } from "../models/team.model";
 import { TEAM_SORT_ORDERS } from "../schemas/team.schema";
 import type { ListTeamsQuery } from "../schemas/team.schema";
 import { ApiError } from "../utils/ApiError";
 import { escapeRegex } from "../utils/regex";
-import { listTeamMembersForAdmin } from "./participant.service";
+import { logActivity } from "./activity.service";
+import { toVolunteerTeam } from "./checkin.service";
+import {
+  countTeamMembers,
+  listTeamMembersForAdmin,
+} from "./participant.service";
+import {
+  releaseSpacesInRoom,
+  reserveSpacesInRoom,
+  teamSpaces,
+} from "./room.service";
 
 export type UpsertTeamInput = {
   unstopId: string;
@@ -71,7 +82,9 @@ export const listTeams = async (query: ListTeamsQuery) => {
 
   const [rows, total] = await Promise.all([
     TeamModel.find(filter)
-      .select("unstopId name world categories room panel points stars")
+      .select(
+        "unstopId name world categories room bedsheetsIssued panel points stars",
+      )
       .sort(TEAM_SORT_ORDERS[query.sort])
       .skip((query.page - 1) * ADMIN_PAGE_SIZE)
       .limit(ADMIN_PAGE_SIZE)
@@ -109,6 +122,7 @@ export const listTeams = async (query: ListTeamsQuery) => {
       world: row.world,
       categories: row.categories,
       room: row.room,
+      bedsheetsIssued: row.bedsheetsIssued ?? 0,
       panel: row.panel,
       points: row.points,
       stars: row.stars,
@@ -143,6 +157,8 @@ export const getTeamForAdmin = async (id: string) => {
       repoUrl: team.repoUrl,
       imageUrl: team.imageUrl,
       room: team.room,
+      bedsheetsIssued: team.bedsheetsIssued ?? 0,
+      memberCount: members.length,
       panel: team.panel,
       points: team.points,
       stars: team.stars,
@@ -189,4 +205,110 @@ export const teamCompositions = async (): Promise<TeamComposition[]> => {
   ]);
 
   return rows;
+};
+
+const teamNotFound = () =>
+  new ApiError(404, "Team not found", ERROR_CODES.NOT_FOUND);
+
+export const setTeamBedsheets = async (
+  actorId: string,
+  teamId: string,
+  count: number,
+) => {
+  const memberCount = await countTeamMembers(teamId);
+
+  if (count > memberCount) {
+    throw new ApiError(
+      400,
+      `A team of ${memberCount} cannot be issued ${count} bedsheets`,
+      ERROR_CODES.VALIDATION_ERROR,
+    );
+  }
+
+  const previous = await TeamModel.findOneAndUpdate(
+    { _id: teamId },
+    { $set: { bedsheetsIssued: count } },
+    { returnDocument: "before", runValidators: true },
+  ).lean();
+
+  if (!previous) throw teamNotFound();
+
+  const changed = (previous.bedsheetsIssued ?? 0) !== count;
+
+  if (changed) {
+    await logActivity({
+      actorId,
+      action: "BEDSHEETS_SET",
+      teamId,
+      details: { from: previous.bedsheetsIssued ?? 0, to: count, memberCount },
+    });
+  }
+
+  return {
+    team: toVolunteerTeam({ ...previous, bedsheetsIssued: count }, memberCount),
+    changed,
+  };
+};
+
+export const moveTeamRoom = async (
+  actorId: string,
+  teamId: string,
+  room: string,
+) => {
+  const team = await TeamModel.findById(teamId).lean();
+
+  if (!team) throw teamNotFound();
+
+  const memberCount = await countTeamMembers(teamId);
+
+  if (team.room === room) {
+    return { team: toVolunteerTeam(team, memberCount), changed: false };
+  }
+
+  const spaces = teamSpaces(memberCount);
+  const reserved = await reserveSpacesInRoom(room, spaces);
+
+  if (!reserved) {
+    const exists = await RoomModel.exists({ number: room });
+
+    if (!exists) {
+      throw new ApiError(404, "Room not found", ERROR_CODES.ROOM_NOT_FOUND);
+    }
+
+    throw new ApiError(
+      409,
+      `Room ${room} does not have ${spaces} free spaces`,
+      ERROR_CODES.NO_ROOM_AVAILABLE,
+    );
+  }
+
+  const moved = await TeamModel.updateOne(
+    { _id: teamId, room: team.room },
+    { $set: { room } },
+  );
+
+  if (moved.matchedCount === 0) {
+    await releaseSpacesInRoom(room, spaces);
+    throw new ApiError(
+      409,
+      "The team's room changed while this move was in flight; try again",
+      ERROR_CODES.CONFLICT,
+    );
+  }
+
+  if (team.room !== null) {
+    await releaseSpacesInRoom(team.room, spaces);
+  }
+
+  await logActivity({
+    actorId,
+    action: "ROOM_CHANGED",
+    teamId,
+    details: { from: team.room, to: room, spaces },
+  });
+
+  return {
+    team: toVolunteerTeam({ ...team, room }, memberCount),
+    changed: true,
+  };
 };

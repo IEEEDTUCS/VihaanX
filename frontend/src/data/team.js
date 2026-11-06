@@ -45,7 +45,7 @@ export const eventLeads = [
   },
   {
     id: "lead-3",
-    name: "Vansh",
+    name: "Vansh Soni",
     role: "Lead Organizer",
     tagline: "Technical Director",
     code: "CMD // 03",

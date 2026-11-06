@@ -41,7 +41,7 @@ export const setRefreshTokenHash = async (id: string, hash: string) =>
   AdminModel.findOneAndUpdate(
     { _id: id },
     { $set: { refreshTokenHash: hash } },
-    { new: true, projection: "+tokenVersion" },
+    { returnDocument: "after", projection: "+tokenVersion" },
   ).lean();
 
 export const rotateRefreshTokenHash = async (
@@ -52,7 +52,7 @@ export const rotateRefreshTokenHash = async (
   AdminModel.findOneAndUpdate(
     { _id: id, refreshTokenHash: currentHash },
     { $set: { refreshTokenHash: nextHash } },
-    { new: true, projection: "+tokenVersion" },
+    { returnDocument: "after", projection: "+tokenVersion" },
   ).lean();
 
 export const revokeAdminTokens = async (id: string) => {

@@ -2,6 +2,7 @@ import type { Request, RequestHandler } from "express";
 
 import { ERROR_CODES } from "../config/constants";
 import { findAdminForAuth } from "../services/admin.service";
+import { findParticipantForAuth } from "../services/participant.service";
 import { accessTokenPayloadSchema } from "../schemas/auth.schema";
 import { ApiError } from "../utils/ApiError";
 import { verifyAccessToken } from "../utils/token";
@@ -39,23 +40,32 @@ export const authenticate: RequestHandler = async (req, _res, next) => {
     throw unauthenticated();
   }
 
-  if (claims.data.kind !== "admin") {
-    throw unauthenticated();
+  if (claims.data.kind === "admin") {
+    const admin = await findAdminForAuth(claims.data.sub);
+    if (!admin || claims.data.ver !== (admin.tokenVersion ?? 0)) {
+      throw unauthenticated();
+    }
+
+    req.auth = {
+      id: String(admin._id),
+      kind: "admin",
+      role: admin.role,
+    };
+
+    next();
+    return;
   }
 
-  const admin = await findAdminForAuth(claims.data.sub);
-  if (!admin) {
-    throw unauthenticated();
-  }
-
-  if (claims.data.ver !== (admin.tokenVersion ?? 0)) {
+  const participant = await findParticipantForAuth(claims.data.sub);
+  if (!participant || claims.data.ver !== (participant.tokenVersion ?? 0)) {
     throw unauthenticated();
   }
 
   req.auth = {
-    id: String(admin._id),
-    kind: "admin",
-    role: admin.role,
+    id: String(participant._id),
+    kind: "participant",
+    role: participant.role,
+    teamId: String(participant.teamId),
   };
 
   next();

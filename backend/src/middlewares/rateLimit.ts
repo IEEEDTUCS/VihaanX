@@ -21,35 +21,41 @@ export const apiRateLimiter = rateLimit({
   },
 });
 
-const loginKey = (req: { ip?: string; body?: unknown }) => {
-  const ip = ipKeyGenerator(req.ip ?? "");
+const loginKeyFor =
+  (field: "username" | "email") => (req: { ip?: string; body?: unknown }) => {
+    const ip = ipKeyGenerator(req.ip ?? "");
 
-  const body = req.body;
-  const raw =
-    typeof body === "object" &&
-    body !== null &&
-    "username" in body &&
-    typeof (body as { username: unknown }).username === "string"
-      ? (body as { username: string }).username
-      : "";
+    const body = req.body;
+    const raw =
+      typeof body === "object" &&
+      body !== null &&
+      field in body &&
+      typeof (body as Record<string, unknown>)[field] === "string"
+        ? ((body as Record<string, string>)[field] as string)
+        : "";
 
-  const username = raw
-    .trim()
-    .toLowerCase()
-    .slice(0, LOGIN_RATE_LIMIT_KEY_MAX_LENGTH);
+    const identifier = raw
+      .trim()
+      .toLowerCase()
+      .slice(0, LOGIN_RATE_LIMIT_KEY_MAX_LENGTH);
 
-  return `${ip}:${username}`;
-};
+    return `${ip}:${identifier}`;
+  };
 
-export const loginRateLimiter = rateLimit({
-  windowMs: LOGIN_RATE_LIMIT_WINDOW_MS,
-  limit: LOGIN_RATE_LIMIT_MAX_ATTEMPTS,
-  standardHeaders: "draft-8",
-  legacyHeaders: false,
-  keyGenerator: loginKey,
-  message: {
-    success: false,
-    message: "Too many login attempts, please try again later",
-    code: ERROR_CODES.RATE_LIMITED,
-  },
-});
+const loginLimiter = (field: "username" | "email") =>
+  rateLimit({
+    windowMs: LOGIN_RATE_LIMIT_WINDOW_MS,
+    limit: LOGIN_RATE_LIMIT_MAX_ATTEMPTS,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    keyGenerator: loginKeyFor(field),
+    message: {
+      success: false,
+      message: "Too many login attempts, please try again later",
+      code: ERROR_CODES.RATE_LIMITED,
+    },
+  });
+
+export const loginRateLimiter = loginLimiter("username");
+
+export const participantLoginRateLimiter = loginLimiter("email");

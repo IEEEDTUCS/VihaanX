@@ -1,0 +1,35 @@
+import type { RequestHandler } from "express";
+
+import { getAuth } from "../middlewares/authenticate";
+import { ERROR_CODES } from "../config/constants";
+import type { ListParticipantsQuery } from "../schemas/participant.schema";
+import {
+  getParticipantWithTeam,
+  listParticipants,
+} from "../services/participant.service";
+import { ApiError } from "../utils/ApiError";
+import { ApiResponse } from "../utils/ApiResponse";
+
+export const getMe: RequestHandler = async (req, res) => {
+  const auth = getAuth(req);
+
+  if (auth.kind !== "participant") {
+    throw new ApiError(
+      403,
+      "You are not allowed to do that",
+      ERROR_CODES.FORBIDDEN,
+    );
+  }
+
+  const result = await getParticipantWithTeam(auth.id, auth.teamId);
+
+  res.status(200).json(new ApiResponse(result));
+};
+
+export const getParticipants: RequestHandler = async (req, res) => {
+  const query = req.validated?.query as ListParticipantsQuery;
+
+  const result = await listParticipants(query);
+
+  res.status(200).json(new ApiResponse(result));
+};

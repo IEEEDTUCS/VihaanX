@@ -4,15 +4,12 @@ import jwt from "jsonwebtoken";
 import type { SignOptions } from "jsonwebtoken";
 
 import { JWT_ALGORITHM } from "../config/constants";
-import type { AdminRole, AuthKind } from "../config/constants";
+import type { AdminRole, AuthKind, ParticipantRole } from "../config/constants";
 import { env } from "../config/env";
 
-export type AccessTokenPayload = {
-  sub: string;
-  kind: AuthKind;
-  role: AdminRole;
-  ver: number;
-};
+export type AccessTokenPayload =
+  | { sub: string; kind: "admin"; role: AdminRole; ver: number }
+  | { sub: string; kind: "participant"; role: ParticipantRole; ver: number };
 
 export type RefreshTokenPayload = {
   sub: string;

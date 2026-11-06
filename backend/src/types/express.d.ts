@@ -1,11 +1,19 @@
-import type { AdminRole, AuthKind } from "../config/constants";
+import type { AdminRole, ParticipantRole, AuthRole } from "../config/constants";
 
-export type RequestAuth = {
+export type AdminAuth = {
   id: string;
-  kind: AuthKind;
+  kind: "admin";
   role: AdminRole;
-  teamId?: string;
 };
+
+export type ParticipantAuth = {
+  id: string;
+  kind: "participant";
+  role: ParticipantRole;
+  teamId: string;
+};
+
+export type RequestAuth = AdminAuth | ParticipantAuth;
 
 export type RequestValidated = {
   params?: unknown;

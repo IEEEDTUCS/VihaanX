@@ -15,6 +15,10 @@ dist/
 # Participant data.
 *.csv
 *.tsv
+
+# Test fixtures are invented data and ARE committed - the integration tests
+# cannot run on a fresh clone without them.
+!tests/fixtures/*.csv
 dump/
 dumps/
 backups/

@@ -1,11 +1,11 @@
 import type { RequestHandler } from "express";
 
 import { ERROR_CODES } from "../config/constants";
-import type { AdminRole } from "../config/constants";
+import type { AuthRole } from "../config/constants";
 import { getAuth } from "./authenticate";
 import { ApiError } from "../utils/ApiError";
 
-export const requireRole = (...roles: AdminRole[]): RequestHandler => {
+export const requireRole = (...roles: AuthRole[]): RequestHandler => {
   return (req, _res, next) => {
     const auth = getAuth(req);
 

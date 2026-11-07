@@ -4,10 +4,13 @@ import { deskOnly } from "../middlewares/chains";
 import { validate } from "../middlewares/validate";
 import {
   deleteMeal,
+  deleteShortlist,
   getCard,
+  patchTable,
   postCardLink,
   postCheckIn,
   postMeal,
+  postShortlist,
   postUndoCheckIn,
 } from "../controllers/checkin.controller";
 import {
@@ -15,6 +18,7 @@ import {
   linkCardBody,
   participantIdParams,
   participantMealParams,
+  tableNoBody,
 } from "../schemas/checkin.schema";
 
 const cards = Router();
@@ -57,6 +61,24 @@ participants.delete(
   "/:id/meals/:mealId",
   validate({ params: participantMealParams }),
   deleteMeal,
+);
+
+participants.post(
+  "/:id/shortlist",
+  validate({ params: participantIdParams }),
+  postShortlist,
+);
+
+participants.delete(
+  "/:id/shortlist",
+  validate({ params: participantIdParams }),
+  deleteShortlist,
+);
+
+participants.patch(
+  "/:id/table",
+  validate({ params: participantIdParams, body: tableNoBody }),
+  patchTable,
 );
 
 export const checkinParticipantsRouter = participants;

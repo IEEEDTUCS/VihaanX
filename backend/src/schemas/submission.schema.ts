@@ -3,6 +3,7 @@ import { z } from "zod";
 import {
   CHECKPOINT_ROUNDS,
   COMMIT_URL_PATTERN,
+  PPT_URL_MAX_LENGTH,
   PROJECT_TRACKS_MAX,
   PROJECT_TRACKS_MIN,
   REPO_URL_PATTERN,
@@ -98,3 +99,24 @@ export type HardwareProjectBody = z.infer<
 >;
 export type SoftwareCheckpointBody = z.infer<typeof softwareCheckpointBody>;
 export type CheckpointRoundParams = z.infer<typeof checkpointRoundParams>;
+
+export const pptBody = z
+  .object({
+    pptUrl: z
+      .string()
+      .trim()
+      .min(1)
+      .max(PPT_URL_MAX_LENGTH)
+      .url("must be a valid URL"),
+  })
+  .strict();
+
+export const specialChallengesBody = z
+  .object({
+    specialChallenge1: z.boolean(),
+    specialChallenge2: z.boolean(),
+  })
+  .strict();
+
+export type PptBody = z.infer<typeof pptBody>;
+export type SpecialChallengesBody = z.infer<typeof specialChallengesBody>;

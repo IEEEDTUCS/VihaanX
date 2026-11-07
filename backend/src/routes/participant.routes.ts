@@ -6,17 +6,29 @@ import {
   getMe,
   getParticipants,
   getParticipantsExport,
+  putPpt,
+  putSpecialChallenges,
 } from "../controllers/participant.controller";
 import {
   exportParticipantsQuery,
   listParticipantsQuery,
 } from "../schemas/participant.schema";
+import {
+  pptBody,
+  specialChallengesBody,
+} from "../schemas/submission.schema";
 
 const me = Router();
 
 me.use(...participantOnly);
 
 me.get("/", getMe);
+me.put("/team/ppt", validate({ body: pptBody }), putPpt);
+me.put(
+  "/team/special-challenges",
+  validate({ body: specialChallengesBody }),
+  putSpecialChallenges,
+);
 
 export const meRouter = me;
 

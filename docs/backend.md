@@ -7,7 +7,7 @@ It is an ESM Node.js application built with Express 5, Mongoose, and Zod.
 
 - Node.js `>=22.12`
 - npm, using the committed `backend/package-lock.json`
-- MongoDB, normally started with [`backend/docker-compose.yml`](../backend/docker-compose.yml)
+- MongoDB, normally started with [`backend/docker-compose.dev.yml`](../backend/docker-compose.dev.yml)
 - The API process runs on the host with `npm run dev`; Docker is only used for MongoDB
 - The default local port is `4000`
 - Development data is stored in the `vihaanx-dev` MongoDB database
@@ -15,7 +15,7 @@ It is an ESM Node.js application built with Express 5, Mongoose, and Zod.
 From the repository root:
 
 ```bash
-docker compose -f backend/docker-compose.yml up -d
+docker compose -f backend/docker-compose.dev.yml up -d
 cd backend
 npm ci
 cp .env.example .env
@@ -36,14 +36,14 @@ npm run build      # Production build
 Stop MongoDB while keeping local data:
 
 ```bash
-docker compose -f docker-compose.yml stop
+docker compose -f docker-compose.dev.yml stop
 ```
 
 Remove the container and its named data volume only when local data can be
 discarded:
 
 ```bash
-docker compose -f docker-compose.yml down -v
+docker compose -f docker-compose.dev.yml down -v
 ```
 
 ## Configuration

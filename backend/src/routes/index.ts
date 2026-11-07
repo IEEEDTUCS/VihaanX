@@ -7,6 +7,7 @@ import { activityRouter } from "./activity.routes";
 import { adminRouter } from "./admin.routes";
 import { authRouter } from "./auth.routes";
 import { cardsRouter, checkinParticipantsRouter } from "./checkin.routes";
+import { deskRouter } from "./desk.routes";
 import { healthRouter } from "./health.routes";
 import { judgingRouter } from "./judging.routes";
 import { adminParticipantsRouter, meRouter } from "./participant.routes";
@@ -30,6 +31,7 @@ router.use("/schedule", tag("/schedule"), scheduleRouter);
 router.use("/auth", tag("/auth"), noStore, authRouter);
 router.use("/me/team", tag("/me/team"), noStore, meTeamRouter);
 router.use("/me", tag("/me"), noStore, meRouter);
+router.use("/desk", deskRouter);
 router.use("/cards", tag("/cards"), noStore, cardsRouter);
 router.use(
   "/participants",

@@ -96,6 +96,8 @@ export type TeamStatusFilter = (typeof TEAM_STATUS_FILTERS)[number];
 
 export const ACTIVITY_ACTIONS = [
   "CARD_LINKED",
+  "CARD_REPLACED",
+  "PARTICIPANT_UPDATED",
   "CHECKED_IN",
   "CHECK_IN_UNDONE",
   "MEAL_SERVED",

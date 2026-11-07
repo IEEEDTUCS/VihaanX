@@ -8,7 +8,8 @@ import type {
   ParticipantMealParams,
   TableNoBody,
 } from "../schemas/checkin.schema";
-import { getCardHolder, linkCard } from "../services/card.service";
+import { getCardHolder } from "../services/card.service";
+import { linkAndAllocate } from "../services/deskAllocation.service";
 import {
   checkInParticipant,
   serveMeal,
@@ -33,7 +34,7 @@ export const postCardLink: RequestHandler = async (req, res) => {
   const params = req.validated?.params as CardCodeParams;
   const body = req.validated?.body as LinkCardBody;
 
-  const result = await linkCard(auth.id, params.code, body.rsvpCode);
+  const result = await linkAndAllocate(auth.id, params.code, body.rsvpCode);
 
   res.status(200).json(new ApiResponse(result));
 };

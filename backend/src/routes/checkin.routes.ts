@@ -40,18 +40,6 @@ const participants = Router();
 participants.use(...deskOnly);
 
 participants.post(
-  "/:id/check-in",
-  validate({ params: participantIdParams }),
-  postCheckIn,
-);
-
-participants.post(
-  "/:id/undo-check-in",
-  validate({ params: participantIdParams }),
-  postUndoCheckIn,
-);
-
-participants.post(
   "/:id/meals/:mealId",
   validate({ params: participantMealParams }),
   postMeal,
@@ -59,6 +47,7 @@ participants.post(
 
 participants.delete(
   "/:id/meals/:mealId",
+  requireRole("SUPER_ADMIN"),
   validate({ params: participantMealParams }),
   deleteMeal,
 );

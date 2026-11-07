@@ -135,6 +135,7 @@ export const toParticipantTeam = (team: TeamRecord, members: TeamMember[]) => ({
   world: team.world,
   categories: team.categories,
   room: team.room,
+  tables: team.tables ?? [],
   tableNo: team.tableNo ?? null,
   panel: team.panel ?? null,
   bedsheetsIssued: team.bedsheetsIssued ?? 0,

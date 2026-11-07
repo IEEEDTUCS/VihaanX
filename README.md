@@ -87,3 +87,5 @@ More backend architecture and API notes are in [`docs/backend.md`](docs/backend.
 
 The frontend has its own package and development workflow. See
 [`frontend/README.md`](frontend/README.md).
+
+Volunteer dashboard setup and room inventory instructions are in [the backend guide](docs/backend.md#volunteer-dashboard).

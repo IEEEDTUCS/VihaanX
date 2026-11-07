@@ -59,6 +59,8 @@ export type Team = {
   categories: TeamCategory[];
   project: Project;
   room: string | null;
+  tables: string[];
+  allocationRosterSize: number | null;
   bedsheetsIssued: number;
   panel: string | null;
   points: number;
@@ -183,6 +185,8 @@ const teamSchema = new Schema<Team>(
       default: () => ({}),
     },
     room: { type: String, default: null },
+    tables: { type: [String], default: [] },
+    allocationRosterSize: { type: Number, default: null },
     bedsheetsIssued: {
       type: Number,
       default: 0,

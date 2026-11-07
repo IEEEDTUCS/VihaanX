@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 import { ROOM_CAPACITY_MAX, ROOM_NUMBER_MAX_LENGTH } from "../config/constants";
 
@@ -7,6 +7,9 @@ export type Room = {
   capacity: number;
   available: number;
   hardware: boolean;
+  small: boolean;
+  enabled: boolean;
+  slots: { label: string; row: string; enabled: boolean; teamId: Types.ObjectId | null }[];
   createdAt: Date;
 };
 
@@ -42,6 +45,9 @@ const roomSchema = new Schema<Room>(
       type: Boolean,
       default: false,
     },
+    small: { type: Boolean, default: false },
+    enabled: { type: Boolean, default: true },
+    slots: { type: [{ label: { type: String, required: true }, row: { type: String, required: true }, enabled: { type: Boolean, default: true }, teamId: { type: Schema.Types.ObjectId, ref: "Team", default: null }, _id: false }], default: [] },
   },
   {
     collection: "rooms",

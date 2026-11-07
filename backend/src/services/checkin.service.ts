@@ -16,6 +16,8 @@ type TeamRecord = Team & { _id: unknown };
 export type VolunteerParticipant = {
   id: string;
   name: string;
+  email: string;
+  college: string;
   role: ParticipantRole;
   checkedIn: boolean;
   checkedInAt: Date | null;
@@ -27,6 +29,7 @@ export type VolunteerTeam = {
   name: string;
   world: string;
   room: string | null;
+  tables: string[];
   bedsheetsIssued: number;
   memberCount: number;
 };
@@ -41,6 +44,8 @@ export const toVolunteerParticipant = (
 ): VolunteerParticipant => ({
   id: String(participant._id),
   name: participant.name,
+  email: participant.email,
+  college: participant.college,
   role: participant.role,
   checkedIn: participant.checkedIn,
   checkedInAt: participant.checkedInAt,
@@ -55,6 +60,7 @@ export const toVolunteerTeam = (
   name: team.name,
   world: team.world,
   room: team.room,
+  tables: team.tables ?? [],
   bedsheetsIssued: team.bedsheetsIssued ?? 0,
   memberCount,
 });

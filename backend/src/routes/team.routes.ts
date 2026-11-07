@@ -83,10 +83,6 @@ desk.put(
   putTeamBedsheets,
 );
 
-desk.patch(
-  "/:id/room",
-  validate({ params: teamIdParams, body: setTeamRoomBody }),
-  patchTeamRoom,
-);
+
 
 export const deskTeamsRouter = desk;

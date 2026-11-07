@@ -22,7 +22,7 @@ const requireCard = async (code: string) => {
 
 export const getCardHolder = async (code: string) => {
   const [card, participant] = await Promise.all([
-    CardModel.findOne({ code }).select("code").lean(),
+    CardModel.findOne({ code, revokedAt: null }).select("code").lean(),
     ParticipantModel.findOne({ qrCode: code }).lean(),
   ]);
 

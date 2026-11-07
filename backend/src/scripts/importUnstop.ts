@@ -20,10 +20,10 @@ import {
   resolveColumns,
   writeExport,
 } from "../utils/csv";
-import { normalisePhone } from "../utils/phone";
 import { confirmTarget } from "./confirmTarget";
 import {
   UNSTOP_IMPORT_USAGE,
+  leaderPhone,
   orderRowsForUpsert,
   parseUnstopOptions,
 } from "./importHelpers";
@@ -80,16 +80,15 @@ const main = async () => {
       return;
     }
 
-    let phone: string | null = null;
+    const { phone, problem } = leaderPhone(parsed.data.role, parsed.data.phone);
 
-    if (parsed.data.role === "LEADER" && parsed.data.phone.length > 0) {
-      phone = normalisePhone(parsed.data.phone);
-      if (phone === null) {
-        invalidPhones.push(
-          `line ${line}: ${parsed.data.teamId} ${parsed.data.name} ` +
-            `("${parsed.data.phone}") stored as null`,
-        );
-      }
+    if (problem !== null) {
+      const shown = problem === "blank" ? "blank" : `"${parsed.data.phone}"`;
+
+      invalidPhones.push(
+        `line ${line}: ${parsed.data.teamId} ${parsed.data.name} ` +
+          `(${shown}) stored as null`,
+      );
     }
 
     if (seenEmails.has(parsed.data.email)) {

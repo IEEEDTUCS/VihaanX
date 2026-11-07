@@ -5,8 +5,10 @@ import { env } from "./env";
 export const MEAL_SLOTS = [
   { id: "lunch-d1", label: "Lunch, day 1" },
   { id: "dinner-d1", label: "Dinner, day 1" },
-  { id: "midnight-d1", label: "Midnight snack" },
+  { id: "midnight-d1", label: "Midnight snack 1" },
+  { id: "midnight-2-d1", label: "Midnight snack 2" },
   { id: "breakfast-d2", label: "Breakfast, day 2" },
+  { id: "lunch-d2", label: "Lunch, day 2" },
 ] as const;
 
 export type MealSlot = (typeof MEAL_SLOTS)[number];

@@ -4,6 +4,7 @@ import {
   CHECKPOINT_AUTO_STATUSES,
   CHECKPOINT_REVIEW_STATUSES,
   CHECKPOINT_ROUNDS,
+  STUCK_CHECK_AFTER_MS,
   TEAM_WORLDS,
 } from "../config/constants";
 import type {
@@ -48,6 +49,7 @@ type TeamFacets = {
   checkpointReview: RoundReviewCount[];
   checkFailed: Counted[];
   unreviewedSuspicious: Counted[];
+  stuckPendingCheck: Counted[];
 };
 
 type RoomFacets = {
@@ -83,6 +85,38 @@ const unreviewedSuspicious = {
     },
   ],
 };
+
+const stuckBefore = (cutoff: Date) => ({
+  $add: [
+    {
+      $cond: [
+        {
+          $and: [
+            { $eq: ["$project.autoStatus", "PENDING_CHECK"] },
+            { $ne: ["$project.submittedAt", null] },
+            { $lt: ["$project.submittedAt", cutoff] },
+          ],
+        },
+        1,
+        0,
+      ],
+    },
+    {
+      $size: {
+        $filter: {
+          input: { $ifNull: ["$checkpoints", []] },
+          cond: {
+            $and: [
+              { $eq: ["$$this.autoStatus", "PENDING_CHECK"] },
+              { $ne: ["$$this.submittedAt", null] },
+              { $lt: ["$$this.submittedAt", cutoff] },
+            ],
+          },
+        },
+      },
+    },
+  ],
+});
 
 const peoplePipeline: PipelineStage[] = [
   {
@@ -120,7 +154,7 @@ const peoplePipeline: PipelineStage[] = [
   },
 ];
 
-const teamPipeline: PipelineStage[] = [
+const teamPipeline = (cutoff: Date): PipelineStage[] => [
   {
     $facet: {
       total: [{ $count: "count" }],
@@ -174,6 +208,10 @@ const teamPipeline: PipelineStage[] = [
       unreviewedSuspicious: [
         { $match: unreviewedSuspicious },
         { $count: "count" },
+      ],
+      stuckPendingCheck: [
+        { $project: { stuck: stuckBefore(cutoff) } },
+        { $group: { _id: null, count: { $sum: "$stuck" } } },
       ],
     },
   },
@@ -232,7 +270,9 @@ const reviewTally = (lookup: Map<string, number>, prefix = "") => ({
 export const getStats = async () => {
   const [people, teams, rooms] = await Promise.all([
     ParticipantModel.aggregate<PeopleFacets>(peoplePipeline),
-    TeamModel.aggregate<TeamFacets>(teamPipeline),
+    TeamModel.aggregate<TeamFacets>(
+      teamPipeline(new Date(Date.now() - STUCK_CHECK_AFTER_MS)),
+    ),
     RoomModel.aggregate<RoomFacets>(roomPipeline),
   ]);
 
@@ -323,6 +363,7 @@ export const getStats = async () => {
       checkedInTeamsWithoutRoom: count(peopleFacets.presentWithoutRoom),
       teamsWithCheckFailed: count(teamFacets.checkFailed),
       teamsWithUnreviewedSuspicious: count(teamFacets.unreviewedSuspicious),
+      submissionsStuckPendingCheck: count(teamFacets.stuckPendingCheck),
     },
   };
 };

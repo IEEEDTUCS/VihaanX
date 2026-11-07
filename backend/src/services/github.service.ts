@@ -18,6 +18,7 @@ import {
   REPO_URL_PATTERN,
 } from "../config/constants";
 import { env } from "../config/env";
+import { logger } from "../config/logger";
 import type { SubmissionWindow } from "../config/event";
 import { effectiveClose } from "../config/event";
 import type { SubmissionResult } from "../models/team.model";
@@ -31,16 +32,16 @@ type Fetched<T> =
   | { ok: true; data: T }
   | { ok: false; status: number | null; remaining: string | null };
 
-type RepoResponse = {
+export type RepoResponse = {
   created_at: string;
   size: number;
   private: boolean;
   full_name: string;
 };
 
-type CommitFile = { patch?: string; status?: string };
+export type CommitFile = { patch?: string; status?: string };
 
-type CommitResponse = {
+export type CommitResponse = {
   sha: string;
   commit: { message: string; committer?: { date?: string } };
   stats?: { total?: number };
@@ -70,8 +71,15 @@ const get = async <T>(
   path: string,
   params?: Record<string, string | number>,
 ): Promise<Fetched<T>> => {
+  const startedAt = Date.now();
+
   try {
     const response = await client.get<T>(path, { params });
+    logger.debug(
+      { path, status: response.status, durationMs: Date.now() - startedAt },
+      "github call",
+    );
+
     return { ok: true, data: response.data };
   } catch (error) {
     const status = axios.isAxiosError(error)
@@ -88,9 +96,14 @@ const get = async <T>(
       status === 403 ||
       status === 401
     ) {
-      console.warn(
-        `GitHub GET ${path} failed: status=${status ?? "none"} ` +
-          `rateLimitRemaining=${remaining ?? "unknown"}`,
+      logger.warn(
+        {
+          path,
+          status,
+          rateLimitRemaining: remaining,
+          durationMs: Date.now() - startedAt,
+        },
+        "github call failed",
       );
     }
 
@@ -123,7 +136,7 @@ export const shaMatches = (a: string | null, b: string | null) => {
 
 const COMMIT_NOT_FOUND_STATUS = 422;
 
-const failed = (commitSha: string | null = null): CheckResult => ({
+export const failed = (commitSha: string | null = null): CheckResult => ({
   autoStatus: "CHECK_FAILED",
   autoFlags: [],
   autoNotes: ["The automatic check could not be completed"],
@@ -141,55 +154,70 @@ const decide = (
   commitSha,
 });
 
+export const notARepoUrl = (): CheckResult => ({
+  autoStatus: "SUSPICIOUS",
+  autoFlags: ["Not a GitHub repository URL"],
+  autoNotes: [],
+  commitSha: null,
+});
+
+export const repoNotFound = (): CheckResult => ({
+  autoStatus: "SUSPICIOUS",
+  autoFlags: ["Repo not found or private"],
+  autoNotes: [],
+  commitSha: null,
+});
+
+export const judgeProjectRepo = (
+  repo: RepoResponse,
+  commitCount: number,
+  eventStart: Date,
+): CheckResult => {
+  const flags: string[] = [];
+  const notes: string[] = [];
+
+  if (repo.private) {
+    flags.push("Repo not found or private");
+  }
+
+  const createdAt = new Date(repo.created_at);
+
+  if (!Number.isNaN(createdAt.getTime()) && createdAt < eventStart) {
+    flags.push(
+      `Repo was created before the event started (${repo.created_at})`,
+    );
+  }
+
+  if (repo.size > PROJECT_MAX_REPO_SIZE_KB) {
+    notes.push(
+      `Repo is ${repo.size} KB, over the ` +
+        `${PROJECT_MAX_REPO_SIZE_KB} KB expected for a new project`,
+    );
+  }
+
+  if (commitCount > PROJECT_MAX_EARLY_COMMITS) {
+    notes.push(
+      `Repo already had more than ${PROJECT_MAX_EARLY_COMMITS} commits at ` +
+        "submission",
+    );
+  }
+
+  return decide(flags, notes);
+};
+
 export const checkProjectRepo = async (
   repoUrl: string,
   eventStart: Date,
 ): Promise<CheckResult> => {
   const ref = parseRepoUrl(repoUrl);
 
-  if (!ref) {
-    return {
-      autoStatus: "SUSPICIOUS",
-      autoFlags: ["Not a GitHub repository URL"],
-      autoNotes: [],
-      commitSha: null,
-    };
-  }
+  if (!ref) return notARepoUrl();
 
   const repo = await get<RepoResponse>(`/repos/${ref.owner}/${ref.repo}`);
 
   if (!repo.ok) {
-    if (repo.status === 404) {
-      return {
-        autoStatus: "SUSPICIOUS",
-        autoFlags: ["Repo not found or private"],
-        autoNotes: [],
-        commitSha: null,
-      };
-    }
+    if (repo.status === 404) return repoNotFound();
     return failed();
-  }
-
-  const flags: string[] = [];
-  const notes: string[] = [];
-
-  if (repo.data.private) {
-    flags.push("Repo not found or private");
-  }
-
-  const createdAt = new Date(repo.data.created_at);
-
-  if (!Number.isNaN(createdAt.getTime()) && createdAt < eventStart) {
-    flags.push(
-      `Repo was created before the event started (${repo.data.created_at})`,
-    );
-  }
-
-  if (repo.data.size > PROJECT_MAX_REPO_SIZE_KB) {
-    notes.push(
-      `Repo is ${repo.data.size} KB, over the ` +
-        `${PROJECT_MAX_REPO_SIZE_KB} KB expected for a new project`,
-    );
   }
 
   const commits = await get<unknown[]>(
@@ -201,16 +229,11 @@ export const checkProjectRepo = async (
     return failed();
   }
 
-  const commitCount = commits.ok ? commits.data.length : 0;
-
-  if (commitCount > PROJECT_MAX_EARLY_COMMITS) {
-    notes.push(
-      `Repo already had more than ${PROJECT_MAX_EARLY_COMMITS} commits at ` +
-        "submission",
-    );
-  }
-
-  return decide(flags, notes);
+  return judgeProjectRepo(
+    repo.data,
+    commits.ok ? commits.data.length : 0,
+    eventStart,
+  );
 };
 
 const pushTime = async (ref: CommitRef): Promise<Date | null> => {
@@ -249,66 +272,59 @@ export type CheckCommitInput = {
   usedShas: { round: number; commitSha: string }[];
 };
 
-export const checkCommit = async (
-  input: CheckCommitInput,
-): Promise<CheckResult> => {
-  const ref = parseCommitUrl(input.commitUrl);
+export const notACommitUrl = (): CheckResult => ({
+  autoStatus: "SUSPICIOUS",
+  autoFlags: ["Not a GitHub commit URL"],
+  autoNotes: [],
+  commitSha: null,
+});
 
-  if (!ref) {
-    return {
-      autoStatus: "SUSPICIOUS",
-      autoFlags: ["Not a GitHub commit URL"],
-      autoNotes: [],
-      commitSha: null,
-    };
-  }
-
+export const commitPreflightFlags = (
+  ref: CommitRef,
+  projectRepoUrl: string | null,
+  usedShas: { round: number; commitSha: string }[],
+): string[] => {
   const flags: string[] = [];
-  const notes: string[] = [];
-
-  const projectRef = input.projectRepoUrl
-    ? parseRepoUrl(input.projectRepoUrl)
-    : null;
+  const projectRef = projectRepoUrl ? parseRepoUrl(projectRepoUrl) : null;
 
   if (!projectRef || !sameRepo(ref, projectRef)) {
     flags.push("Commit is not from the team's project repo");
   }
 
-  for (const used of input.usedShas) {
+  for (const used of usedShas) {
     if (shaMatches(used.commitSha, ref.sha)) {
       flags.push(`Same commit as round ${used.round}`);
     }
   }
 
-  const commit = await get<CommitResponse>(
-    `/repos/${ref.owner}/${ref.repo}/commits/${ref.sha}`,
-  );
+  return flags;
+};
 
-  if (!commit.ok) {
-    if (commit.status === 404 || commit.status === COMMIT_NOT_FOUND_STATUS) {
-      flags.push("Repo or commit not found");
-      return decide(flags, notes, ref.sha);
-    }
+export type JudgeCommitInput = {
+  commit: CommitResponse;
+  fallbackSha: string;
+  pushedAt: Date | null;
+  preflight: string[];
+  window: SubmissionWindow;
+  graceSeconds: number;
+};
 
-    if (flags.length > 0) {
-      return decide(flags, notes, ref.sha);
-    }
+export const judgeCommit = (input: JudgeCommitInput): CheckResult => {
+  const flags = [...input.preflight];
+  const notes: string[] = [];
 
-    return failed(ref.sha);
-  }
+  const fullSha = input.commit.sha || input.fallbackSha;
 
-  const fullSha = commit.data.sha || ref.sha;
-  const pushedAt = await pushTime({ ...ref, sha: fullSha });
-  const committedAt = commit.data.commit.committer?.date
-    ? new Date(commit.data.commit.committer.date)
+  const committedAt = input.commit.commit.committer?.date
+    ? new Date(input.commit.commit.committer.date)
     : null;
 
-  if (!pushedAt) {
+  if (!input.pushedAt) {
     notes.push("Window checked against the commit date (no push record)");
   }
 
   const when =
-    pushedAt ??
+    input.pushedAt ??
     (committedAt && !Number.isNaN(committedAt.getTime()) ? committedAt : null);
 
   if (!when) {
@@ -322,7 +338,7 @@ export const checkCommit = async (
     );
   }
 
-  const changedLines = commit.data.stats?.total ?? 0;
+  const changedLines = input.commit.stats?.total ?? 0;
 
   if (changedLines > CHECKPOINT_CODE_DUMP_LINES) {
     notes.push(`${changedLines} changed lines: likely a code dump`);
@@ -333,7 +349,7 @@ export const checkCommit = async (
     );
   }
 
-  const files = commit.data.files ?? [];
+  const files = input.commit.files ?? [];
   const binary = files.filter((file) => file.patch === undefined).length;
 
   if (files.length > 0 && binary / files.length > CHECKPOINT_MAX_BINARY_SHARE) {
@@ -343,11 +359,52 @@ export const checkCommit = async (
   }
 
   if (
-    isGenericMessage(commit.data.commit.message) &&
+    isGenericMessage(input.commit.commit.message) &&
     changedLines > CHECKPOINT_GENERIC_MESSAGE_LINES
   ) {
     notes.push(`Generic commit message on a ${changedLines}-line change`);
   }
 
   return decide(flags, notes, fullSha);
+};
+
+export const checkCommit = async (
+  input: CheckCommitInput,
+): Promise<CheckResult> => {
+  const ref = parseCommitUrl(input.commitUrl);
+
+  if (!ref) return notACommitUrl();
+
+  const preflight = commitPreflightFlags(
+    ref,
+    input.projectRepoUrl,
+    input.usedShas,
+  );
+
+  const commit = await get<CommitResponse>(
+    `/repos/${ref.owner}/${ref.repo}/commits/${ref.sha}`,
+  );
+
+  if (!commit.ok) {
+    if (commit.status === 404 || commit.status === COMMIT_NOT_FOUND_STATUS) {
+      return decide([...preflight, "Repo or commit not found"], [], ref.sha);
+    }
+
+    if (preflight.length > 0) {
+      return decide(preflight, [], ref.sha);
+    }
+
+    return failed(ref.sha);
+  }
+
+  const fullSha = commit.data.sha || ref.sha;
+
+  return judgeCommit({
+    commit: commit.data,
+    fallbackSha: ref.sha,
+    pushedAt: await pushTime({ ...ref, sha: fullSha }),
+    preflight,
+    window: input.window,
+    graceSeconds: input.graceSeconds,
+  });
 };

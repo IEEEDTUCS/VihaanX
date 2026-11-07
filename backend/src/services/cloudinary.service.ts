@@ -6,6 +6,7 @@ import {
   ERROR_CODES,
 } from "../config/constants";
 import { env } from "../config/env";
+import { logger } from "../config/logger";
 import { ApiError } from "../utils/ApiError";
 
 cloudinary.config(env.CLOUDINARY_URL);
@@ -19,6 +20,8 @@ export type ImageUpload = {
 export const uploadSubmissionImage = async (
   upload: ImageUpload,
 ): Promise<string> => {
+  const startedAt = Date.now();
+
   try {
     const result = await new Promise<{ secure_url?: string }>(
       (resolve, reject) => {
@@ -48,11 +51,25 @@ export const uploadSubmissionImage = async (
       throw new Error("Cloudinary returned no secure_url");
     }
 
+    logger.info(
+      {
+        team: upload.unstopId,
+        publicId: upload.publicId,
+        durationMs: Date.now() - startedAt,
+      },
+      "cloudinary upload",
+    );
+
     return result.secure_url;
   } catch (error) {
-    console.error(
-      `Cloudinary upload failed for ${upload.unstopId}/${upload.publicId}`,
-      error instanceof Error ? error.message : error,
+    logger.error(
+      {
+        team: upload.unstopId,
+        publicId: upload.publicId,
+        durationMs: Date.now() - startedAt,
+        reason: error instanceof Error ? error.message : String(error),
+      },
+      "cloudinary upload failed",
     );
 
     throw new ApiError(

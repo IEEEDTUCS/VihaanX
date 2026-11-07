@@ -4,6 +4,7 @@ import {
   TEAM_WORLDS,
 } from "../config/constants";
 import type { RoomStatus } from "../config/constants";
+import { logger } from "../config/logger";
 import { ParticipantModel } from "../models/participant.model";
 import { RoomModel } from "../models/room.model";
 import type { Room } from "../models/room.model";
@@ -32,9 +33,9 @@ export const releaseSpacesInRoom = async (number: string, spaces: number) => {
   );
 
   if (result.matchedCount === 0) {
-    console.warn(
-      `Could not return ${spaces} spaces to room ${number}: ` +
-        `the room is missing or it would exceed its capacity`,
+    logger.warn(
+      { room: number, spaces },
+      "could not return spaces: the room is missing or would exceed capacity",
     );
     return false;
   }

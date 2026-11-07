@@ -1,4 +1,7 @@
 import { Router } from "express";
+import type { RequestHandler } from "express";
+
+import { noStore } from "../middlewares/noStore";
 
 import { activityRouter } from "./activity.routes";
 import { adminRouter } from "./admin.routes";
@@ -14,19 +17,36 @@ import { adminTeamsRouter, deskTeamsRouter } from "./team.routes";
 
 const router = Router();
 
-router.use("/health", healthRouter);
-router.use("/schedule", scheduleRouter);
-router.use("/auth", authRouter);
-router.use("/me/team", meTeamRouter);
-router.use("/me", meRouter);
-router.use("/cards", cardsRouter);
-router.use("/participants", checkinParticipantsRouter);
-router.use("/teams", deskTeamsRouter);
-router.use("/rooms", roomsRouter);
-router.use("/admin/volunteers", adminRouter);
-router.use("/admin/participants", adminParticipantsRouter);
-router.use("/admin/teams", adminTeamsRouter);
-router.use("/admin/stats", statsRouter);
-router.use("/admin/activity", activityRouter);
+const tag =
+  (prefix: string): RequestHandler =>
+  (req, _res, next) => {
+    (req as { logPrefix?: string }).logPrefix = prefix;
+    next();
+  };
+
+router.use("/health", tag("/health"), healthRouter);
+router.use("/schedule", tag("/schedule"), scheduleRouter);
+router.use("/auth", tag("/auth"), noStore, authRouter);
+router.use("/me/team", tag("/me/team"), noStore, meTeamRouter);
+router.use("/me", tag("/me"), noStore, meRouter);
+router.use("/cards", tag("/cards"), noStore, cardsRouter);
+router.use(
+  "/participants",
+  tag("/participants"),
+  noStore,
+  checkinParticipantsRouter,
+);
+router.use("/teams", tag("/teams"), noStore, deskTeamsRouter);
+router.use("/rooms", tag("/rooms"), noStore, roomsRouter);
+router.use("/admin/volunteers", tag("/admin/volunteers"), noStore, adminRouter);
+router.use(
+  "/admin/participants",
+  tag("/admin/participants"),
+  noStore,
+  adminParticipantsRouter,
+);
+router.use("/admin/teams", tag("/admin/teams"), noStore, adminTeamsRouter);
+router.use("/admin/stats", tag("/admin/stats"), noStore, statsRouter);
+router.use("/admin/activity", tag("/admin/activity"), noStore, activityRouter);
 
 export const apiRouter = router;

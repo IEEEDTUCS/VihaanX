@@ -1,8 +1,7 @@
 import { Router } from "express";
 
-import { authenticate } from "../middlewares/authenticate";
-import { requireKind } from "../middlewares/requireKind";
-import { requireRole } from "../middlewares/requireRole";
+import { leaderOnly } from "../middlewares/chains";
+import { submitRateLimiter } from "../middlewares/rateLimit";
 import { uploadImage } from "../middlewares/upload";
 import { validate } from "../middlewares/validate";
 import {
@@ -13,7 +12,7 @@ import { checkpointRoundParams } from "../schemas/submission.schema";
 
 const router = Router();
 
-router.use(authenticate, requireKind("participant"), requireRole("LEADER"));
+router.use(...leaderOnly, submitRateLimiter);
 
 router.put("/project", uploadImage, putProject);
 

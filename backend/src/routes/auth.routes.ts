@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { authenticate } from "../middlewares/authenticate";
+import { authenticated } from "../middlewares/chains";
 import {
   loginRateLimiter,
   participantLoginRateLimiter,
@@ -34,8 +34,8 @@ router.post(
 
 router.post("/refresh", validate({ body: refreshBody }), refresh);
 
-router.post("/logout", authenticate, logout);
+router.post("/logout", ...authenticated, logout);
 
-router.get("/me", authenticate, me);
+router.get("/me", ...authenticated, me);
 
 export const authRouter = router;

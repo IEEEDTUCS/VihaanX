@@ -41,6 +41,7 @@ import {
   projectOf,
   saveCheckpointResult,
   saveProjectResult,
+  settleCheck,
   toAdminCheckpoint,
   toAdminProject,
 } from "./submission.service";
@@ -578,17 +579,18 @@ export const recheckProject = async (actorId: string, teamId: string) => {
   const team = await loadTeam(teamId);
   const project = projectOf(team);
 
-  if (project.submittedAt === null) throw notSubmitted("The project");
-  if (team.world !== "SOFTWARE" || !project.repoUrl) throw nothingToCheck();
+  const submittedAt = project.submittedAt;
+  const repoUrl = project.repoUrl;
 
-  const result = await checkProjectRepo(project.repoUrl, env.EVENT_START);
+  if (submittedAt === null) throw notSubmitted("The project");
+  if (team.world !== "SOFTWARE" || !repoUrl) throw nothingToCheck();
 
-  console.info(
-    `Project re-check for ${team.unstopId}: ${result.autoStatus} ` +
-      `flags=${result.autoFlags.length} notes=${result.autoNotes.length}`,
-  );
-
-  const written = await saveProjectResult(teamId, project.submittedAt, result);
+  const { result, applied } = await settleCheck({
+    target: "project re-check",
+    unstopId: team.unstopId,
+    check: () => checkProjectRepo(repoUrl, env.EVENT_START),
+    write: (outcome) => saveProjectResult(teamId, submittedAt, outcome),
+  });
 
   await logActivity({
     actorId,
@@ -599,7 +601,7 @@ export const recheckProject = async (actorId: string, teamId: string) => {
       from: project.autoStatus,
       to: result.autoStatus,
       flags: result.autoFlags,
-      applied: written.matchedCount > 0,
+      applied,
     },
   });
 
@@ -615,39 +617,36 @@ export const recheckCheckpoint = async (
   const entries = checkpointsOf(team);
   const entry = entries.find((candidate) => candidate.round === round);
 
-  if (!entry || entry.submittedAt === null)
-    throw notSubmitted(`Round ${round}`);
-  if (team.world !== "SOFTWARE" || !entry.url) throw nothingToCheck();
+  const submittedAt = entry?.submittedAt ?? null;
+  const commitUrl = entry?.url ?? null;
+
+  if (!entry || submittedAt === null) throw notSubmitted(`Round ${round}`);
+  if (team.world !== "SOFTWARE" || !commitUrl) throw nothingToCheck();
 
   const project = projectOf(team);
 
-  const result = await checkCommit({
-    commitUrl: entry.url,
-    projectRepoUrl: project.repoUrl,
-    window: CHECKPOINT_WINDOWS[round],
-    graceSeconds: graceSeconds(),
-    usedShas: entries
-      .filter(
-        (candidate) =>
-          candidate.round !== round && candidate.commitSha !== null,
-      )
-      .map((candidate) => ({
-        round: candidate.round,
-        commitSha: candidate.commitSha!,
-      })),
+  const { result, applied } = await settleCheck({
+    target: `checkpoint ${round} re-check`,
+    unstopId: team.unstopId,
+    check: () =>
+      checkCommit({
+        commitUrl,
+        projectRepoUrl: project.repoUrl,
+        window: CHECKPOINT_WINDOWS[round],
+        graceSeconds: graceSeconds(),
+        usedShas: entries
+          .filter(
+            (candidate) =>
+              candidate.round !== round && candidate.commitSha !== null,
+          )
+          .map((candidate) => ({
+            round: candidate.round,
+            commitSha: candidate.commitSha!,
+          })),
+      }),
+    write: (outcome) =>
+      saveCheckpointResult(teamId, round, submittedAt, outcome),
   });
-
-  console.info(
-    `Checkpoint ${round} re-check for ${team.unstopId}: ${result.autoStatus} ` +
-      `flags=${result.autoFlags.length} notes=${result.autoNotes.length}`,
-  );
-
-  const written = await saveCheckpointResult(
-    teamId,
-    round,
-    entry.submittedAt,
-    result,
-  );
 
   await logActivity({
     actorId,
@@ -659,7 +658,7 @@ export const recheckCheckpoint = async (
       from: entry.autoStatus,
       to: result.autoStatus,
       flags: result.autoFlags,
-      applied: written.matchedCount > 0,
+      applied,
     },
   });
 

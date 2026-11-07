@@ -5,6 +5,7 @@ export const DATABASE_NAMES = {
 } as const;
 
 export const DATABASE_CONNECT_TIMEOUT_MS = 10_000;
+export const DATABASE_MAX_POOL_SIZE = 20;
 
 export const API_ROOT = "/api";
 export const API_PREFIX = `${API_ROOT}/v1`;
@@ -12,9 +13,34 @@ export const API_PREFIX = `${API_ROOT}/v1`;
 export const JSON_BODY_LIMIT = "100kb";
 
 export const RATE_LIMIT_WINDOW_MS = 60_000;
-export const RATE_LIMIT_MAX_REQUESTS = 300;
+export const RATE_LIMIT_MAX_REQUESTS = 2_000;
+
+export const USER_RATE_LIMIT_WINDOW_MS = 60_000;
+export const USER_RATE_LIMIT_MAX_REQUESTS = 120;
+
+export const SUBMIT_RATE_LIMIT_WINDOW_MS = 60_000;
+export const SUBMIT_RATE_LIMIT_MAX_REQUESTS = 6;
 
 export const SHUTDOWN_TIMEOUT_MS = 10_000;
+export const KEEP_ALIVE_TIMEOUT_MS = 65_000;
+export const HEADERS_TIMEOUT_MS = 66_000;
+
+export const LOG_LEVELS = [
+  "fatal",
+  "error",
+  "warn",
+  "info",
+  "debug",
+  "trace",
+  "silent",
+] as const;
+export type LogLevel = (typeof LOG_LEVELS)[number];
+
+export const LOG_LEVEL_DEFAULT = "info";
+export const LOG_LEVEL_TEST_DEFAULT = "silent";
+export const REQUEST_ID_PATTERN = /^[A-Za-z0-9-]{1,64}$/;
+export const REQUEST_ID_HEADER = "x-request-id";
+export const STUCK_CHECK_AFTER_MS = 2 * 60_000;
 
 export const ADMIN_ROLES = ["SUPER_ADMIN", "VOLUNTEER"] as const;
 export type AdminRole = (typeof ADMIN_ROLES)[number];
@@ -63,6 +89,7 @@ export type CheckpointReviewStatus =
 export const TEAM_STATUS_FILTERS = [
   "SUSPICIOUS",
   "CHECK_FAILED",
+  "PENDING_CHECK",
   "UNREVIEWED",
 ] as const;
 export type TeamStatusFilter = (typeof TEAM_STATUS_FILTERS)[number];
@@ -135,6 +162,7 @@ export const MAX_VOLUNTEERS_RETURNED = 200;
 
 export const ADMIN_PAGE_SIZE = 25;
 export const SEARCH_MAX_LENGTH = 100;
+export const SEARCH_TEAM_MATCH_LIMIT = 500;
 export const MAX_PAGE = 10_000;
 export const EXPORT_MAX_ROWS = 5_000;
 
@@ -186,9 +214,9 @@ export const GITHUB_TIMEOUT_MS = 5_000;
 export const GITHUB_ACTIVITY_PAGE_SIZE = 100;
 
 export const REPO_URL_PATTERN =
-  /^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}))\/([A-Za-z0-9_.-]{1,100}?)(?:\.git)?\/?$/;
+  /^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}))\/(?!\.+(?:\.git)?\/?$)([A-Za-z0-9_.-]{1,100}?)(?:\.git)?\/?$/;
 export const COMMIT_URL_PATTERN =
-  /^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}))\/([A-Za-z0-9_.-]{1,100}?)(?:\.git)?\/commit\/([0-9a-fA-F]{7,40})\/?$/;
+  /^https:\/\/github\.com\/([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}))\/(?!\.+(?:\.git)?\/commit)([A-Za-z0-9_.-]{1,100}?)(?:\.git)?\/commit\/([0-9a-fA-F]{7,40})\/?$/;
 export const URL_MAX_LENGTH = 300;
 
 export const PROJECT_MAX_EARLY_COMMITS = 3;
@@ -222,6 +250,8 @@ export const GENERIC_COMMIT_MESSAGES = [
 ] as const;
 
 export const IMAGE_MAX_BYTES = 400 * 1024;
+export const IMAGE_FIELD_SIZE_MAX = 8 * 1024;
+export const IMAGE_FIELD_NAME_SIZE_MAX = 32;
 export const IMAGE_FIELD_NAME = "image";
 export const IMAGE_MIME_TYPES = [
   "image/jpeg",

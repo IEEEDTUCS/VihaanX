@@ -7,6 +7,7 @@ import {
 } from "../config/constants";
 import type { ErrorCode } from "../config/constants";
 import { env } from "../config/env";
+import { logger } from "../config/logger";
 import { ApiError } from "../utils/ApiError";
 
 const BODY_PARSER_MESSAGES: Record<string, string> = {
@@ -120,18 +121,47 @@ const asMongooseError = (error: unknown): Mapped | null => {
   return null;
 };
 
+const requestIdOf = (req: unknown) => {
+  const id = (req as { id?: unknown }).id;
+  return typeof id === "string" ? id : undefined;
+};
+
 export const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
+  const requestId = requestIdOf(req);
+
   if (res.headersSent) {
+    logger.error(
+      { err: error, requestId, method: req.method },
+      "error after the response had started",
+    );
     next(error);
     return;
   }
 
   if (error instanceof ApiError) {
+    if (error.status >= 500) {
+      logger.error(
+        { err: error, requestId, status: error.status, code: error.code },
+        "request failed",
+      );
+    } else {
+      logger.warn(
+        {
+          requestId,
+          status: error.status,
+          code: error.code,
+          reason: error.message,
+        },
+        "request rejected",
+      );
+    }
+
     res.status(error.status).json({
       success: false,
       message: error.message,
       ...(error.code === undefined ? {} : { code: error.code }),
       ...(error.details === undefined ? {} : { details: error.details }),
+      ...(requestId === undefined ? {} : { requestId }),
     });
     return;
   }
@@ -139,18 +169,28 @@ export const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
   const mapped =
     asBodyParserError(error) ?? asUploadError(error) ?? asMongooseError(error);
   if (mapped) {
-    // A bad request, not a server fault: one log line, no stack.
     const name = asRecord(error)?.type ?? asRecord(error)?.name ?? "error";
-    console.warn(`Rejected ${req.method} ${req.path}: ${String(name)}`);
+
+    logger.warn(
+      {
+        requestId,
+        status: mapped.status,
+        code: mapped.code,
+        reason: String(name),
+      },
+      "request rejected",
+    );
+
     res.status(mapped.status).json({
       success: false,
       message: mapped.message,
       ...(mapped.code === undefined ? {} : { code: mapped.code }),
+      ...(requestId === undefined ? {} : { requestId }),
     });
     return;
   }
 
-  console.error(`Unexpected error on ${req.method} ${req.path}`, error);
+  logger.error({ err: error, requestId }, "unexpected error");
 
   res.status(500).json({
     success: false,
@@ -160,5 +200,6 @@ export const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
         : error instanceof Error
           ? error.message
           : "Something went wrong",
+    ...(requestId === undefined ? {} : { requestId }),
   });
 };

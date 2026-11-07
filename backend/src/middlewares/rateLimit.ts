@@ -7,6 +7,10 @@ import {
   LOGIN_RATE_LIMIT_WINDOW_MS,
   RATE_LIMIT_MAX_REQUESTS,
   RATE_LIMIT_WINDOW_MS,
+  SUBMIT_RATE_LIMIT_MAX_REQUESTS,
+  SUBMIT_RATE_LIMIT_WINDOW_MS,
+  USER_RATE_LIMIT_MAX_REQUESTS,
+  USER_RATE_LIMIT_WINDOW_MS,
 } from "../config/constants";
 
 export const apiRateLimiter = rateLimit({
@@ -17,6 +21,38 @@ export const apiRateLimiter = rateLimit({
   message: {
     success: false,
     message: "Too many requests, please slow down",
+    code: ERROR_CODES.RATE_LIMITED,
+  },
+});
+
+export const userRateLimiter = rateLimit({
+  windowMs: USER_RATE_LIMIT_WINDOW_MS,
+  limit: USER_RATE_LIMIT_MAX_REQUESTS,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  keyGenerator: (req: { auth?: { id?: string }; ip?: string }) =>
+    req.auth?.id ?? ipKeyGenerator(req.ip ?? ""),
+  message: {
+    success: false,
+    message: "Too many requests, please slow down",
+    code: ERROR_CODES.RATE_LIMITED,
+  },
+});
+
+export const submitRateLimiter = rateLimit({
+  windowMs: SUBMIT_RATE_LIMIT_WINDOW_MS,
+  limit: SUBMIT_RATE_LIMIT_MAX_REQUESTS,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  skipFailedRequests: true,
+  keyGenerator: (req: {
+    auth?: { teamId?: string; id?: string };
+    ip?: string;
+  }) => req.auth?.teamId ?? req.auth?.id ?? ipKeyGenerator(req.ip ?? ""),
+  message: {
+    success: false,
+    message:
+      "Too many submissions in a row, please wait a moment and try again",
     code: ERROR_CODES.RATE_LIMITED,
   },
 });

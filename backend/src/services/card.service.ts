@@ -91,7 +91,7 @@ export const linkCard = async (
       action: "CARD_LINKED",
       participantId: String(previous._id),
       teamId: String(previous.teamId),
-      details: { card: code },
+      details: { linked: true },
     });
   }
 

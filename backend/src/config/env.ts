@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import {
   ACCESS_TOKEN_EXPIRY_DEFAULT,
+  LOG_LEVELS,
   REFRESH_TOKEN_EXPIRY_DEFAULT,
   SUBMISSION_GRACE_SECONDS_MAX,
 } from "./constants";
@@ -41,9 +42,11 @@ const envSchema = z.object({
     .string({ error: "MONGODB_URI is required" })
     .min(1, "MONGODB_URI is required"),
 
-  NODE_ENV: z
-    .enum(["development", "production", "test"])
-    .default("development"),
+  NODE_ENV: z.enum(["development", "production", "test"], {
+    error:
+      "NODE_ENV is required and must be development, production or test " +
+      "(it picks the database)",
+  }),
 
   PORT: z.coerce.number().int().min(1).max(65535).default(4000),
 
@@ -104,6 +107,12 @@ const envSchema = z.object({
     .min(0)
     .max(SUBMISSION_GRACE_SECONDS_MAX)
     .default(0),
+
+  LOG_LEVEL: z
+    .enum(LOG_LEVELS, {
+      error: `LOG_LEVEL must be one of ${LOG_LEVELS.join(", ")}`,
+    })
+    .optional(),
 });
 
 type ScheduleWindow = { name: string; open: Date; close: Date };

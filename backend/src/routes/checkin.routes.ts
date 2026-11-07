@@ -1,8 +1,6 @@
 import { Router } from "express";
 
-import { authenticate } from "../middlewares/authenticate";
-import { requireKind } from "../middlewares/requireKind";
-import { requireRole } from "../middlewares/requireRole";
+import { deskOnly } from "../middlewares/chains";
 import { validate } from "../middlewares/validate";
 import {
   deleteMeal,
@@ -18,12 +16,6 @@ import {
   participantIdParams,
   participantMealParams,
 } from "../schemas/checkin.schema";
-
-const deskOnly = [
-  authenticate,
-  requireKind("admin"),
-  requireRole("VOLUNTEER", "SUPER_ADMIN"),
-] as const;
 
 const cards = Router();
 

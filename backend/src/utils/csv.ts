@@ -148,7 +148,7 @@ export const describeColumnMismatch = (
     "Missing:",
     ...missing.map((entry) => `  - ${entry}`),
     "",
-    "Expected (first spelling is the one Unstop used last year):",
+    "Expected (the first spelling is the one the real file uses):",
     ...Object.entries(spec).map(
       ([field, { headers, required }]) =>
         `  - ${field}${required ? "" : " (optional)"}: ${headers.join(" | ")}`,

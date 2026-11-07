@@ -8,18 +8,12 @@ import { ApiError } from "../utils/ApiError";
 import { ERROR_CODES } from "../config/constants";
 import { roomNumberSchema } from "../schemas/room.schema";
 
-import { authenticate } from "../middlewares/authenticate";
-import { requireKind } from "../middlewares/requireKind";
-import { requireRole } from "../middlewares/requireRole";
+import { deskOnly } from "../middlewares/chains";
 import { getRooms } from "../controllers/room.controller";
 
 const router = Router();
 
-router.use(
-  authenticate,
-  requireKind("admin"),
-  requireRole("VOLUNTEER", "SUPER_ADMIN"),
-);
+router.use(...deskOnly);
 
 router.get("/", getRooms);
 

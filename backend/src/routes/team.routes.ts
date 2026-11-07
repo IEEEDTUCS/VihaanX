@@ -1,8 +1,6 @@
 import { Router } from "express";
 
-import { authenticate } from "../middlewares/authenticate";
-import { requireKind } from "../middlewares/requireKind";
-import { requireRole } from "../middlewares/requireRole";
+import { deskOnly, superAdminOnly } from "../middlewares/chains";
 import { validate } from "../middlewares/validate";
 import {
   getTeam,
@@ -29,7 +27,7 @@ import {
 
 const router = Router();
 
-router.use(authenticate, requireKind("admin"), requireRole("SUPER_ADMIN"));
+router.use(...superAdminOnly);
 
 router.get("/", validate({ query: listTeamsQuery }), getTeams);
 
@@ -71,11 +69,7 @@ export const adminTeamsRouter = router;
 
 const desk = Router();
 
-desk.use(
-  authenticate,
-  requireKind("admin"),
-  requireRole("VOLUNTEER", "SUPER_ADMIN"),
-);
+desk.use(...deskOnly);
 
 desk.put(
   "/:id/bedsheets",

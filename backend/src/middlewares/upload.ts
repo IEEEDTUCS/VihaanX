@@ -28,3 +28,8 @@ export const uploadImage = multer({
     callback(null, true);
   },
 }).single(IMAGE_FIELD_NAME);
+
+export const uploadCsv = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 2 * 1024 * 1024, files: 1, fields: 4 },
+}).single("file");

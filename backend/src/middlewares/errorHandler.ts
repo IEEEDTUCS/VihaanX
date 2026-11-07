@@ -51,6 +51,12 @@ const UPLOAD_MESSAGES: Record<string, string> = {
   LIMIT_UNEXPECTED_FILE: `The image must be sent as the "${IMAGE_FIELD_NAME}" field`,
 };
 
+const CSV_UPLOAD_MESSAGES: Record<string, string> = {
+  LIMIT_FILE_SIZE: "CSV must be at most 2 MB",
+  LIMIT_FILE_COUNT: "Send exactly one CSV file",
+  LIMIT_UNEXPECTED_FILE: 'The CSV must be sent as the "file" field',
+};
+
 const asUploadError = (error: unknown): Mapped | null => {
   const record = asRecord(error);
   if (!record || record.name !== "MulterError") return null;
@@ -60,14 +66,20 @@ const asUploadError = (error: unknown): Mapped | null => {
   if (code === "LIMIT_FILE_SIZE") {
     return {
       status: 413,
-      message: UPLOAD_MESSAGES[code]!,
+      message:
+        record.field === "file"
+          ? CSV_UPLOAD_MESSAGES[code]!
+          : UPLOAD_MESSAGES[code]!,
       code: ERROR_CODES.PAYLOAD_TOO_LARGE,
     };
   }
 
   return {
     status: 400,
-    message: UPLOAD_MESSAGES[code] ?? "Invalid image upload",
+    message:
+      record.field === "file"
+        ? (CSV_UPLOAD_MESSAGES[code] ?? "Invalid CSV upload")
+        : (UPLOAD_MESSAGES[code] ?? "Invalid image upload"),
     code: ERROR_CODES.VALIDATION_ERROR,
   };
 };

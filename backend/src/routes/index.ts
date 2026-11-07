@@ -5,6 +5,7 @@ import { adminRouter } from "./admin.routes";
 import { authRouter } from "./auth.routes";
 import { cardsRouter, checkinParticipantsRouter } from "./checkin.routes";
 import { healthRouter } from "./health.routes";
+import { judgingRouter } from "./judging.routes";
 import { adminParticipantsRouter, meRouter } from "./participant.routes";
 import { roomsRouter } from "./room.routes";
 import { scheduleRouter } from "./schedule.routes";
@@ -28,5 +29,6 @@ router.use("/admin/participants", adminParticipantsRouter);
 router.use("/admin/teams", adminTeamsRouter);
 router.use("/admin/stats", statsRouter);
 router.use("/admin/activity", activityRouter);
+router.use("/admin/judging", judgingRouter);
 
 export const apiRouter = router;

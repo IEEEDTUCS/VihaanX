@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { CARD_CODE_PATTERN, CARD_CODE_LENGTH } from "../config/constants";
+import { CARD_CODE_PATTERN, CARD_CODE_LENGTH, TABLE_NO_MAX_LENGTH } from "../config/constants";
 import { objectIdSchema } from "./admin.schema";
 import { rsvpCodeSchema } from "./participant.schema";
 
@@ -48,3 +48,11 @@ export type CardCodeParams = z.infer<typeof cardCodeParams>;
 export type LinkCardBody = z.infer<typeof linkCardBody>;
 export type ParticipantIdParams = z.infer<typeof participantIdParams>;
 export type ParticipantMealParams = z.infer<typeof participantMealParams>;
+
+export const tableNoBody = z
+  .object({
+    tableNo: z.string().trim().min(1).max(TABLE_NO_MAX_LENGTH),
+  })
+  .strict();
+
+export type TableNoBody = z.infer<typeof tableNoBody>;

@@ -11,6 +11,11 @@ import {
   listParticipantRowsForExport,
   listParticipants,
 } from "../services/participant.service";
+import {
+  submitPpt,
+  updateSpecialChallenges,
+} from "../services/submission.service";
+import type { PptBody, SpecialChallengesBody } from "../schemas/submission.schema";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
 import { sendCsvAttachment } from "../utils/csv";
@@ -45,4 +50,42 @@ export const getParticipantsExport: RequestHandler = async (req, res) => {
   const table = await listParticipantRowsForExport(query);
 
   sendCsvAttachment(res, "participants", table);
+};
+
+export const putPpt: RequestHandler = async (req, res) => {
+  const auth = getAuth(req);
+
+  if (auth.kind !== "participant" || auth.role !== "LEADER") {
+    throw new ApiError(
+      403,
+      "Only the team leader can submit the PPT",
+      ERROR_CODES.FORBIDDEN,
+    );
+  }
+
+  const body = req.validated?.body as PptBody;
+  const result = await submitPpt(auth.teamId, body.pptUrl);
+
+  res.status(200).json(new ApiResponse(result));
+};
+
+export const putSpecialChallenges: RequestHandler = async (req, res) => {
+  const auth = getAuth(req);
+
+  if (auth.kind !== "participant" || auth.role !== "LEADER") {
+    throw new ApiError(
+      403,
+      "Only the team leader can update special challenges",
+      ERROR_CODES.FORBIDDEN,
+    );
+  }
+
+  const body = req.validated?.body as SpecialChallengesBody;
+  const result = await updateSpecialChallenges(
+    auth.teamId,
+    body.specialChallenge1,
+    body.specialChallenge2,
+  );
+
+  res.status(200).json(new ApiResponse(result));
 };

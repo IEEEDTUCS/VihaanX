@@ -92,7 +92,7 @@ export const getParticipantWithTeam = async (
   teamId: string,
 ) => {
   const [participant, team, members] = await Promise.all([
-    ParticipantModel.findById(participantId).lean(),
+    ParticipantModel.findById(participantId).select("+phone").lean(),
     TeamModel.findById(teamId).lean(),
     ParticipantModel.find({ teamId })
       .select("name role checkedIn")
@@ -109,6 +109,7 @@ export const getParticipantWithTeam = async (
       id: String(participant._id),
       name: participant.name,
       email: participant.email,
+      phone: participant.phone ?? null,
       college: participant.college,
       role: participant.role,
       checkedIn: participant.checkedIn,

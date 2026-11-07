@@ -63,6 +63,11 @@ export type Team = {
   allocationRosterSize: number | null;
   bedsheetsIssued: number;
   panel: string | null;
+  tableNo: string | null;
+  shortlistedForFinals: boolean;
+  pptUrl: string | null;
+  specialChallenge1: boolean;
+  specialChallenge2: boolean;
   points: number;
   stars: number;
   checkpoints: Checkpoint[];
@@ -197,6 +202,11 @@ const teamSchema = new Schema<Team>(
       },
     },
     panel: { type: String, default: null },
+    tableNo: { type: String, default: null },
+    shortlistedForFinals: { type: Boolean, default: false },
+    pptUrl: { type: String, default: null },
+    specialChallenge1: { type: Boolean, default: false },
+    specialChallenge2: { type: Boolean, default: false },
     points: { type: Number, default: 0, min: POINTS_MIN, max: POINTS_MAX },
     stars: { type: Number, default: 0, min: STARS_MIN, max: STARS_MAX },
     checkpoints: { type: [checkpointSchema], default: emptyCheckpoints },

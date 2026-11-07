@@ -91,10 +91,6 @@ export const toParticipantProject = (project: Project) => ({
   repoUrl: project.repoUrl,
   imageUrl: project.imageUrl,
   submittedAt: project.submittedAt,
-  autoStatus: project.autoStatus,
-  autoFlags: project.autoFlags,
-  autoNotes: project.autoNotes,
-  reviewStatus: project.reviewStatus,
 });
 
 export const toParticipantCheckpoint = (checkpoint: Checkpoint) => ({
@@ -102,14 +98,14 @@ export const toParticipantCheckpoint = (checkpoint: Checkpoint) => ({
   url: checkpoint.url,
   commitSha: checkpoint.commitSha,
   submittedAt: checkpoint.submittedAt,
-  autoStatus: checkpoint.autoStatus,
-  autoFlags: checkpoint.autoFlags,
-  autoNotes: checkpoint.autoNotes,
-  reviewStatus: checkpoint.reviewStatus,
 });
 
 export const toAdminProject = (project: Project) => ({
   ...toParticipantProject(project),
+  autoStatus: project.autoStatus,
+  autoFlags: project.autoFlags,
+  autoNotes: project.autoNotes,
+  reviewStatus: project.reviewStatus,
   reviewNote: project.reviewNote,
   reviewedBy: project.reviewedBy ? String(project.reviewedBy) : null,
   reviewedAt: project.reviewedAt ?? null,
@@ -117,6 +113,10 @@ export const toAdminProject = (project: Project) => ({
 
 export const toAdminCheckpoint = (checkpoint: Checkpoint) => ({
   ...toParticipantCheckpoint(checkpoint),
+  autoStatus: checkpoint.autoStatus,
+  autoFlags: checkpoint.autoFlags,
+  autoNotes: checkpoint.autoNotes,
+  reviewStatus: checkpoint.reviewStatus,
   reviewNote: checkpoint.reviewNote,
   reviewedBy: checkpoint.reviewedBy ? String(checkpoint.reviewedBy) : null,
   reviewedAt: checkpoint.reviewedAt ?? null,
@@ -136,7 +136,13 @@ export const toParticipantTeam = (team: TeamRecord, members: TeamMember[]) => ({
   categories: team.categories,
   room: team.room,
   tables: team.tables ?? [],
+  tableNo: team.tableNo ?? null,
+  panel: team.panel ?? null,
   bedsheetsIssued: team.bedsheetsIssued ?? 0,
+  shortlistedForFinals: team.shortlistedForFinals ?? false,
+  pptUrl: team.pptUrl ?? null,
+  specialChallenge1: team.specialChallenge1 ?? false,
+  specialChallenge2: team.specialChallenge2 ?? false,
   memberCount: members.length,
   members,
   project: toParticipantProject(projectOf(team)),
@@ -541,6 +547,40 @@ export const submitCheckpoint = async (
       autoStatus: "VERIFIED",
       autoNotes: [IMAGE_REVIEWED_NOTE],
     });
+  }
+
+  return { team: await getTeamForParticipant(teamId) };
+};
+
+
+export const submitPpt = async (teamId: string, pptUrl: string) => {
+  const team = await loadTeam(teamId);
+
+  if (!team.shortlistedForFinals) {
+    throw new ApiError(
+      403,
+      "Your team has not been shortlisted for the final round",
+      ERROR_CODES.NOT_SHORTLISTED,
+    );
+  }
+
+  await TeamModel.updateOne({ _id: teamId }, { $set: { pptUrl } });
+
+  return { team: await getTeamForParticipant(teamId) };
+};
+
+export const updateSpecialChallenges = async (
+  teamId: string,
+  specialChallenge1: boolean,
+  specialChallenge2: boolean,
+) => {
+  const result = await TeamModel.updateOne(
+    { _id: teamId },
+    { $set: { specialChallenge1, specialChallenge2 } },
+  );
+
+  if (result.matchedCount === 0) {
+    throw new ApiError(404, "Team not found", ERROR_CODES.NOT_FOUND);
   }
 
   return { team: await getTeamForParticipant(teamId) };

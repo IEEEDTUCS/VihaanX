@@ -226,3 +226,78 @@ export const undoMeal = async (
 
   return { ...(await toVolunteerView(participant)), changed: updated !== null };
 };
+
+
+export const shortlistTeam = async (
+  actorId: string,
+  participantId: string,
+) => {
+  const participant = await readParticipant(participantId);
+  const teamId = String(participant.teamId);
+
+  const result = await TeamModel.updateOne(
+    { _id: teamId },
+    { $set: { shortlistedForFinals: true } },
+  );
+
+  if (result.matchedCount === 0) {
+    throw new ApiError(404, "Team not found", ERROR_CODES.NOT_FOUND);
+  }
+
+  await logActivity({
+    actorId,
+    action: "TEAM_UPDATED",
+    participantId,
+    teamId,
+    details: { shortlistedForFinals: true },
+  });
+
+  return toVolunteerView(participant);
+};
+
+export const unshortlistTeam = async (
+  actorId: string,
+  participantId: string,
+) => {
+  const participant = await readParticipant(participantId);
+  const teamId = String(participant.teamId);
+
+  await TeamModel.updateOne(
+    { _id: teamId },
+    { $set: { shortlistedForFinals: false, pptUrl: null } },
+  );
+
+  await logActivity({
+    actorId,
+    action: "TEAM_UPDATED",
+    participantId,
+    teamId,
+    details: { shortlistedForFinals: false },
+  });
+
+  return toVolunteerView(participant);
+};
+
+export const assignTable = async (
+  actorId: string,
+  participantId: string,
+  tableNo: string,
+) => {
+  const participant = await readParticipant(participantId);
+  const teamId = String(participant.teamId);
+
+  await TeamModel.updateOne(
+    { _id: teamId },
+    { $set: { tableNo } },
+  );
+
+  await logActivity({
+    actorId,
+    action: "TEAM_UPDATED",
+    participantId,
+    teamId,
+    details: { tableNo },
+  });
+
+  return toVolunteerView(participant);
+};

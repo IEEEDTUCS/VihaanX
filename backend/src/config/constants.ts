@@ -109,6 +109,8 @@ export const ACTIVITY_ACTIONS = [
   "PROJECT_REVIEWED",
   "CHECKPOINT_REVIEWED",
   "CHECK_RERUN",
+  "JUDGING_SCORES_IMPORTED",
+  "JUDGING_SCORES_CALCULATED",
   "VOLUNTEER_CREATED",
   "VOLUNTEER_DELETED",
 ] as const;
@@ -131,6 +133,7 @@ export const ERROR_CODES = {
   UNKNOWN_MEAL: "UNKNOWN_MEAL",
   ALREADY_SERVED: "ALREADY_SERVED",
   NOT_CHECKED_IN: "NOT_CHECKED_IN",
+  NOT_SHORTLISTED: "NOT_SHORTLISTED",
   ROOM_NOT_FOUND: "ROOM_NOT_FOUND",
   NO_ROOM_AVAILABLE: "NO_ROOM_AVAILABLE",
   TEAM_WORLD_NOT_SET: "TEAM_WORLD_NOT_SET",
@@ -167,11 +170,24 @@ export const MAX_PAGE = 10_000;
 export const EXPORT_MAX_ROWS = 5_000;
 
 export const PANEL_MAX_LENGTH = 20;
+export const TABLE_NO_MAX_LENGTH = 16;
+export const PPT_URL_MAX_LENGTH = 500;
 export const POINTS_MIN = 0;
 export const POINTS_MAX = 100;
 export const POINTS_DECIMALS = 2;
 export const STARS_MIN = 0;
 export const STARS_MAX = 5;
+export const JUDGING_SCORE_MAX = 25;
+export const JUDGING_STARS_MAX = 3;
+export const JUDGING_REQUIRED_EVALUATORS = 2;
+export const JUDGING_ROUND_TYPES = ["MENTOR", "FINAL"] as const;
+export type JudgingRoundType = (typeof JUDGING_ROUND_TYPES)[number];
+export const JUDGING_ROUND_STATUS = [
+  "RECEIVING_SCORES",
+  "CALCULATED",
+  "PUBLISHED",
+] as const;
+export type JudgingRoundStatus = (typeof JUDGING_ROUND_STATUS)[number];
 export const REVIEW_NOTE_MAX_LENGTH = 500;
 
 export const UNSTOP_TEAM_ID_PATTERN = /^U[A-Z0-9]{7}$/;

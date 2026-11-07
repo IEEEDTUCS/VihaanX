@@ -4,6 +4,7 @@ import { UNSTOP_COLUMNS } from "../config/unstop";
 import { unstopRowSchema } from "../schemas/import.schema";
 import {
   LeaderConflictError,
+  TeamMoveError,
   listParticipantsForExport,
   upsertParticipant,
 } from "../services/participant.service";
@@ -19,10 +20,10 @@ import {
   resolveColumns,
   writeExport,
 } from "../utils/csv";
-import { normalisePhone } from "../utils/phone";
 import { confirmTarget } from "./confirmTarget";
 import {
   UNSTOP_IMPORT_USAGE,
+  leaderPhone,
   orderRowsForUpsert,
   parseUnstopOptions,
 } from "./importHelpers";
@@ -54,6 +55,9 @@ const main = async () => {
   const valid: ValidRow[] = [];
   const skipped: string[] = [];
   const invalidPhones: string[] = [];
+  const duplicates: string[] = [];
+  const moved: string[] = [];
+  const seenEmails = new Set<string>();
 
   table.rows.forEach((row, index) => {
     const line = index + 2;
@@ -76,17 +80,25 @@ const main = async () => {
       return;
     }
 
-    let phone: string | null = null;
+    const { phone, problem } = leaderPhone(parsed.data.role, parsed.data.phone);
 
-    if (parsed.data.role === "LEADER" && parsed.data.phone.length > 0) {
-      phone = normalisePhone(parsed.data.phone);
-      if (phone === null) {
-        invalidPhones.push(
-          `line ${line}: ${parsed.data.teamId} ${parsed.data.name} ` +
-            `("${parsed.data.phone}") stored as null`,
-        );
-      }
+    if (problem !== null) {
+      const shown = problem === "blank" ? "blank" : `"${parsed.data.phone}"`;
+
+      invalidPhones.push(
+        `line ${line}: ${parsed.data.teamId} ${parsed.data.name} ` +
+          `(${shown}) stored as null`,
+      );
     }
+
+    if (seenEmails.has(parsed.data.email)) {
+      duplicates.push(
+        `line ${line}: ${parsed.data.email} appears twice in this file`,
+      );
+      return;
+    }
+
+    seenEmails.add(parsed.data.email);
 
     valid.push({
       line,
@@ -150,16 +162,28 @@ const main = async () => {
             college: row.college,
             role: row.role,
             phone: row.phone,
+            allowMove: options.allowMove,
           });
 
           if (participant.created) counts.participantsCreated += 1;
           else counts.participantsUpdated += 1;
+
+          if (participant.movedFrom !== null) {
+            moved.push(
+              `line ${row.line}: ${row.email} moved from team ` +
+                `${participant.movedFrom} to ${unstopId}`,
+            );
+          }
         } catch (error) {
           if (error instanceof LeaderConflictError) {
             skipped.push(
               `line ${row.line}: ${unstopId} already has a different leader; ` +
                 `${row.email} not imported as LEADER`,
             );
+            continue;
+          }
+          if (error instanceof TeamMoveError) {
+            skipped.push(`line ${row.line}: ${error.message}`);
             continue;
           }
           throw error;
@@ -185,7 +209,7 @@ const main = async () => {
       `  participants: ${counts.participantsCreated} created, ` +
         `${counts.participantsUpdated} updated`,
     );
-    console.log(`  rows skipped: ${skipped.length}`);
+    console.log(`  rows skipped: ${skipped.length + duplicates.length}`);
 
     const section = (title: string, lines: string[]) => {
       if (lines.length === 0) return;
@@ -194,6 +218,8 @@ const main = async () => {
     };
 
     section("Skipped rows", skipped);
+    section("Duplicate emails in this file", duplicates);
+    section("Participants moved between teams", moved);
     section("Invalid leader phones", invalidPhones);
     section(
       "Teams without exactly one leader",

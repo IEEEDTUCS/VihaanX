@@ -3,6 +3,8 @@ import multer from "multer";
 import {
   ERROR_CODES,
   IMAGE_FIELD_NAME,
+  IMAGE_FIELD_NAME_SIZE_MAX,
+  IMAGE_FIELD_SIZE_MAX,
   IMAGE_MAX_BYTES,
   IMAGE_MIME_TYPES,
 } from "../config/constants";
@@ -12,7 +14,14 @@ const allowed: readonly string[] = IMAGE_MIME_TYPES;
 
 export const uploadImage = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: IMAGE_MAX_BYTES, files: 1, fields: 20 },
+  limits: {
+    fileSize: IMAGE_MAX_BYTES,
+    files: 1,
+    fields: 20,
+    fieldSize: IMAGE_FIELD_SIZE_MAX,
+    fieldNameSize: IMAGE_FIELD_NAME_SIZE_MAX,
+    parts: 22,
+  },
   fileFilter: (_req, file, callback) => {
     if (!allowed.includes(file.mimetype)) {
       callback(

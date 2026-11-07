@@ -9,6 +9,7 @@ import {
 } from "../config/constants";
 import type { CheckpointRound, TeamWorld } from "../config/constants";
 import { env } from "../config/env";
+import { logger } from "../config/logger";
 import {
   CHECKPOINT_WINDOWS,
   PROJECT_WINDOW,
@@ -33,6 +34,7 @@ import { uploadSubmissionImage } from "./cloudinary.service";
 import {
   checkCommit,
   checkProjectRepo,
+  failed,
   parseCommitUrl,
 } from "./github.service";
 import type { CheckResult } from "./github.service";
@@ -340,6 +342,67 @@ export const saveCheckpointResult = async (
     },
   );
 
+export type CheckWriter = (
+  result: CheckResult,
+) => Promise<{ matchedCount: number }>;
+
+export type SettleCheckInput = {
+  target: string;
+  unstopId: string;
+  check: () => Promise<CheckResult>;
+  write: CheckWriter;
+};
+
+export const settleCheck = async (input: SettleCheckInput) => {
+  let result: CheckResult;
+
+  try {
+    result = await input.check();
+  } catch (error) {
+    logger.error(
+      { err: error, target: input.target, team: input.unstopId },
+      "check threw; recording CHECK_FAILED",
+    );
+    result = failed();
+  }
+
+  try {
+    const written = await input.write(result);
+
+    logger.info(
+      {
+        target: input.target,
+        team: input.unstopId,
+        autoStatus: result.autoStatus,
+        flags: result.autoFlags.length,
+        notes: result.autoNotes.length,
+        applied: written.matchedCount > 0,
+      },
+      "check settled",
+    );
+
+    return { result, applied: written.matchedCount > 0 };
+  } catch (error) {
+    logger.error(
+      { err: error, target: input.target, team: input.unstopId },
+      "could not write the check result; retrying as CHECK_FAILED",
+    );
+
+    try {
+      const retried = await input.write(failed());
+
+      return { result: failed(), applied: retried.matchedCount > 0 };
+    } catch (retryError) {
+      logger.error(
+        { err: retryError, target: input.target, team: input.unstopId },
+        "could not record CHECK_FAILED either; the submission stays PENDING_CHECK",
+      );
+    }
+
+    return { result: failed(), applied: false };
+  }
+};
+
 const loadTeam = async (teamId: string) => {
   const team = await TeamModel.findById(teamId).lean();
   if (!team) throw teamNotFound();
@@ -372,14 +435,12 @@ export const submitProject = async (
       autoNotes: [],
     });
 
-    const result = await checkProjectRepo(input.repoUrl, env.EVENT_START);
-
-    console.info(
-      `Project check for ${team.unstopId}: ${result.autoStatus} ` +
-        `flags=${result.autoFlags.length} notes=${result.autoNotes.length}`,
-    );
-
-    await saveProjectResult(teamId, submittedAt, result);
+    await settleCheck({
+      target: "project",
+      unstopId: team.unstopId,
+      check: () => checkProjectRepo(input.repoUrl, env.EVENT_START),
+      write: (result) => saveProjectResult(teamId, submittedAt, result),
+    });
   } else {
     const input = parseOrThrow("body", hardwareProjectBody(world), body);
     const buffer = requireImage(image);
@@ -446,20 +507,20 @@ export const submitCheckpoint = async (
       .filter((entry) => entry.round !== round && entry.commitSha !== null)
       .map((entry) => ({ round: entry.round, commitSha: entry.commitSha! }));
 
-    const result = await checkCommit({
-      commitUrl: input.commitUrl,
-      projectRepoUrl: project.repoUrl,
-      window,
-      graceSeconds: graceSeconds(),
-      usedShas,
+    await settleCheck({
+      target: `checkpoint ${round}`,
+      unstopId: team.unstopId,
+      check: () =>
+        checkCommit({
+          commitUrl: input.commitUrl,
+          projectRepoUrl: project.repoUrl,
+          window,
+          graceSeconds: graceSeconds(),
+          usedShas,
+        }),
+      write: (result) =>
+        saveCheckpointResult(teamId, round, submittedAt, result),
     });
-
-    console.info(
-      `Checkpoint ${round} check for ${team.unstopId}: ${result.autoStatus} ` +
-        `flags=${result.autoFlags.length} notes=${result.autoNotes.length}`,
-    );
-
-    await saveCheckpointResult(teamId, round, submittedAt, result);
   } else {
     parseOrThrow("body", hardwareCheckpointBody, body);
     const buffer = requireImage(image);

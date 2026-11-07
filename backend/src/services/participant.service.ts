@@ -5,6 +5,7 @@ import {
   ERROR_CODES,
   EXPORT_MAX_ROWS,
   RSVP_CODE_MAX_ATTEMPTS,
+  SEARCH_TEAM_MATCH_LIMIT,
 } from "../config/constants";
 import type { ParticipantRole, TeamWorld } from "../config/constants";
 import { ParticipantModel } from "../models/participant.model";
@@ -164,6 +165,7 @@ export const participantFilter = async (query: ExportParticipantsQuery) => {
 
     const matchingTeams = await TeamModel.find({ name: pattern })
       .select("_id")
+      .limit(SEARCH_TEAM_MATCH_LIMIT)
       .lean();
 
     filter.$or = [
@@ -242,6 +244,7 @@ export type UpsertParticipantInput = {
   college: string;
   role: ParticipantRole;
   phone: string | null;
+  allowMove: boolean;
 };
 
 export const duplicateKeyFields = (error: unknown): string[] | null => {
@@ -262,7 +265,34 @@ export class LeaderConflictError extends Error {
   }
 }
 
+export class TeamMoveError extends Error {
+  constructor(
+    public readonly email: string,
+    public readonly currentTeam: string,
+  ) {
+    super(`${email} already belongs to team ${currentTeam}`);
+  }
+}
+
+const describeTeam = async (teamId: string) => {
+  const team = await TeamModel.findById(teamId).select("unstopId").lean();
+  return team?.unstopId ?? teamId;
+};
+
 export const upsertParticipant = async (input: UpsertParticipantInput) => {
+  const existing = await ParticipantModel.findOne({ email: input.email })
+    .select("teamId")
+    .lean();
+
+  const movedFrom =
+    existing && String(existing.teamId) !== input.teamId
+      ? await describeTeam(String(existing.teamId))
+      : null;
+
+  if (movedFrom !== null && !input.allowMove) {
+    throw new TeamMoveError(input.email, movedFrom);
+  }
+
   for (let attempt = 0; attempt < RSVP_CODE_MAX_ATTEMPTS; attempt += 1) {
     try {
       const result = await ParticipantModel.findOneAndUpdate(
@@ -294,6 +324,7 @@ export const upsertParticipant = async (input: UpsertParticipantInput) => {
       return {
         id: String(participant._id),
         created: result.lastErrorObject?.updatedExisting !== true,
+        movedFrom,
       };
     } catch (error) {
       const fields = duplicateKeyFields(error);
@@ -311,7 +342,8 @@ export const upsertParticipant = async (input: UpsertParticipantInput) => {
   }
 
   throw new Error(
-    `Could not generate a unique RSVP code for ${input.email} after ${RSVP_CODE_MAX_ATTEMPTS} attempts`,
+    `Could not write ${input.email} after ${RSVP_CODE_MAX_ATTEMPTS} attempts: ` +
+      "its RSVP code or email kept colliding with another row",
   );
 };
 

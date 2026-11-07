@@ -7,6 +7,7 @@ import { env } from "./config/env";
 import { errorHandler } from "./middlewares/errorHandler";
 import { notFound } from "./middlewares/notFound";
 import { apiRateLimiter } from "./middlewares/rateLimit";
+import { requestLogger } from "./middlewares/requestLogger";
 import { apiRouter } from "./routes/index";
 
 export const createApp = () => {
@@ -26,6 +27,8 @@ export const createApp = () => {
       credentials: false,
     }),
   );
+
+  app.use(requestLogger);
 
   app.use(express.json({ limit: JSON_BODY_LIMIT }));
 

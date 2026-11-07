@@ -20,7 +20,7 @@ Node watch command while working on API features.
 Run these commands from the repository root:
 
 ```bash
-docker compose -f backend/docker-compose.yml up -d
+docker compose -f backend/docker-compose.dev.yml up -d
 cd backend
 npm ci
 cp .env.example .env
@@ -52,23 +52,23 @@ erase local records.
 From the repository root, start or stop MongoDB with:
 
 ```bash
-docker compose -f backend/docker-compose.yml up -d
-docker compose -f backend/docker-compose.yml stop
+docker compose -f backend/docker-compose.dev.yml up -d
+docker compose -f backend/docker-compose.dev.yml stop
 ```
 
 Run `npm run dev` from `backend/` in a separate terminal. To see database
 status or logs:
 
 ```bash
-docker compose -f backend/docker-compose.yml ps
-docker compose -f backend/docker-compose.yml logs -f mongodb
+docker compose -f backend/docker-compose.dev.yml ps
+docker compose -f backend/docker-compose.dev.yml logs -f mongodb
 ```
 
 To remove the local database and start fresh, run this only when the data is
 disposable:
 
 ```bash
-docker compose -f backend/docker-compose.yml down -v
+docker compose -f backend/docker-compose.dev.yml down -v
 ```
 
 ### Backend checks

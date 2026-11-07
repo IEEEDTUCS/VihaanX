@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 
 import { ADMIN_PAGE_SIZE } from "../config/constants";
+import { logger } from "../config/logger";
 import type { ActivityAction } from "../config/constants";
 import { ActivityModel } from "../models/activity.model";
 import { AdminModel } from "../models/admin.model";
@@ -26,7 +27,10 @@ export const logActivity = async (input: LogActivityInput) => {
       details: input.details ?? {},
     });
   } catch (error) {
-    console.error(`Failed to write activity ${input.action}`, error);
+    logger.error(
+      { err: error, action: input.action },
+      "could not write the activity entry",
+    );
   }
 };
 

@@ -4,6 +4,7 @@ import { UNSTOP_COLUMNS } from "../config/unstop";
 import { unstopRowSchema } from "../schemas/import.schema";
 import {
   LeaderConflictError,
+  TeamMoveError,
   listParticipantsForExport,
   upsertParticipant,
 } from "../services/participant.service";
@@ -54,6 +55,9 @@ const main = async () => {
   const valid: ValidRow[] = [];
   const skipped: string[] = [];
   const invalidPhones: string[] = [];
+  const duplicates: string[] = [];
+  const moved: string[] = [];
+  const seenEmails = new Set<string>();
 
   table.rows.forEach((row, index) => {
     const line = index + 2;
@@ -87,6 +91,15 @@ const main = async () => {
         );
       }
     }
+
+    if (seenEmails.has(parsed.data.email)) {
+      duplicates.push(
+        `line ${line}: ${parsed.data.email} appears twice in this file`,
+      );
+      return;
+    }
+
+    seenEmails.add(parsed.data.email);
 
     valid.push({
       line,
@@ -150,16 +163,28 @@ const main = async () => {
             college: row.college,
             role: row.role,
             phone: row.phone,
+            allowMove: options.allowMove,
           });
 
           if (participant.created) counts.participantsCreated += 1;
           else counts.participantsUpdated += 1;
+
+          if (participant.movedFrom !== null) {
+            moved.push(
+              `line ${row.line}: ${row.email} moved from team ` +
+                `${participant.movedFrom} to ${unstopId}`,
+            );
+          }
         } catch (error) {
           if (error instanceof LeaderConflictError) {
             skipped.push(
               `line ${row.line}: ${unstopId} already has a different leader; ` +
                 `${row.email} not imported as LEADER`,
             );
+            continue;
+          }
+          if (error instanceof TeamMoveError) {
+            skipped.push(`line ${row.line}: ${error.message}`);
             continue;
           }
           throw error;
@@ -185,7 +210,7 @@ const main = async () => {
       `  participants: ${counts.participantsCreated} created, ` +
         `${counts.participantsUpdated} updated`,
     );
-    console.log(`  rows skipped: ${skipped.length}`);
+    console.log(`  rows skipped: ${skipped.length + duplicates.length}`);
 
     const section = (title: string, lines: string[]) => {
       if (lines.length === 0) return;
@@ -194,6 +219,8 @@ const main = async () => {
     };
 
     section("Skipped rows", skipped);
+    section("Duplicate emails in this file", duplicates);
+    section("Participants moved between teams", moved);
     section("Invalid leader phones", invalidPhones);
     section(
       "Teams without exactly one leader",

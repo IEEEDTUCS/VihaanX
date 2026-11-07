@@ -1,4 +1,5 @@
 import { ERROR_CODES } from "../config/constants";
+import { logger } from "../config/logger";
 import type { PublicAdmin } from "./admin.service";
 import {
   findAdminByUsername,
@@ -178,7 +179,7 @@ export const refreshTokens = async (
     const rotated = await rotateRefreshTokenHash(id, currentHash, nextHash);
 
     if (!rotated) {
-      console.warn(`Refresh token rejected for admin ${id}`);
+      logger.warn({ adminId: id }, "refresh token rejected; revoking admin");
       await revokeAdminTokens(id);
       throw unauthenticated();
     }
@@ -204,7 +205,7 @@ export const refreshTokens = async (
   );
 
   if (!rotated) {
-    console.warn(`Refresh token rejected for participant ${id}`);
+    logger.warn({ participantId: id }, "refresh token rejected");
     throw unauthenticated();
   }
 

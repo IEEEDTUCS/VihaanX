@@ -1,8 +1,6 @@
 import { Router } from "express";
 
-import { authenticate } from "../middlewares/authenticate";
-import { requireKind } from "../middlewares/requireKind";
-import { requireRole } from "../middlewares/requireRole";
+import { participantOnly, superAdminOnly } from "../middlewares/chains";
 import { validate } from "../middlewares/validate";
 import {
   getMe,
@@ -16,7 +14,7 @@ import {
 
 const me = Router();
 
-me.use(authenticate, requireKind("participant"));
+me.use(...participantOnly);
 
 me.get("/", getMe);
 
@@ -24,11 +22,7 @@ export const meRouter = me;
 
 const adminParticipants = Router();
 
-adminParticipants.use(
-  authenticate,
-  requireKind("admin"),
-  requireRole("SUPER_ADMIN"),
-);
+adminParticipants.use(...superAdminOnly);
 
 adminParticipants.get(
   "/",

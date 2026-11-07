@@ -16,12 +16,7 @@ export const RATE_LIMIT_MAX_REQUESTS = 300;
 
 export const SHUTDOWN_TIMEOUT_MS = 10_000;
 
-export const ADMIN_ROLES = [
-  "SUPER_ADMIN",
-  "VOLUNTEER",
-  "MENTOR",
-  "FINAL_JUDGE",
-] as const;
+export const ADMIN_ROLES = ["SUPER_ADMIN", "VOLUNTEER"] as const;
 export type AdminRole = (typeof ADMIN_ROLES)[number];
 
 export const PARTICIPANT_ROLES = ["LEADER", "MEMBER"] as const;

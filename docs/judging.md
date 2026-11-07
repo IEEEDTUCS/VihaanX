@@ -1,7 +1,8 @@
 # Judging score imports
 
-The judging API accepts one CSV row per evaluator/team score. Assignment of
-teams to panels and evaluators is managed outside this feature.
+The judging API is an admin-only import pipeline. Mentors and judges do not
+log in or enter scores in the application. Assignment of teams to panels and
+evaluators is managed outside this feature.
 
 Required columns:
 
@@ -14,7 +15,7 @@ MENTOR,panel-1,mentor-2,UABC1234,24,1
 `round_type` is either `MENTOR` or `FINAL`. The current implementation accepts
 scores from `0` to `25` and stars from `0` to `3`.
 
-Preview or import a file as an admin:
+Preview or import a file as a super admin:
 
 ```text
 POST /api/v1/admin/judging/scores/preview?roundId=mentor-round-1&roundType=MENTOR
@@ -33,4 +34,5 @@ GET /api/v1/admin/judging/rounds/mentor-round-1/results?roundType=MENTOR
 
 Each evaluator is normalized independently using a population standard
 deviation. A team's final score is the sum of its two evaluator z-scores; total
-stars are retained as the first tie-breaker.
+stars are retained as the first tie-breaker. The same pipeline is used for
+mentor-round rows (`MENTOR`) and final-round rows (`FINAL`).

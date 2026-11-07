@@ -107,6 +107,8 @@ export const ACTIVITY_ACTIONS = [
   "PROJECT_REVIEWED",
   "CHECKPOINT_REVIEWED",
   "CHECK_RERUN",
+  "JUDGING_SCORES_IMPORTED",
+  "JUDGING_SCORES_CALCULATED",
   "VOLUNTEER_CREATED",
   "VOLUNTEER_DELETED",
 ] as const;
@@ -170,6 +172,17 @@ export const POINTS_MAX = 100;
 export const POINTS_DECIMALS = 2;
 export const STARS_MIN = 0;
 export const STARS_MAX = 5;
+export const JUDGING_SCORE_MAX = 25;
+export const JUDGING_STARS_MAX = 3;
+export const JUDGING_REQUIRED_EVALUATORS = 2;
+export const JUDGING_ROUND_TYPES = ["MENTOR", "FINAL"] as const;
+export type JudgingRoundType = (typeof JUDGING_ROUND_TYPES)[number];
+export const JUDGING_ROUND_STATUS = [
+  "RECEIVING_SCORES",
+  "CALCULATED",
+  "PUBLISHED",
+] as const;
+export type JudgingRoundStatus = (typeof JUDGING_ROUND_STATUS)[number];
 export const REVIEW_NOTE_MAX_LENGTH = 500;
 
 export const UNSTOP_TEAM_ID_PATTERN = /^U[A-Z0-9]{7}$/;

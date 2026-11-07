@@ -8,6 +8,7 @@ import { adminRouter } from "./admin.routes";
 import { authRouter } from "./auth.routes";
 import { cardsRouter, checkinParticipantsRouter } from "./checkin.routes";
 import { healthRouter } from "./health.routes";
+import { judgingRouter } from "./judging.routes";
 import { adminParticipantsRouter, meRouter } from "./participant.routes";
 import { roomsRouter } from "./room.routes";
 import { scheduleRouter } from "./schedule.routes";
@@ -48,5 +49,6 @@ router.use(
 router.use("/admin/teams", tag("/admin/teams"), noStore, adminTeamsRouter);
 router.use("/admin/stats", tag("/admin/stats"), noStore, statsRouter);
 router.use("/admin/activity", tag("/admin/activity"), noStore, activityRouter);
+router.use("/admin/judging", judgingRouter);
 
 export const apiRouter = router;

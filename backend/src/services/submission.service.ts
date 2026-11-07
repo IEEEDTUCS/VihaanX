@@ -91,10 +91,6 @@ export const toParticipantProject = (project: Project) => ({
   repoUrl: project.repoUrl,
   imageUrl: project.imageUrl,
   submittedAt: project.submittedAt,
-  autoStatus: project.autoStatus,
-  autoFlags: project.autoFlags,
-  autoNotes: project.autoNotes,
-  reviewStatus: project.reviewStatus,
 });
 
 export const toParticipantCheckpoint = (checkpoint: Checkpoint) => ({
@@ -102,14 +98,14 @@ export const toParticipantCheckpoint = (checkpoint: Checkpoint) => ({
   url: checkpoint.url,
   commitSha: checkpoint.commitSha,
   submittedAt: checkpoint.submittedAt,
-  autoStatus: checkpoint.autoStatus,
-  autoFlags: checkpoint.autoFlags,
-  autoNotes: checkpoint.autoNotes,
-  reviewStatus: checkpoint.reviewStatus,
 });
 
 export const toAdminProject = (project: Project) => ({
   ...toParticipantProject(project),
+  autoStatus: project.autoStatus,
+  autoFlags: project.autoFlags,
+  autoNotes: project.autoNotes,
+  reviewStatus: project.reviewStatus,
   reviewNote: project.reviewNote,
   reviewedBy: project.reviewedBy ? String(project.reviewedBy) : null,
   reviewedAt: project.reviewedAt ?? null,
@@ -117,6 +113,10 @@ export const toAdminProject = (project: Project) => ({
 
 export const toAdminCheckpoint = (checkpoint: Checkpoint) => ({
   ...toParticipantCheckpoint(checkpoint),
+  autoStatus: checkpoint.autoStatus,
+  autoFlags: checkpoint.autoFlags,
+  autoNotes: checkpoint.autoNotes,
+  reviewStatus: checkpoint.reviewStatus,
   reviewNote: checkpoint.reviewNote,
   reviewedBy: checkpoint.reviewedBy ? String(checkpoint.reviewedBy) : null,
   reviewedAt: checkpoint.reviewedAt ?? null,
